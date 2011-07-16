@@ -1,3 +1,5 @@
+#Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
+
 from ipmi import Command
 
 def str2bool(v):

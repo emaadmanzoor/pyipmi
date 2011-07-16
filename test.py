@@ -1,3 +1,5 @@
+#Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
+
 import sys
 
 from lanbmc import LanBMC

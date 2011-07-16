@@ -1,3 +1,5 @@
+#Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
+
 class BMC:
     """A BMC - what you're talking to when you're talking IPMI"""
 
