@@ -37,10 +37,7 @@ class ChassisStatusCommand(Command):
             field, value = [field.strip() for field in line.split(":")]
 
             if field == 'System Power':
-                if value == 'on':
-                    status.power_on = True
-                else:
-                    status.power_off = True
+                status.power_on = value == 'on'
 
             if field == 'Power Overload':
                 status.power_fault = str2bool(value)
@@ -58,3 +55,15 @@ class ChassisStatusCommand(Command):
                 status.power_restore_policy = value
 
         return status
+
+class ChassisControlCommand(Command):
+    """Describes the IPMI chassis control command
+
+    ipmitool calls this "chassis power"
+    """
+
+    def ipmitool_args(self):
+        return ["chassis", "power", self._params["mode"]]
+
+    def ipmitool_parse_results(self, response):
+        return None

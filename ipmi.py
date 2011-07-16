@@ -26,6 +26,9 @@ class Handle:
     def chassis_status(self):
         return self._tool.chassis_status()
 
+    def chassis_control(self, mode):
+        return self._tool.chassis_control(mode)
+
 class Tool:
     """A tool implements communications with a BMC"""
     def __init__(self, handle, command_list):
@@ -34,11 +37,15 @@ class Tool:
 
     """TODO: find a better home for command stubs."""
     def chassis_status(self):
-        command = self._command_list["chassis_status"](self, None)
+        command = self._command_list["chassis_status"](self)
+        return self.run(command)
+
+    def chassis_control(self, mode):
+        command = self._command_list["chassis_control"](self, mode=mode)
         return self.run(command)
 
 class Command:
     """A Command describes a specific IPMI command"""
-    def __init__(self, tool, params = None):
+    def __init__(self, tool, **params):
         self._tool = tool
         self._params = params
