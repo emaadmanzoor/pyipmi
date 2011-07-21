@@ -1,9 +1,8 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 
 import sys
-
-from lanbmc import LanBMC
-from server import Server
+from ipmi.server import Server
+from ipmi.lanbmc import LanBMC
 
 bmc = LanBMC(sys.argv[1], password = "admin")
 server = Server(bmc)

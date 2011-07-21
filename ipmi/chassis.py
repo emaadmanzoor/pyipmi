@@ -1,13 +1,22 @@
-#Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
-
 import time
 
-from ipmi import Handle
-from ipmitool import IpmiTool
-from commands import ipmi_commands
+class ChassisStatus:
+    """The response to a ChassisStatus command
 
-class Server:
-    """A server is managed over IPMI"""
+    TODO: This is currently an odd mix of types.. there must be a better way
+    """
+
+    def __init__(self):
+        self.power_restore_policy = None
+        self.power_control_fault = None
+        self.power_fault = None
+        self.power_interlock = None
+        self.power_overload = None
+        self.power_on = None 
+        self.last_power_event = None
+        self.misc_chassis_state = None
+
+class Chassis:
     def wait_after(f):
         def sleeper(self):
             ret = f(self)
@@ -15,10 +24,12 @@ class Server:
             return ret
         return sleeper
 
-    def __init__(self, bmc):
-        self.bmc = bmc
-        self._handle = bmc.handle(Handle, IpmiTool, ipmi_commands)
+    def __init__(self, handle):
+        self._handle = handle
         self._wait = 10
+       
+    def status(self):
+        return self._handle.chassis_status()
 
     @wait_after
     def power_off(self):

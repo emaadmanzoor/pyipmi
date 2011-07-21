@@ -1,25 +1,10 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 
 from ipmi import Command
+from ipmi.chassis import ChassisStatus
 
 def str2bool(v):
   return v.lower() == "true"
-
-class ChassisStatus:
-    """The response to a ChassisStatus command
-
-    TODO: This is currently an odd mix of types.. there must be a better way
-    """
-
-    def __init__(self):
-        self.power_restore_policy = None
-        self.power_control_fault = None
-        self.power_fault = None
-        self.power_interlock = None
-        self.power_overload = None
-        self.power_on = None 
-        self.last_power_event = None
-        self.misc_chassis_state = None
         
 class ChassisStatusCommand(Command):
     """Describes the chassis status IPMI command"""
