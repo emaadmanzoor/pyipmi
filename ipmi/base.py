@@ -12,35 +12,36 @@ class Handle:
     def __init__(self, bmc, tool_class, command_list):
         self.bmc = bmc
         self._tool = tool_class(self, command_list)
+        self._add_command_stubs(command_list)
 
-    """TODO: find a better home for command stubs"""
-    def chassis_status(self):
-        return self._tool.chassis_status()
+    def _add_command_stubs(self, command_list):
+        for command in command_list:
+            self._add_command_stub(command)
 
-    def chassis_control(self, mode):
-        return self._tool.chassis_control(mode)
+    def _add_command_stub(self, command):
+        def _cmd(*args, **kwargs):
+            tm = getattr(self._tool, command)
+            return tm(*args, **kwargs)
 
-    def get_device_id(self):
-        return self._tool.get_device_id()
+        setattr(self, command, _cmd)
 
 class Tool:
     """A tool implements communications with a BMC"""
     def __init__(self, handle, command_list):
         self._handle = handle
+        self._add_command_stubs(command_list)
         self._command_list = command_list
 
-    """TODO: find a better home for command stubs."""
-    def chassis_status(self):
-        command = self._command_list["chassis_status"](self)
-        return self.run(command)
+    def _add_command_stubs(self, command_list):
+        for command in command_list:
+            self._add_command_stub(command)
 
-    def chassis_control(self, mode):
-        command = self._command_list["chassis_control"](self, mode=mode)
-        return self.run(command)
+    def _add_command_stub(self, command):
+        def _cmd(*args, **kwargs):
+            inst = self._command_list[command](self, *args, **kwargs)
+            return self.run(inst)
 
-    def get_device_id(self):
-        command = self._command_list["get_device_id"](self)
-        return self.run(command)
+        setattr(self, command, _cmd)
 
 class Command:
     """A Command describes a specific IPMI command"""
