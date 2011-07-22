@@ -1,9 +1,7 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
-
 from ipmi import Command
 from ipmi.chassis import ChassisStatus
 from ipmi.ipmitool import BOOL_VAL, ipmitool_command
-
 
 @ipmitool_command
 class ChassisStatusCommand(Command):
@@ -33,3 +31,8 @@ class ChassisControlCommand(Command):
     @property
     def ipmitool_args(self):
         return ["chassis", "power", self._params["mode"]]
+
+chassis_commands = {
+    "chassis_status" : ChassisStatusCommand,
+    "chassis_control" : ChassisControlCommand,
+}

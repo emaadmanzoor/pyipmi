@@ -24,3 +24,7 @@ class GetDeviceIdCommand(Command):
     }
 
     ipmitool_args = ["bmc", "info"]
+
+global_commands = {
+    "get_device_id" : GetDeviceIdCommand
+}

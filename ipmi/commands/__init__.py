@@ -1,10 +1,8 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
-
 from _chassis import *
-from _global import *
+from _global import global_commands
 
-ipmi_commands = {
-    "chassis_status" : ChassisStatusCommand,
-    "chassis_control" : ChassisControlCommand,
-    "get_device_id" : GetDeviceIdCommand
-}
+ipmi_commands = {}
+
+ipmi_commands.update(global_commands)
+ipmi_commands.update(chassis_commands)
