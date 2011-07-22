@@ -18,8 +18,7 @@ class ChassisStatusCommand(Command):
 
     name = "Chassis Status"
 
-    def ipmitool_args(self):
-        return ["chassis", "status"]
+    ipmitool_args = ["chassis", "status"]
 
     def ipmitool_parse_results(self, response):
         status = ChassisStatus()
@@ -32,6 +31,7 @@ class ChassisControlCommand(Command):
     ipmitool calls this "chassis power"
     """
 
+    @property
     def ipmitool_args(self):
         return ["chassis", "power", self._params["mode"]]
 

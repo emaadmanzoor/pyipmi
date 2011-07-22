@@ -16,10 +16,11 @@ class IpmiTool(Tool):
 
     def _ipmi_args(self, command):
         base = []
-        base.extend(self._config_args())
-        base.extend(command.ipmitool_args())
+        base.extend(self._config_args)
+        base.extend(command.ipmitool_args)
         return base
 
+    @property
     def _config_args(self):
         params_to_args = {
             'hostname' : '-H',

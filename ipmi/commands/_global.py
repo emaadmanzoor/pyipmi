@@ -21,9 +21,7 @@ class GetDeviceIdCommand(Command):
     """
 
     name = "Get Device ID"
-
-    def ipmitool_args(self):
-        return ["bmc", "info"]
+    ipmitool_args = ["bmc", "info"]
 
     def ipmitool_parse_results(self, response):
         status = BMCInfo()
