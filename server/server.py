@@ -1,17 +1,13 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 
-from ipmi import Handle
-from ipmitool import IpmiTool
-from commands import ipmi_commands
-from chassis import Chassis
+from ipmi import Chassis
 
 class Server:
     """A server is managed over IPMI"""
 
     def __init__(self, bmc):
         self.bmc = bmc
-        self._handle = bmc.handle(Handle, IpmiTool, ipmi_commands)
-        self._chassis = Chassis(self._handle)
+        self._chassis = Chassis(self.bmc.handle)
 
     def power_off(self):
         if self._chassis.is_powered:

@@ -1,10 +1,11 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 
 import sys
-from ipmi.server import Server
-from ipmi.lanbmc import LanBMC
+from ipmi import make_bmc
+from server import Server
+from ipmi.bmc import LanBMC
 
-bmc = LanBMC(sys.argv[1], password = "admin")
+bmc = make_bmc(LanBMC, hostname = sys.argv[1], password = "admin")
 server = Server(bmc)
 
 print "Power on: %s" % server.is_powered
