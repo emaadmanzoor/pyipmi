@@ -1,0 +1,18 @@
+{
+	"atom1" : {
+		"bmc" : {
+			"hostname" : "172.17.28.26",
+			"password" : "admin"
+		},
+		"type" : "supermicro_atom"
+	},
+
+	"sandy1" : {
+		"bmc" : {
+			"hostname" : "sandy2-ipmi.lab.calxeda.com",
+			"username" : "ADMIN",
+			"password" : "cl0uds"
+		},
+		"type" : "supermicro_sandy"
+	}
+}
