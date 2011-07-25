@@ -25,6 +25,7 @@ class IpmiTool(Tool):
         params_to_args = {
             'hostname' : '-H',
             'password' : '-P',
+            'username' : '-U',
             'port' : '-p'
         }
 
@@ -33,7 +34,7 @@ class IpmiTool(Tool):
         
         for param,val in bmc_params.iteritems():
             arg = params_to_args.get(param)
-            if arg:
+            if arg and val:
                 base.extend([arg, str(val)])
 
         return base
@@ -51,7 +52,7 @@ BOOL_VAL = 2
 
 def ipmitool_command(command_class):
     def str2bool(v):
-      return v.lower() == "true"
+      return v.lower() in ["true", "yes"]
 
     def field_to_attr(field_name):
         return field_name.lower().replace(' ', '_')

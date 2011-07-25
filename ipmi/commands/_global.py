@@ -19,7 +19,7 @@ class GetDeviceIdCommand(Command):
         "Firmware Revision" : {},
         "IPMI Version" : {},
         "Manufacturer ID" : {},
-        "Product ID" : {},
+        "Product ID" : { "conv" : lambda s: s.split(' ')[0] },
         "Device Available" : { "conv" : BOOL_VAL }
     }
 
