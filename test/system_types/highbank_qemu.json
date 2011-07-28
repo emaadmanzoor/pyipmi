@@ -1,0 +1,11 @@
+{
+	"BMCInfo" : {
+		"ipmi_version": "0.0",
+		"product_id": "205",
+		"firmware_revision": "0.1",
+		"device_revision": "2",
+		"manufacturer_id": "171",
+		"device_available": true,
+		"device_id": "1"
+	}
+}
