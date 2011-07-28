@@ -26,6 +26,8 @@ class IpmiTool(Tool):
             'hostname' : '-H',
             'password' : '-P',
             'username' : '-U',
+            'authtype' : '-A',
+            'level' : '-L',
             'port' : '-p'
         }
 

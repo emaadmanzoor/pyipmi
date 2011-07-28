@@ -38,14 +38,18 @@ class LanBMC(BMC):
                     hostname,
                     username = None,
                     password = None,
+                    authtype = None,
+                    level = None,
                     port = 623,
                     **kwargs):
 
         self.params = {
-            'username' : username,
             'hostname' : hostname,
+            'username' : username,
             'password' : password,
-            'port' : port
+            'authtype' : authtype,
+            'level'    : level,
+            'port'     : port
         }
 
         super(LanBMC, self).__init__(**kwargs)
