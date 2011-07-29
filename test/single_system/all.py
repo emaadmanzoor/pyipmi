@@ -5,7 +5,7 @@ import xmlrunner
 
 tests = []
 tests.extend(bmc_test.tests)
-tests.extend(power_test.tests)
+#tests.extend(power_test.tests)
 
 if __name__ == '__main__':
     for test in tests:
