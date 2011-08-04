@@ -17,3 +17,9 @@ class SingleSystemTest(unittest.TestCase):
     def get_checks(self):
         file_name = os.path.join('system_types', self.system_info['type'] + '.json')
         return json.load(open(file_name))
+
+    def id(self, *args, **kwargs):
+        if self.shortDescription():
+            return self.shortDescription()
+        else:
+            return super(SingleSystemTest, self).id(*args, **kwargs)

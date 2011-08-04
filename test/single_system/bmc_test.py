@@ -4,6 +4,7 @@ from singlesystemtest import SingleSystemTest
 
 class TestBmcInfo(SingleSystemTest):
     def test_bmc_info(self):
+        """BMC info provides expected results"""
         info = self.bmc.info()
         check_items = self.get_checks()['BMCInfo']
 
