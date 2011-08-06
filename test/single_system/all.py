@@ -1,4 +1,4 @@
-import sys, unittest
+import sys, unittest, os
 import bmc_test
 import power_test
 import xmlrunner
@@ -11,4 +11,6 @@ if __name__ == '__main__':
     for test in tests:
         test.system = sys.argv[1]
         suite = unittest.TestLoader().loadTestsFromTestCase(test)
-        xmlrunner.XMLTestRunner(verbose = 1, output='test-reports').run(suite)
+        result = xmlrunner.XMLTestRunner(verbose = 1, output='test-reports').run(suite)
+        if result.failures or result.errors:
+            os.sys.exit(1)
