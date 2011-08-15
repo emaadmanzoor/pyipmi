@@ -11,7 +11,6 @@ class IpmiTool(Tool):
     def run(self, command):
         ipmi_args = self._ipmi_args(command)
         results = self._execute(ipmi_args)
-        self._log(results)
         return command.ipmitool_parse_results(results)
 
     def _ipmi_args(self, command):
