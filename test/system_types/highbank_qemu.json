@@ -1,6 +1,6 @@
 {
 	"BMCInfo" : {
-		"ipmi_version": "0.0",
+		"ipmi_version": "2.0",
 		"product_id": "205",
 		"firmware_revision": "0.1",
 		"device_revision": "2",
