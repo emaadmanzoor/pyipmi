@@ -11,14 +11,14 @@ class TestBmcInfo(SingleSystemTest):
         for item,expected in check_items.iteritems():
             self.assertEqual(expected, getattr(info, item))
 
-    def test_bmc_info_eleven_times(self):
-        """BMC info provides expected results 11 times in a row"""
-        for i in range(0, 11):
-            info = self.bmc.info()
-            check_items = self.get_checks()['BMCInfo']
-
-            for item,expected in check_items.iteritems():
-                self.assertEqual(expected, getattr(info, item))
+#    def test_bmc_info_eleven_times(self):
+#        """BMC info provides expected results 11 times in a row"""
+#        for i in range(0, 11):
+#            info = self.bmc.info()
+#            check_items = self.get_checks()['BMCInfo']
+#
+#            for item,expected in check_items.iteritems():
+#                self.assertEqual(expected, getattr(info, item))
 
 tests = [TestBmcInfo]
 
