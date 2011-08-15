@@ -8,8 +8,12 @@ tests = []
 tests.extend(bmc_test.tests)
 #tests.extend(power_test.tests)
 
-os.remove('ipmi.log')
-SingleSystemTest.logfile = open('ipmi.log', 'a+')
+ipmi_log = 'ipmi.log'
+
+if (os.path.exists(ipmi_log)):
+    os.remove(ipmi_log)
+
+SingleSystemTest.logfile = open(ipmi_log, 'a+')
 
 if __name__ == '__main__':
     for test in tests:
