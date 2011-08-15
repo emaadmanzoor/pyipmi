@@ -5,7 +5,7 @@ from ipmitool import IpmiTool
 from commands import ipmi_commands
 from chassis import Chassis
 
-def make_bmc(bmc_class, **kwargs):
+def make_bmc(bmc_class, logfile = None, **kwargs):
     bmc_kwargs = {
         "tool_class" : IpmiTool,
         "handle_class" : Handle,
@@ -13,4 +13,7 @@ def make_bmc(bmc_class, **kwargs):
     }
 
     bmc_kwargs.update(kwargs)
-    return bmc_class(**bmc_kwargs)
+    bmc_obj = bmc_class(**bmc_kwargs)
+    bmc_obj.handle.set_log(logfile)
+
+    return bmc_obj

@@ -1,17 +1,17 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 
+import subprocess, sys
 from ipmi import Tool
-import subprocess
 
 class IpmiTool(Tool):
     """Implements interaction with impitool
 
     Currently only supports one off commands, persistent sessions will come..
     """
-
     def run(self, command):
         ipmi_args = self._ipmi_args(command)
         results = self._execute(ipmi_args)
+        self._log(results)
         return command.ipmitool_parse_results(results)
 
     def _ipmi_args(self, command):
@@ -42,11 +42,16 @@ class IpmiTool(Tool):
         return base
 
     def _execute(self, ipmi_args):
-        args = ["ipmitool"]
+        args = ['ipmitool']
         args.extend(ipmi_args)
-        print "Running: " + " ".join(args)
-        proc = subprocess.Popen(args, stdout=subprocess.PIPE)
-        out, err = proc.communicate()
+        self._log('Running: ' + ' '.join(args))
+        print 'Running: ' + ' '.join(args)
+        proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out,err = proc.communicate()
+        self._log(out)
+        self._log(err)
+        sys.stdout.write(out)
+        sys.stderr.write(err)
         return out
 
 SIMPLE_VAL = 1

@@ -1,11 +1,15 @@
 import sys, unittest, os
 import bmc_test
 import power_test
+from singlesystemtest import SingleSystemTest
 import xmlrunner
 
 tests = []
 tests.extend(bmc_test.tests)
 #tests.extend(power_test.tests)
+
+os.remove('ipmi.log')
+SingleSystemTest.logfile = open('ipmi.log', 'a+')
 
 if __name__ == '__main__':
     for test in tests:
