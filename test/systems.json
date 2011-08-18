@@ -19,8 +19,8 @@
 	"m3qemu1" : {
 		"bmc" : {
 			"hostname" : "192.168.100.250",
-			"authtype" : "none",
-			"level"	   : "user"
+			"username" : "admin",
+			"password" : "admin"
 		},
 		"type" : "highbank_qemu"
 	}
