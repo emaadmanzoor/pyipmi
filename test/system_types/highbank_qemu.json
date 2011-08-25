@@ -7,5 +7,9 @@
 		"manufacturer_id": "171",
 		"device_available": true,
 		"device_id": "1"
+	},
+	"BMCGuid" : {
+		"system_guid": "00000000-0000-0000-e0d3-29331a4fc2a8"
 	}
 }
+

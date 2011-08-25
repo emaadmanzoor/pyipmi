@@ -1,7 +1,7 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 
 from ipmi import Command
-from ipmi.bmc import BMCInfo
+from ipmi.bmc import BMCInfo, BMCGuid
 from ipmi.ipmitool import BOOL_VAL, ipmitool_command
 
 @ipmitool_command
@@ -25,6 +25,22 @@ class GetDeviceIdCommand(Command):
 
     ipmitool_args = ["bmc", "info"]
 
+@ipmitool_command
+class GetSystemGuidCommand(Command):
+    """Describes the get_system_guid IPMI command
+
+    This is "bmc guid" to ipmitool
+    """
+    name = "Get System GUID"
+    result_type = BMCGuid
+
+    ipmitool_response_fields = {
+        "System GUID" : {}
+    }
+
+    ipmitool_args = ["bmc", "guid"]
+
 global_commands = {
-    "get_device_id" : GetDeviceIdCommand
+    "get_device_id" : GetDeviceIdCommand,
+    "get_system_guid" : GetSystemGuidCommand
 }

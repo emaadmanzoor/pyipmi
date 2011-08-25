@@ -81,7 +81,9 @@ def ipmitool_command(command_class):
             if line.find(':') == -1:
                 continue
 
-            field, value = [field.strip() for field in line.split(":")]
+            field_seperator=line.index(":")
+	    field = line[0:field_seperator-1].strip()
+            value = line[field_seperator+1:].strip()
 
             field_info = mapping.get(field)
 

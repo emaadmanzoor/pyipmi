@@ -1,4 +1,4 @@
-__all__ = ["BMC", "BMCInfo", "LanBMC"]
+__all__ = ["BMC", "BMCInfo", "BMCGuid", "LanBMC"]
 
 class BMCInfo:
     device_id = None
@@ -23,6 +23,16 @@ class BMCInfo:
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
+
+class BMCGuid:
+    system_guid = None
+    time_stamp = None
+
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
         
 class BMC(object):
     """A BMC - what you're talking to when you're talking IPMI"""
@@ -31,6 +41,9 @@ class BMC(object):
 
     def info(self):
         return self.handle.get_device_id()
+
+    def guid(self):
+	return self.handle.get_system_guid()
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
