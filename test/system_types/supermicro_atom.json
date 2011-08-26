@@ -7,5 +7,9 @@
 		"manufacturer_id": "47488",
 		"device_available": true,
 		"device_id": "32"
+	},
+
+	"BMCGuid" : {
+		"system_guid": "31303037-534d-2500-900a-2d5300000000"
 	}
 }
