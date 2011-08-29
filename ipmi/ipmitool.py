@@ -56,25 +56,28 @@ class IpmiTool(Tool):
 SIMPLE_VAL = 1
 BOOL_VAL = 2
 
-def ipmitool_command(command_class):
+class IpmitoolCommandMixIn(object):
+"""Add this MixIn to a Command to enable it to work with ipmitool"""
+    @staticmethod
     def str2bool(v):
       return v.lower() in ["true", "yes"]
 
+    @staticmethod
     def field_to_attr(field_name):
         return field_name.lower().replace(' ', '_')
 
-    def field_to_objval(obj, field_info, field_name, value):
-        attr_name = field_info.get('attr', field_to_attr(field_name))
+    def field_to_objval(self, obj, field_info, field_name, value):
+        attr_name = field_info.get('attr', self.field_to_attr(field_name))
         attr_conv = field_info.get('conv', SIMPLE_VAL)
 
         if attr_conv == SIMPLE_VAL:
             setattr(obj, attr_name, value)
         elif attr_conv == BOOL_VAL:
-            setattr(obj, attr_name, str2bool(value))
+            setattr(obj, attr_name, self.str2bool(value))
         else:
             setattr(obj, attr_name, attr_conv(value))
 
-    def parse_response(obj, response, mapping):
+    def parse_response(self, obj, response, mapping):
         lines = response.split("\n")
         left_over = []
         for line in lines:
@@ -91,7 +94,7 @@ def ipmitool_command(command_class):
                 left_over.append((field, value))
                 continue
 
-            field_to_objval(obj, field_info, field, value)
+            self.field_to_objval(obj, field_info, field, value)
 
     def ipmitool_parse_results(self, response):
         try:
@@ -99,9 +102,5 @@ def ipmitool_command(command_class):
         except AttributeError:
             return None
 
-        parse_response(result, response, self.ipmitool_response_fields)
+        self.parse_response(result, response, self.ipmitool_response_fields)
         return result
-
-    command_class.ipmitool_parse_results = ipmitool_parse_results
-
-    return command_class

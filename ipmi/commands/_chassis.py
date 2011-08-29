@@ -1,10 +1,9 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 from ipmi import Command
 from ipmi.chassis import ChassisStatus
-from ipmi.ipmitool import BOOL_VAL, ipmitool_command
+from ipmi.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
 
-@ipmitool_command
-class ChassisStatusCommand(Command):
+class ChassisStatusCommand(Command, IpmitoolCommandMixIn):
     """Describes the chassis status IPMI command"""
 
     name = "Chassis Status"
@@ -21,8 +20,7 @@ class ChassisStatusCommand(Command):
         'Power Restore Policy' : {}
     }
 
-@ipmitool_command
-class ChassisControlCommand(Command):
+class ChassisControlCommand(Command, IpmitoolCommandMixIn):
     """Describes the IPMI chassis control command
 
     ipmitool calls this "chassis power"

@@ -2,10 +2,9 @@
 
 from ipmi import Command
 from ipmi.bmc import BMCInfo, BMCGuid
-from ipmi.ipmitool import BOOL_VAL, ipmitool_command
+from ipmi.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
 
-@ipmitool_command
-class GetDeviceIdCommand(Command):
+class GetDeviceIdCommand(Command, IpmitoolCommandMixIn):
     """Describes the get_device_id IPMI command
 
     This is "bmc info" to ipmitool
@@ -25,8 +24,7 @@ class GetDeviceIdCommand(Command):
 
     ipmitool_args = ["bmc", "info"]
 
-@ipmitool_command
-class GetSystemGuidCommand(Command):
+class GetSystemGuidCommand(Command, IpmitoolCommandMixIn):
     """Describes the get_system_guid IPMI command
 
     This is "bmc guid" to ipmitool
