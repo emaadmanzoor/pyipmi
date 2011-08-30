@@ -43,7 +43,7 @@ class BMC(object):
         return self.handle.get_device_id()
 
     def guid(self):
-	return self.handle.get_system_guid()
+        return self.handle.get_system_guid()
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
