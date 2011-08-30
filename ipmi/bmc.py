@@ -45,6 +45,9 @@ class BMC(object):
     def guid(self):
         return self.handle.get_system_guid()
 
+    def sdr_list(self):
+        return self.handle.get_sdr_list()
+
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
     def __init__(self,
