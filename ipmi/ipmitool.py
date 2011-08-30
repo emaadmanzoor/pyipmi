@@ -6,8 +6,9 @@ from ipmi import Tool
 class IpmiTool(Tool):
     """Implements interaction with impitool
 
-    Currently only supports one off commands, persistent sessions will come..
+    Currently only supports one off commands, persistent sessions will come.
     """
+
     def run(self, command):
         ipmi_args = self._ipmi_args(command)
         results = self._execute(ipmi_args)
@@ -53,11 +54,22 @@ class IpmiTool(Tool):
         sys.stderr.write(err)
         return out
 
-SIMPLE_VAL = 1
-BOOL_VAL = 2
+SIMPLE_VAL      = 1
+BOOL_VAL        = 2
+PAREN_PAIR_VAL  = 3
 
 class IpmitoolCommandMixIn(object):
-"""Add this MixIn to a Command to enable it to work with ipmitool"""
+    """Add this MixIn to a Command to enable it to work with ipmitool"""
+
+    COLUMN_RECORD = 1
+    COLUMN_RECORD_LIST = 2
+    
+    ipmitool_response_format = COLUMN_RECORD
+
+    @staticmethod
+    def paren_pair(v):
+        return [p.strip(' )') for p in v.split('(')]
+
     @staticmethod
     def str2bool(v):
       return v.lower() in ["true", "yes"]
@@ -74,10 +86,21 @@ class IpmitoolCommandMixIn(object):
             setattr(obj, attr_name, value)
         elif attr_conv == BOOL_VAL:
             setattr(obj, attr_name, self.str2bool(value))
+        elif attr_conv == PAREN_PAIR_VAL:
+            attr_vals = self.paren_pair(value)
+
+            for i, v in enumerate(attr_vals):
+                setattr(obj, attr_name[i], v)
         else:
             setattr(obj, attr_name, attr_conv(value))
 
-    def parse_response(self, obj, response, mapping):
+    def parse_colon_record(self, response):
+        result_type, mapping = self.ipmitool_types(response)
+
+        if result_type == None:
+            return None
+
+        obj = result_type()
         lines = response.split("\n")
         left_over = []
         for line in lines:
@@ -96,11 +119,37 @@ class IpmitoolCommandMixIn(object):
 
             self.field_to_objval(obj, field_info, field, value)
 
+        return obj
+
+    def ipmitool_types(self, response):
+        return self.result_type, self.ipmitool_response_fields
+
+    def parse_colon_record_list(self, response):
+        results = []
+        records = response.split('\n\n')
+        for record in records:
+            obj = self.parse_colon_record(record)
+
+            if obj == None:
+                continue
+
+            results.append(obj)
+
+        return results
+
+    def parse_response(self, response):
+        if self.ipmitool_response_format == self.COLUMN_RECORD:
+            return self.parse_colon_record(response)
+        elif self.ipmitool_response_format == self.COLUMN_RECORD_LIST:
+            return self.parse_colon_record_list(response)
+        else:
+            raise Exception('unknown ipmitool_response_format: %d\n' % (
+                ipmitool_response_format))
+
     def ipmitool_parse_results(self, response):
         try:
-            result = self.result_type()
+            result_type = self.result_type
         except AttributeError:
             return None
 
-        self.parse_response(result, response, self.ipmitool_response_fields)
-        return result
+        return self.parse_response(response)
