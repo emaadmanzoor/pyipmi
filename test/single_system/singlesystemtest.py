@@ -30,7 +30,7 @@ class SingleSystemTest(unittest.TestCase):
 
     def run(self, *args, **kwargs):
         if self.logfile:
-            out = 'STARTING TEST: ' + self.shortDescription() + '\n'
+            out = 'STARTING TEST: ' + self.id() + '\n'
             self.logfile.write(out)
 
         super(SingleSystemTest, self).run(*args, **kwargs)
