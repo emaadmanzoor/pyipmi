@@ -1,12 +1,14 @@
 import sys, unittest, os
 import bmc_test
 import power_test
+import sdr_test
 from singlesystemtest import SingleSystemTest
 import xmlrunner
 import argparse
 
 tests = []
 tests.extend(bmc_test.tests)
+#tests.extend(sdr_test.tests)
 #tests.extend(power_test.tests)
 
 parser = argparse.ArgumentParser(description = 'Run all single system tests')
