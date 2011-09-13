@@ -1,9 +1,9 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved.
 import re
 
-from pyipmi import Command
-from pyipmi.base.sdr import Sdr, AnalogSdr, DiscreteSdr
-from pyipmi.tools.ipmitool import BOOL_VAL, PAREN_PAIR_VAL, IpmitoolCommandMixIn
+from .. import Command
+from .. sdr import Sdr, AnalogSdr, DiscreteSdr
+from .. tools.ipmitool import BOOL_VAL, PAREN_PAIR_VAL, IpmitoolCommandMixIn
 
 class SdrListCommand(Command, IpmitoolCommandMixIn):
     """Describes the sdr list command

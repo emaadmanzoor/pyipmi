@@ -1,6 +1,6 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 
-from pyipmi.base.chassis import Chassis
+from chassis import Chassis
 
 class Server:
     """A server is managed over IPMI"""

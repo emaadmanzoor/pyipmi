@@ -1,7 +1,7 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
-from pyipmi import Command
-from pyipmi.base.chassis import ChassisStatus
-from pyipmi.tools.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
+from .. import Command
+from .. chassis import ChassisStatus
+from .. tools.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
 
 class ChassisStatusCommand(Command, IpmitoolCommandMixIn):
     """Describes the chassis status IPMI command"""

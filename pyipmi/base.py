@@ -1,0 +1,76 @@
+from __future__ import print_function
+
+__all__ = ['Handle', 'Tool', 'Command', 'make_bmc']
+
+class Handle:
+    """A handle to speak with a BMC
+
+    Handles use a Tool to speak with a BMC.
+
+    Handles may or may not use a single ipmi session for their duration,
+    depending on their implementation.
+    """
+
+    def __init__(self, bmc, tool_class, command_list):
+        self.bmc = bmc
+        self._tool = tool_class(self, command_list)
+        self._add_command_stubs(command_list)
+
+    def _add_command_stubs(self, command_list):
+        for command in command_list:
+            self._add_command_stub(command)
+
+    def _add_command_stub(self, command):
+        def _cmd(*args, **kwargs):
+            tm = getattr(self._tool, command)
+            return tm(*args, **kwargs)
+
+        setattr(self, command, _cmd)
+
+    def set_log(self, log_file):
+        self._log_file = log_file
+
+    def log(self, string):
+        if (self._log_file):
+            print(string, file = self._log_file)
+            self._log_file.flush()
+
+class Tool:
+    """A tool implements communications with a BMC"""
+    def __init__(self, handle, command_list):
+        self._handle = handle
+        self._add_command_stubs(command_list)
+        self._command_list = command_list
+
+    def _add_command_stubs(self, command_list):
+        for command in command_list:
+            self._add_command_stub(command)
+
+    def _add_command_stub(self, command):
+        def _cmd(*args, **kwargs):
+            inst = self._command_list[command](self, *args, **kwargs)
+            return self.run(inst)
+
+        setattr(self, command, _cmd)
+
+    def _log(self, string):
+        self._handle.log(string)
+
+class Command:
+    """A Command describes a specific IPMI command"""
+    def __init__(self, tool, **params):
+        self._tool = tool
+        self._params = params
+
+def make_bmc(bmc_class, logfile = None, **kwargs):
+    bmc_kwargs = {
+        "tool_class" : IpmiTool,
+        "handle_class" : Handle,
+        "command_list" : ipmi_commands
+    }
+
+    bmc_kwargs.update(kwargs)
+    bmc_obj = bmc_class(**bmc_kwargs)
+    bmc_obj.handle.set_log(logfile)
+
+    return bmc_obj

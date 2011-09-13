@@ -1,0 +1,5 @@
+Python library that provides IPMI commands.
+
+The goal is to provide an abstraction layer above tools that provide
+IPMI (ipmitool, freeipmi) so code can be written once and reused across
+different tools.
