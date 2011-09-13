@@ -1,8 +1,8 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 
-from ipmi import Command
-from ipmi.bmc import BMCInfo, BMCGuid
-from ipmi.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
+from pyipmi import Command
+from pyipmi.base.bmc import BMCInfo, BMCGuid
+from pyipmi.tools.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
 
 class GetDeviceIdCommand(Command, IpmitoolCommandMixIn):
     """Describes the get_device_id IPMI command

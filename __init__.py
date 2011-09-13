@@ -1,9 +1,8 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved.
 
 from base import *
-from ipmitool import IpmiTool
+from tools import IpmiTool
 from commands import ipmi_commands
-from chassis import Chassis
 
 def make_bmc(bmc_class, logfile = None, **kwargs):
     bmc_kwargs = {

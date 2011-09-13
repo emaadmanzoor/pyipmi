@@ -1,7 +1,7 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 
 import subprocess, sys
-from ipmi import Tool
+from pyipmi import Tool
 
 class IpmiTool(Tool):
     """Implements interaction with impitool
