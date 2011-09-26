@@ -1,8 +1,10 @@
 from base import *
 from commands import ipmi_commands
 from tools import IpmiTool
+from bmc import *
+from server import *
 
-__all__ = ['Handle', 'Tool', 'Command', 'make_bmc']
+__all__ = ['Handle', 'Tool', 'Command', 'make_bmc', 'Server']
 
 
 def make_bmc(bmc_class, logfile = None, **kwargs):

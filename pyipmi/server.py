@@ -2,6 +2,8 @@
 
 from chassis import Chassis
 
+__all__ = ['Server']
+
 class Server:
     """A server is managed over IPMI"""
 
