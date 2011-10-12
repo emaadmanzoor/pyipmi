@@ -1,4 +1,5 @@
-#Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
+#Copyright 2011 Calxeda, Inc.  All Rights Reserved.
+"""BMC (global) related commands"""
 
 from .. import Command
 from .. bmc import BMCInfo, BMCGuid

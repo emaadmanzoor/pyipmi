@@ -1,4 +1,5 @@
-#Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
+#Copyright 2011 Calxeda, Inc.  All Rights Reserved.
+"""Chassis related IPMI commands"""
 from .. import Command
 from .. chassis import ChassisStatus
 from .. tools.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
@@ -6,9 +7,9 @@ from .. tools.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
 class ChassisStatusCommand(Command, IpmitoolCommandMixIn):
     """Describes the chassis status IPMI command"""
 
-    name = "Chassis Status"
+    name = 'Chassis Status'
 
-    ipmitool_args = ["chassis", "status"]
+    ipmitool_args = ['chassis', 'status']
     result_type = ChassisStatus
 
     ipmitool_response_fields = {
@@ -28,9 +29,13 @@ class ChassisControlCommand(Command, IpmitoolCommandMixIn):
 
     @property
     def ipmitool_args(self):
-        return ["chassis", "power", self._params["mode"]]
+        """The chassis control command takes a 'mode' parameter
+
+        Look at ipmitool's manpage for more info.
+        """
+        return ['chassis', 'power', self._params['mode']]
 
 chassis_commands = {
-    "chassis_status" : ChassisStatusCommand,
-    "chassis_control" : ChassisControlCommand,
+    'chassis_status' : ChassisStatusCommand,
+    'chassis_control' : ChassisControlCommand,
 }

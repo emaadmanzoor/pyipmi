@@ -1,9 +1,10 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved.
+"""SDR related commands"""
 import re
 
 from .. import Command
-from .. sdr import Sdr, AnalogSdr, DiscreteSdr
-from .. tools.ipmitool import BOOL_VAL, PAREN_PAIR_VAL, IpmitoolCommandMixIn
+from .. sdr import Sdr, AnalogSdr
+from .. tools.ipmitool import PAREN_PAIR_VAL, IpmitoolCommandMixIn
 
 class SdrListCommand(Command, IpmitoolCommandMixIn):
     """Describes the sdr list command
@@ -29,17 +30,17 @@ class SdrListCommand(Command, IpmitoolCommandMixIn):
         else:
             return None, None
 
-    """
-    Unparsed fields for analog sensors:
-
-     Readable Thresholds   : lnr lcr lnc unc ucr unr 
-     Settable Thresholds   : lnr lcr lnc unc ucr unr 
-     Threshold Read Mask   : lnr lcr lnc unc ucr unr 
-     Assertion Events      : 
-     Assertions Enabled    : unc+ ucr+ unr+ 
-     Deassertions Enabled  : unc+ ucr+ unr+ 
-    """
     analog_response_fields = {
+        """
+        Unparsed fields for analog sensors:
+
+         Readable Thresholds   : lnr lcr lnc unc ucr unr 
+         Settable Thresholds   : lnr lcr lnc unc ucr unr 
+         Threshold Read Mask   : lnr lcr lnc unc ucr unr 
+         Assertion Events      : 
+         Assertions Enabled    : unc+ ucr+ unr+ 
+         Deassertions Enabled  : unc+ ucr+ unr+ 
+        """
         'Sensor ID' : {
             'attr' : ('sensor_name', 'sensor_id'),
             'conv' : PAREN_PAIR_VAL
