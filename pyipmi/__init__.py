@@ -120,6 +120,10 @@ class Tool:
         """Log a message via this tool's handle"""
         self._handle.log(string)
 
+    def run(self, command):
+        """This should be defined in a subclass of Tool"""
+        pass
+
 class Command:
     """A Command describes a specific IPMI command"""
     def __init__(self, tool, **params):
