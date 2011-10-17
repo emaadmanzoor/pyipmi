@@ -86,7 +86,7 @@ class IpmitoolCommandMixIn(object):
     @staticmethod
     def str2bool(val):
         """True if val is 'true' or 'yes', otherwise false"""
-        return val.lower() in ['true', 'yes']
+        return val.lower() in ['true', 'yes', 'enabled']
 
     @staticmethod
     def field_to_attr(field_name):
