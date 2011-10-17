@@ -2,3 +2,4 @@
 test/test-reports
 test/*.log
 build/
+*.swp
