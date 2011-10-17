@@ -1,8 +1,23 @@
 """Stuff about BMC's"""
 
-__all__ = ["BMC", "BMCInfo", "BMCGuid", "LanBMC"]
+__all__ = ['BMC', 'BMCInfo', 'BMCGuid', 'BMCEnables', 'LanBMC']
 
-class BMCInfo:
+class BMCResult(object):
+    """superclass for BMC result objects
+    
+    Sets attribute names from a dict passed to init, and allows comparison
+    with other results based on dict equality.
+    """
+    def __init__(self, **entries):
+        """each kwarg's value to an attribute of the same name"""
+        self.__dict__.update(entries)
+
+    def __eq__(self, other):
+        """BMCInfo's are equivalent if their attributes are the same"""
+        return self.__dict__ == other.__dict__
+
+
+class BMCInfo(BMCResult):
     """Describes a BMC info record result
     
     "bmc info" is just the ipmitool name - this is really "get device id"
@@ -24,15 +39,7 @@ class BMCInfo:
     device_available = None
     aux_firmware_revision_info = None
 
-    def __init__(self, **entries):
-        """each kwarg's value to an attribute of the same name"""
-        self.__dict__.update(entries)
-
-    def __eq__(self, other):
-        """BMCInfo's are equivalent if their attributes are the same"""
-        return self.__dict__ == other.__dict__
-
-class BMCGuid:
+class BMCGuid(BMCResult):
     """Result record for bmc guid command
 
     this is really "get device guid" - bmc guid is the ipmitool command name.
@@ -40,13 +47,18 @@ class BMCGuid:
     system_guid = None
     time_stamp = None
 
-    def __init__(self, **entries):
-        """each kwarg's value to an attribute of the same name"""
-        self.__dict__.update(entries)
+class BMCEnables(BMCResult):
+    """Result record for get command enables
 
-    def __eq__(self, other):
-        """BMCGuid's are equivalent if their attributes are the same"""
-        return self.__dict__ == other.__dict__
+    The names for the attributes here come from the command line syntax for ipmitool
+    """
+    recv_msg_intr = None
+    event_msg_intr = None
+    event_msg = None
+    system_event_log = None
+    oem0 = None
+    oem1 = None
+    oem2 = None
         
 class BMC(object):
     """A BMC - what you're talking to when you're talking IPMI
@@ -75,6 +87,11 @@ class BMC(object):
     def sdr_list(self):
         """Get a list of SDR's for the BMC"""
         return self.handle.get_sdr_list()
+
+    def enables(self):
+        """Return a BMCEnables object for the BMC"""
+        return self.handle.get_command_enables()
+        
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
