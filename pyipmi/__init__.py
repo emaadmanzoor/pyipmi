@@ -1,7 +1,7 @@
 """pyipmi provides IPMI client functionality"""
 from __future__ import print_function
 
-__all__ = ['Handle', 'Tool', 'Command', 'make_bmc']
+__all__ = ['Handle', 'Tool', 'Command', 'make_bmc', 'IpmiError']
 
 class Handle:
     """A handle to speak with a BMC
@@ -161,3 +161,7 @@ def make_bmc(bmc_class, logfile = None, **kwargs):
     bmc_obj.handle.set_log(logfile)
 
     return bmc_obj
+
+
+class IpmiError(Exception):
+    """A wrapper for an Ipmi error"""

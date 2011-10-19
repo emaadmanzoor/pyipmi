@@ -2,7 +2,7 @@
 """Chassis related IPMI commands"""
 from .. import Command
 from .. chassis import ChassisStatus
-from .. tools.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
+from .. tools.ipmitool import str2bool, IpmitoolCommandMixIn
 
 class ChassisStatusCommand(Command, IpmitoolCommandMixIn):
     """Describes the chassis status IPMI command"""
@@ -13,11 +13,11 @@ class ChassisStatusCommand(Command, IpmitoolCommandMixIn):
     result_type = ChassisStatus
 
     ipmitool_response_fields = {
-        'System Power' : {'attr' : 'power_on', 'conv' : lambda v: v == 'on'},
-        'Power Overload' : {'conv' : BOOL_VAL},
+        'System Power' : {'attr' : 'power_on', 'parser' : lambda v: v == 'on'},
+        'Power Overload' : {'parser' : str2bool},
         'Power Interlock' : {},
-        'Main Power Fault' : {'conv' : BOOL_VAL},
-        'Power Control Fault' : {'conv' : BOOL_VAL},
+        'Main Power Fault' : {'parser' : str2bool},
+        'Power Control Fault' : {'parser' : str2bool},
         'Power Restore Policy' : {}
     }
 

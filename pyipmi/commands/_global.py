@@ -3,7 +3,7 @@
 
 from .. import Command
 from .. bmc import BMCInfo, BMCGuid, BMCEnables
-from .. tools.ipmitool import BOOL_VAL, IpmitoolCommandMixIn
+from .. tools.ipmitool import str2bool, IpmitoolCommandMixIn
 
 class GetDeviceIdCommand(Command, IpmitoolCommandMixIn):
     """Describes the get_device_id IPMI command
@@ -19,8 +19,8 @@ class GetDeviceIdCommand(Command, IpmitoolCommandMixIn):
         "Firmware Revision" : {},
         "IPMI Version" : {},
         "Manufacturer ID" : {},
-        "Product ID" : { "conv" : lambda s: s.split(' ')[0] },
-        "Device Available" : { "conv" : BOOL_VAL }
+        "Product ID" : { "parser" : lambda s: s.split(' ')[0] },
+        "Device Available" : { "parser" : str2bool }
     }
 
     ipmitool_args = ["bmc", "info"]
@@ -50,31 +50,31 @@ class GetCommandEnables(Command, IpmitoolCommandMixIn):
     ipmitool_response_fields = {
         'Receive Message Queue Interrupt' : {
                 'attr' : 'recv_msg_intr',
-                'conv' : BOOL_VAL
+                'parser' : str2bool
         },
         'Event Message Buffer Full Interrupt' : {
                 'attr' : 'event_msg_intr',
-                'conv' : BOOL_VAL
+                'parser' : str2bool
         },
         'Event Message Buffer' : {
                 'attr' : 'event_msg',
-                'conv' : BOOL_VAL
+                'parser' : str2bool
         },
         'System Event Logging' : {
                 'attr' : 'system_event_log',
-                'conv' : BOOL_VAL
+                'parser' : str2bool
         },
         'OEM 0' : {
                 'attr' : 'oem0',
-                'conv' : BOOL_VAL
+                'parser' : str2bool
         },
         'OEM 1' : {
                 'attr' : 'oem1',
-                'conv' : BOOL_VAL
+                'parser' : str2bool
         },
         'OEM 2' : {
                 'attr' : 'oem2',
-                'conv' : BOOL_VAL
+                'parser' : str2bool
         }
     }
 

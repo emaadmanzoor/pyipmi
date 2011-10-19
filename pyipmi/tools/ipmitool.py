@@ -3,6 +3,7 @@
 
 import subprocess, sys
 from .. import Tool
+from pyipmi import IpmiError
 
 class IpmiTool(Tool):
     """Implements interaction with impitool
@@ -13,8 +14,8 @@ class IpmiTool(Tool):
     def run(self, command):
         """Run a command via ipmitool"""
         ipmi_args = self._ipmi_args(command)
-        results = self._execute(ipmi_args)
-        return command.ipmitool_parse_results(results)
+        out, err = self._execute(command, ipmi_args)
+        return command.ipmitool_parse_results(out, err)
 
     def _ipmi_args(self, command):
         """Return the command line arguments to ipmitool for command"""
@@ -50,7 +51,7 @@ class IpmiTool(Tool):
 
         return base
 
-    def _execute(self, ipmi_args):
+    def _execute(self, command, ipmi_args):
         """Execute an ipmitool command"""
         args = ['ipmitool']
         args.extend(ipmi_args)
@@ -64,11 +65,25 @@ class IpmiTool(Tool):
         self._log(err)
         sys.stdout.write(out)
         sys.stderr.write(err)
-        return out
+        if proc.returncode != 0:
+            command.handle_command_error(out, err)
+        return out, err
 
-SIMPLE_VAL      = 1
-BOOL_VAL        = 2
-PAREN_PAIR_VAL  = 3
+def str2bool(val):
+    """True if val is 'true', 'yes' or 'enabled, otherwise false"""
+    return val.lower() in ['true', 'yes', 'enabled']
+
+def paren_pair(val):
+    """Convert 'foo (bar)' to ['foo', 'bar']"""
+    return [p.strip(' )') for p in val.split('(')]
+
+def field_to_attr(field_name):
+    """Convert a field name to an attribute name
+    
+    Make the field all lowercase and replace ' ' with '_'
+    (replace space with underscore)
+    """
+    return field_name.lower().replace(' ', '_')
 
 class IpmitoolCommandMixIn(object):
     """Add this MixIn to a Command to enable it to work with ipmitool"""
@@ -77,25 +92,6 @@ class IpmitoolCommandMixIn(object):
     COLUMN_RECORD_LIST = 2
     
     ipmitool_response_format = COLUMN_RECORD
-
-    @staticmethod
-    def paren_pair(val):
-        """Convert 'foo (bar)' to ['foo', 'bar']"""
-        return [p.strip(' )') for p in val.split('(')]
-
-    @staticmethod
-    def str2bool(val):
-        """True if val is 'true' or 'yes', otherwise false"""
-        return val.lower() in ['true', 'yes', 'enabled']
-
-    @staticmethod
-    def field_to_attr(field_name):
-        """Convert a field name to an attribute name
-        
-        Make the field all lowercase and replace ' ' with '_'
-        (replace space with underscore)
-        """
-        return field_name.lower().replace(' ', '_')
 
     def field_to_objval(self, obj, field_info, field_name, value):
         """Assign a field's value to an attribute of obj
@@ -110,39 +106,23 @@ class IpmitoolCommandMixIn(object):
                       this will be used as the name of the attribute unless a
                       'attr' key/value is given in the field_info dict.
         value -- the value of the field as given in the ipmitool results. This
-                 value will be assigned to the attribute unless a 'conv'
+                 value will be assigned to the attribute unless a 'parser'
                  key/value is specified in the field_info dict
 
         Field Info:
         If an 'attr' key/value is present, the value will be used for the
-        attribute name of this field instead of 'field_name'. There is a
-        special case when conv==PAREN_PAIR_VALUE, see below.
+        attribute name of this field instead of 'field_name'.
 
-        If a 'conv' key/value is present, the value is either one of these:
-            SIMPLE_VAL: the value is assigned directly.
-            BOOL_VAL: the value is converted to True/False using the str2bool
-                      method.
-            PAREN_PAIR_VALUE: Value is 'like (this)' and attr must be a tuple
-            containing two strings to be used as names for two attributes.
-        Or, it can be a callable object, in which case value will be passed to
-        it, and the result will be assigned to the attribute.
+        If a 'parser' key/value is present, the value will be passed to
+        it, and the result will be assigned to the attribute. The default
+        parser is str().
         """
-        attr_name = field_info.get('attr', self.field_to_attr(field_name))
-        attr_conv = field_info.get('conv', SIMPLE_VAL)
+        attr_name = field_info.get('attr', field_to_attr(field_name))
+        attr_parser = field_info.get('parser', str)
 
-        if attr_conv == SIMPLE_VAL:
-            setattr(obj, attr_name, value)
-        elif attr_conv == BOOL_VAL:
-            setattr(obj, attr_name, self.str2bool(value))
-        elif attr_conv == PAREN_PAIR_VAL:
-            attr_vals = self.paren_pair(value)
+        setattr(obj, attr_name, attr_parser(value))
 
-            for i, val in enumerate(attr_vals):
-                setattr(obj, attr_name[i], val)
-        else:
-            setattr(obj, attr_name, attr_conv(value))
-
-    def parse_colon_record(self, response):
+    def parse_colon_record(self, response, err):
         """Parse records of key : value separated lines
 
         This expects response to be a string of newline separated
@@ -225,26 +205,19 @@ class IpmitoolCommandMixIn(object):
 
         return results
 
-    def parse_response(self, response):
+    def parse_response(self, out, err):
         """Parse the response to a command
 
         The 'ipmitool_response_format' attribute is used to determine
         what parser to use to for interpreting the results.
-
-        The format is COLUMN_RECORD by default.
         
         Arguments:
-        response -- the text response of an ipmitool command
+        out -- the text response of an ipmitool command from stdout
+        err -- the text response of an ipmitool command from stderr
         """
-        if self.ipmitool_response_format == self.COLUMN_RECORD:
-            return self.parse_colon_record(response)
-        elif self.ipmitool_response_format == self.COLUMN_RECORD_LIST:
-            return self.parse_colon_record_list(response)
-        else:
-            raise Exception('unknown ipmitool_response_format: %d\n' % (
-                self.ipmitool_response_format))
+        return self.ipmitool_parse_response(out, err)
 
-    def ipmitool_parse_results(self, response):
+    def ipmitool_parse_results(self, out, err):
         """Parse the results if a result type is specified
         
         If there is not 'result_type' attribute for this this command, return
@@ -255,4 +228,10 @@ class IpmitoolCommandMixIn(object):
         except AttributeError:
             return None
 
-        return self.parse_response(response)
+        return self.parse_response(out, err)
+
+    def handle_command_error(self, out, err):
+        """Handle an error from running the command"""
+        raise IpmiError(err)
+
+    ipmitool_parse_response = parse_colon_record

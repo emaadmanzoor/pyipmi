@@ -4,7 +4,9 @@ import re
 
 from .. import Command
 from .. sdr import Sdr, AnalogSdr
-from .. tools.ipmitool import PAREN_PAIR_VAL, IpmitoolCommandMixIn
+from .. tools.ipmitool import IpmitoolCommandMixIn
+
+PAREN_PAIR_VAL = 'CHANGE ME' # FIXME: change
 
 class SdrListCommand(Command, IpmitoolCommandMixIn):
     """Describes the sdr list command
@@ -43,11 +45,11 @@ class SdrListCommand(Command, IpmitoolCommandMixIn):
         """
         'Sensor ID' : {
             'attr' : ('sensor_name', 'sensor_id'),
-            'conv' : PAREN_PAIR_VAL
+            'parser' : PAREN_PAIR_VAL
         },
         'Entity ID' : {
             'attr' : ('entity_id', 'entity_name'),
-            'conv' : PAREN_PAIR_VAL
+            'parser' : PAREN_PAIR_VAL
         },
         'Sensor Type (Analog)'  : { 'attr' : 'sensor_type' },
         'Sensor Reading'        : {},
