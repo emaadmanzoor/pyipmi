@@ -99,6 +99,23 @@ class BMC(object):
         return self.handle.fw_download(filename=filename, slot=slot,
                                        image_type=image_type,
                                        tftp_addr=tftp_addr)
+        
+    def get_sel_time(self):
+        """Get the time for the SEL"""
+        return self.handle.get_sel_time()
+
+    def set_sel_time(self, time):
+        """Set the time for the SEL"""
+        return self.handle.set_sel_time(time=time)
+
+    def sel_info(self):
+        """Get SEL info"""
+        return self.handle.sel_info()
+
+    def add_sel_entry(self, entry):
+        """Add SEL entries"""
+        return self.handle.add_sel_entries(entry=entry)
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
