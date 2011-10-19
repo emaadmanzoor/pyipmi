@@ -59,7 +59,7 @@ class BMCEnables(BMCResult):
     oem0 = None
     oem1 = None
     oem2 = None
-        
+
 class BMC(object):
     """A BMC - what you're talking to when you're talking IPMI
     
@@ -91,17 +91,24 @@ class BMC(object):
     def enables(self):
         """Return a BMCEnables object for the BMC"""
         return self.handle.get_command_enables()
-        
+
+    def update_socman(self, filename, slot, tftp_addr):
+        return self.update_firmware(filename, slot, '3', tftp_addr)
+
+    def update_firmware(self, filename, slot, image_type, tftp_addr):
+        return self.handle.fw_download(filename=filename, slot=slot,
+                                       image_type=image_type,
+                                       tftp_addr=tftp_addr)
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
     def __init__(self,
                     hostname,
-                    username = None,
-                    password = None,
-                    authtype = None,
-                    level = None,
-                    port = 623,
+                    username=None,
+                    password=None,
+                    authtype=None,
+                    level=None,
+                    port=623,
                     **kwargs):
 
         self.params = {
