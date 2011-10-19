@@ -4,5 +4,5 @@ setup(name='pyipmi',
       packages=['pyipmi',
                 'pyipmi.commands',
                 'pyipmi.tools',
-                'pyipmi.base'],
+                'pyipmi'],
 )
