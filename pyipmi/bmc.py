@@ -99,6 +99,9 @@ class BMC(object):
         return self.handle.fw_download(filename=filename, slot=slot,
                                        image_type=image_type,
                                        tftp_addr=tftp_addr)
+
+    def get_firmware_info(self):
+        return self.handle.fw_info()
         
     def get_sel_time(self):
         """Get the time for the SEL"""
