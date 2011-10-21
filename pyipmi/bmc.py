@@ -119,6 +119,18 @@ class BMC(object):
         """Add SEL entries"""
         return self.handle.add_sel_entries(entry=entry)
 
+    def get_sel_entry(self, entry_id):
+        """Get SEL entry"""
+        return self.handle.get_sel_entry(entry_id=entry_id)
+
+    def sel_list(self):
+        """List SEL entries"""
+        return self.handle.sel_list()
+
+    def sel_clear(self):
+        """Clear the SEL"""
+        return self.handle.sel_clear()
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""

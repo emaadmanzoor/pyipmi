@@ -6,6 +6,7 @@
 
 import re
 import tempfile
+import string
 from pyipmi import Command
 from pyipmi.tools.ipmitool import IpmitoolCommandMixIn, str2bool
 from pyipmi.sel import SELTimestamp, SELInfo, SELRecord
@@ -26,7 +27,7 @@ class SELTimeSetCommand(Command, IpmitoolCommandMixIn):
 class SELTimeGetCommand(Command, IpmitoolCommandMixIn):
     """Describes the Get SEL Time command"""
  
-    def _parse_sel_timestamp(self, resp, err):
+    def ipmitool_parse_response(self, resp, err):
         """A helper function to parse a timestamp returned from 
         an sel time [gs]et command
         """
@@ -37,7 +38,6 @@ class SELTimeGetCommand(Command, IpmitoolCommandMixIn):
     name = "Get SEL Time"
     result_type = SELTimestamp
     ipmitool_args = ["sel", "time", "get"]
-    ipmitool_parse_response = _parse_sel_timestamp
 
 
 class SELInfoCommand(Command, IpmitoolCommandMixIn):
@@ -82,7 +82,6 @@ class SELAddEntryCommand(Command, IpmitoolCommandMixIn):
     @property
     def ipmitool_args(self):
         """return args for ipmitool command"""
-        print hex(self._params['entry'].evm_rev)
         tmpfile = sel_entries_to_tmpfile(self._params['entry'])
         # TODO: clean up tmpfile
         return ["sel", "add", tmpfile.name]
@@ -91,13 +90,35 @@ class SELAddEntryCommand(Command, IpmitoolCommandMixIn):
 class SELGetEntryCommand(Command, IpmitoolCommandMixIn):
     """Describes the Get SEL Entry command"""
 
+    def event_data_parser(string):
+        data = int(string, 16)
+        return (data >> 16, (data >> 8) & 0xff, data & 0xff)
+
+    direction_parser= lambda d: 0 if d == 'Assertion Event' else 1
+    hex_parser = lambda x: int(x, 16)
+
     name = "Get SEL Entry"
     result_type = SELRecord
 
     @property
     def ipmitool_args(self):
         """return args for ipmitool command"""
-        return ["sel", "get", self._params['entry']]
+        return ["sel", "get", self._params['entry_id']]
+
+    # TODO: add support for oem records
+    ipmitool_response_fields = {
+        'SEL Record ID': {'parser': hex_parser, 'attr': 'record_id'},
+        'Record Type' : {'parser': hex_parser},
+        'Timestamp': {},
+        'Generator ID': {'parser': hex_parser},
+        'EvM Revision': {'parser': hex_parser},
+        'Sensor Type': {}, #TODO: covert to hex code
+        'Sensor Number': {'parser': hex_parser},
+        'Event Type': {}, #TODO: convert to hex code
+        'Event Direction': {'parser': direction_parser},
+        'Event Data': {'parser': event_data_parser},
+        'Description': {}
+    }
 
 
 class SELClearCommand(Command, IpmitoolCommandMixIn):
@@ -108,13 +129,28 @@ class SELClearCommand(Command, IpmitoolCommandMixIn):
     # TODO: get response data from ipmitool
 
 
+class SELListCommand(Command, IpmitoolCommandMixIn):
+    """Describes SEL List command
+       note: this command is non-standard
+    """
+
+    def ipmitool_parse_response(self, resp, err):
+        sel_list = resp.strip().split('\n')
+        return map(string.strip, sel_list)
+
+    name = "List SEL"
+    ipmitool_args = ["sel", "list"]
+    result_type = list
+
+
 sel_commands = {
     "set_sel_time" : SELTimeSetCommand,
     "get_sel_time" : SELTimeGetCommand,
     "sel_info" : SELInfoCommand,
     "add_sel_entries" : SELAddEntryCommand,
     "get_sel_entry" : SELGetEntryCommand,
-    "sel_clear" : SELClearCommand
+    "sel_clear" : SELClearCommand,
+    "sel_list" : SELListCommand
 }
 
 def sel_entries_to_tmpfile(*entries):
@@ -124,9 +160,9 @@ def sel_entries_to_tmpfile(*entries):
         # TODO: handle other types of SEL Records
         # TODO: allow for malformed SEL entries
         entry = ('%s %s %s %s %s %s %s' % 
-            (hex(e.evm_rev), hex(e.sensor_type), hex(e.sensor_num),
-             hex(e.event_info), hex(e.event_data1), hex(e.event_data2),
-             hex(e.event_data3)))
+            (hex(e.evm_rev), hex(e.sensor_type), hex(e.sensor_number),
+             hex((e.event_direction << 7) | e.event_type),
+             hex(e.event_data[0]), hex(e.event_data[1]), hex(e.event_data[2])))
         tmpfile.write(str(entry) + '\n')
     tmpfile.flush()
     return tmpfile

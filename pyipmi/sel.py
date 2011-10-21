@@ -5,19 +5,18 @@ class SELRecord(object):
 
     def __init__(self, record_id=0, record_type=2, timestamp='',
                  generator_id=0, evm_rev=4, sensor_type=0,
-                 sensor_num=0, event_info=0, event_data1=0,
-                 event_data2=0, event_data3=0):
+                 sensor_number=0, event_type=0, event_direction=0,
+                 event_data=(0, 0, 0)):
         self.record_id = record_id
         self.record_type = record_type
         self.timestamp = timestamp
         self.generator_id = generator_id
         self.evm_rev = evm_rev
         self.sensor_type = sensor_type
-        self.sensor_num = sensor_num
-        self.event_info = event_info
-        self.event_data1 = event_data1
-        self.event_data2 = event_data2
-        self.event_data3 = event_data3
+        self.sensor_number = sensor_number
+        self.event_type = event_type
+        self.event_direction = event_direction
+        self.event_data = event_data
 
 class OEMSELRecord(object):
     """A class to represent an OEM SEL record type C0h-DFh"""
