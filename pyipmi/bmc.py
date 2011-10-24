@@ -100,6 +100,32 @@ class BMC(object):
                                        image_type=image_type,
                                        tftp_addr=tftp_addr)
 
+
+    def retrieve_firmware(self, filename, slot, tftp_addr):
+        return self.handle.fw_upload(filename=filename, slot=slot,
+                                       tftp_addr=tftp_addr)
+
+    def activate_firmware(self, slot):
+        return self.handle.fw_activate(slot=slot)
+
+    def deactivate_firmware(self, slot):
+        return self.handle.fw_deactivate(slot=slot)
+
+    def set_firmware_flags(self, slot, flags):
+        return self.handle.fw_flags(slot=slot, flags=flags)
+
+    def get_firmware_status(self):
+        return self.handle.fw_status()
+
+    def check_firmware(self, slot):
+        return self.handle.fw_check(slot=slot)
+
+    def cancel_firmware(self, job_id):
+        return self.handle.fw_cancel(job_id=job_id)
+
+    def blow_firmware(self, filename):
+        return self.handle.fw_cancel(filename=filename)
+
     def get_firmware_info(self):
         return self.handle.fw_info()
         

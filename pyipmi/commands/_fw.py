@@ -172,7 +172,7 @@ class FWCancelCommand(Command, IpmitoolCommandMixIn):
     def ipmitool_args(self):
         """
         """
-        return ["cxoem", "fw", "cancel", self._params['jobid']]
+        return ["cxoem", "fw", "cancel", self._params['job_id']]
 
 
 class FWInfoCommand(Command, IpmitoolCommandMixIn):
@@ -188,12 +188,6 @@ class FWInfoCommand(Command, IpmitoolCommandMixIn):
     }
 
     ipmitool_args = ["cxoem", "fw", "info"]
-
-
-fw_commands = {
-    "fw_download" : FWDownloadCommand,
-    "fw_info"     : FWInfoCommand
-}
 
 
 class FWBlowCommand(Command, IpmitoolCommandMixIn):
@@ -213,3 +207,17 @@ class FWBlowCommand(Command, IpmitoolCommandMixIn):
         """
         """
         return ["cxoem", "fw", "blow", self._params['filename']]
+
+
+fw_commands = {
+    "fw_download"   : FWDownloadCommand,
+    "fw_upload"     : FWUploadCommand,
+    "fw_activate"   : FWActivateCommand,
+    "fw_deactivate" : FWDeactivateCommand,
+    "fw_flags"      : FWFlagsCommand,
+    "fw_status"     : FWStatusCommand,
+    "fw_check"      : FWCheckCommand,
+    "fw_cancel"     : FWCancelCommand,
+    "fw_info"       : FWInfoCommand,
+    "fw_blow"       : FWBlowCommand
+}
