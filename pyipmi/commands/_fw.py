@@ -118,7 +118,7 @@ class FWFlagsCommand(Command, IpmitoolCommandMixIn):
     def ipmitool_args(self):
         """
         """
-        return ["cxoem", "fw", "flags", self._params['slot'], 
+        return ["cxoem", "fw", "flags", self._params['slot'],
                 self._params['flags']]
 
 
@@ -182,9 +182,14 @@ class FWInfoCommand(Command, IpmitoolCommandMixIn):
 
     name = "Request Firmware Information"
     result_type = FWInfo
+    ipmitool_parse_response = IpmitoolCommandMixIn.parse_colon_record_list
 
     ipmitool_response_fields = {
-        "" : {}
+        "Slot" : {},
+        "Type" : {},
+        "Offset" : {},
+        "Size" : {},
+        "Flags" : {}
     }
 
     ipmitool_args = ["cxoem", "fw", "info"]
@@ -199,7 +204,6 @@ class FWBlowCommand(Command, IpmitoolCommandMixIn):
     result_type = FWBlowResult
 
     ipmitool_response_fields = {
-        "" : {}
     }
 
     @property

@@ -4,7 +4,10 @@
 
 class FWInfo(object):
     """Object to hold device-reported SPI flash table"""
-    fw_table = None
+
+    def __str__(self):
+        return "%s | %s | %s | %s | %s" % (self.slot, self.type, self.offset,
+                                           self.size, self.flags)
 
 
 class FWDownloadResult(object):
