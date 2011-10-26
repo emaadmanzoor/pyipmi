@@ -43,7 +43,7 @@ class IpmiTool(Tool):
 
         base = []
         bmc_params = self._handle.bmc.params
-        
+
         for param, val in bmc_params.iteritems():
             arg = params_to_args.get(param)
             if arg and val:
@@ -90,7 +90,7 @@ class IpmitoolCommandMixIn(object):
 
     COLUMN_RECORD = 1
     COLUMN_RECORD_LIST = 2
-    
+
     ipmitool_response_format = COLUMN_RECORD
 
     def field_to_objval(self, obj, field_info, field_name, value):
@@ -153,8 +153,8 @@ class IpmitoolCommandMixIn(object):
                 continue
 
             field_seperator = line.index(':')
-            field = line[0:field_seperator-1].strip()
-            value = line[field_seperator+1:].strip()
+            field = line[0:field_seperator - 1].strip()
+            value = line[field_seperator + 1:].strip()
 
             field_info = mapping.get(field)
 
@@ -182,7 +182,7 @@ class IpmitoolCommandMixIn(object):
         """
         return self.result_type, self.ipmitool_response_fields
 
-    def parse_colon_record_list(self, response):
+    def parse_colon_record_list(self, response, err):
         """Parse multiple groups of colon records
         
         Like colon records, but with multiple groups, each separted
@@ -196,7 +196,7 @@ class IpmitoolCommandMixIn(object):
         results = []
         records = response.split('\n\n')
         for record in records:
-            obj = self.parse_colon_record(record)
+            obj = self.parse_colon_record(record, err)
 
             if obj == None:
                 continue
