@@ -9,6 +9,16 @@ class FWInfo(object):
         return "%s | %s | %s | %s | %s" % (self.slot, self.type, self.offset,
                                            self.size, self.flags)
 
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return (self.slot == other.slot and \
+                   self.type == other.type and \
+                   self.offset == other.offset and \
+                   self.size == other.size and \
+                   self.flags == other.flags)
+        else:
+            return False
+
 
 class FWDownloadResult(object):
     """Object to hold firmware update results"""
