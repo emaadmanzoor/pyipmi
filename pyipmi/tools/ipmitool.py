@@ -54,7 +54,7 @@ class IpmiTool(Tool):
     def _execute(self, command, ipmi_args):
         """Execute an ipmitool command"""
         args = ['ipmitool']
-        args.extend(ipmi_args)
+        args.extend(map(str, ipmi_args))
         self._log('Running: ' + ' '.join(args))
         print 'Running: ' + ' '.join(args)
         proc = subprocess.Popen(args,
