@@ -141,13 +141,13 @@ class BMC(object):
         """Get SEL info"""
         return self.handle.sel_info()
 
-    def add_sel_entry(self, entry):
-        """Add SEL entries"""
-        return self.handle.add_sel_entries(entry=entry)
+    def sel_add(self, *records):
+        """Add records to the SEL"""
+        return self.handle.sel_add(records=records)
 
-    def get_sel_entry(self, entry_id):
-        """Get SEL entry"""
-        return self.handle.get_sel_entry(entry_id=entry_id)
+    def sel_get(self, *record_ids):
+        """Get SEL Records"""
+        return self.handle.sel_get(record_ids=record_ids)
 
     def sel_list(self):
         """List SEL entries"""

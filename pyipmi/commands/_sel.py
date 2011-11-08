@@ -29,7 +29,7 @@ class SELTimeGetCommand(Command, IpmitoolCommandMixIn):
  
     def ipmitool_parse_response(self, resp, err):
         """A helper function to parse a timestamp returned from 
-        an sel time [gs]et command
+        an 'sel time get' command
         """
         timestamp = SELTimestamp()
         self.field_to_objval(timestamp, {}, 'timestamp', resp.strip())
@@ -61,8 +61,8 @@ class SELInfoCommand(Command, IpmitoolCommandMixIn):
         'Entries' : {'parser': int},
         'Free Space' : {},
         'Percent Used' : {},
-        'Last Add Time' : {},
-        'Last Del Time' : {},
+        'Last Add Time' : {'parser': lambda ts: SELTimestamp(ts)},
+        'Last Del Time' : {'parser': lambda ts: SELTimestamp(ts)},
         'Overflow' : {'parser': str2bool},
         'Supported Cmds' : {'parser': lambda s: re.findall("\w[ \w]+", s)},
         '# of Alloc Units' : {'attr': 'num_alloc_units', 'parser': int},
@@ -73,37 +73,49 @@ class SELInfoCommand(Command, IpmitoolCommandMixIn):
     }
 
 
-class SELAddEntryCommand(Command, IpmitoolCommandMixIn):
-    """Describes the Get SEL Entry command"""
+class SELAddCommand(Command, IpmitoolCommandMixIn):
+    """Describes the sel add command"""
     
-    name = "Add SEL Entry"
+    name = "SEL Add"
     #TODO: get response data from ipmitool
 
     @property
     def ipmitool_args(self):
         """return args for ipmitool command"""
-        tmpfile = sel_entries_to_tmpfile(self._params['entry'])
+        tmpfile = sel_entries_to_tmpfile(*self._params['records'])
         # TODO: clean up tmpfile
         return ["sel", "add", tmpfile.name]
 
+    def ipmitool_parse_response(self, response, err):
+        print response, err
 
-class SELGetEntryCommand(Command, IpmitoolCommandMixIn):
-    """Describes the Get SEL Entry command"""
+
+class SELGetCommand(Command, IpmitoolCommandMixIn):
+    """Describes the sel get command"""
 
     def event_data_parser(string):
         data = int(string, 16)
         return (data >> 16, (data >> 8) & 0xff, data & 0xff)
 
+    def ipmitool_parse_response(self, response, err):
+        if err.find("command failed") > 0:
+            return None
+
+        entry = self.parse_colon_record(response, err)
+        entry.normalize()
+        return entry
+
+
     direction_parser= lambda d: 0 if d == 'Assertion Event' else 1
     hex_parser = lambda x: int(x, 16)
 
-    name = "Get SEL Entry"
+    name = "SEL Get"
     result_type = SELRecord
 
     @property
     def ipmitool_args(self):
         """return args for ipmitool command"""
-        return ["sel", "get", self._params['entry_id']]
+        return ["sel", "get"] + list(self._params['record_ids'])
 
     # TODO: add support for oem records
     ipmitool_response_fields = {
@@ -136,7 +148,8 @@ class SELListCommand(Command, IpmitoolCommandMixIn):
 
     def ipmitool_parse_response(self, resp, err):
         sel_list = resp.strip().split('\n')
-        return map(string.strip, sel_list)
+        sel_list =  map(string.strip, sel_list)
+        return filter(lambda s: s != '', sel_list) # remove blank entries
 
     name = "List SEL"
     ipmitool_args = ["sel", "list"]
@@ -147,14 +160,14 @@ sel_commands = {
     "set_sel_time" : SELTimeSetCommand,
     "get_sel_time" : SELTimeGetCommand,
     "sel_info" : SELInfoCommand,
-    "add_sel_entries" : SELAddEntryCommand,
-    "get_sel_entry" : SELGetEntryCommand,
+    "sel_add" : SELAddCommand,
+    "sel_get" : SELGetCommand,
     "sel_clear" : SELClearCommand,
     "sel_list" : SELListCommand
 }
 
 def sel_entries_to_tmpfile(*entries):
-    """Write SELEntries to a file and call ipmitool"""
+    """Write SELRecords to a file and call ipmitool"""
     tmpfile = tempfile.NamedTemporaryFile(delete=False)
     for e in entries:
         # TODO: handle other types of SEL Records
