@@ -9,7 +9,7 @@ import tempfile
 import string
 from pyipmi import Command
 from pyipmi.tools.ipmitool import IpmitoolCommandMixIn, str2bool
-from pyipmi.sel import SELTimestamp, SELInfo, SELRecord
+from pyipmi.sel import SELTimestamp, SELInfo, SELRecord, SELTimestampError
 
 
 class SELTimeSetCommand(Command, IpmitoolCommandMixIn):
@@ -21,7 +21,10 @@ class SELTimeSetCommand(Command, IpmitoolCommandMixIn):
     @property
     def ipmitool_args(self):
         """return args for ipmitool command"""
-        return ["sel", "time", "set", self._params["time"]]
+        return ["sel", "time", "set", self._params["time"].timestamp]
+
+    def handle_command_error(self, resp, err):
+        raise SELTimestampError(err)
 
 
 class SELTimeGetCommand(Command, IpmitoolCommandMixIn):
@@ -31,9 +34,8 @@ class SELTimeGetCommand(Command, IpmitoolCommandMixIn):
         """A helper function to parse a timestamp returned from 
         an 'sel time get' command
         """
-        timestamp = SELTimestamp()
-        self.field_to_objval(timestamp, {}, 'timestamp', resp.strip())
-        return timestamp
+
+        return SELTimestamp(resp.strip())
 
     name = "Get SEL Time"
     result_type = SELTimestamp

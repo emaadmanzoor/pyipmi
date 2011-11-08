@@ -110,3 +110,7 @@ class SELInfo(object):
 
 class SELOverflowError(IpmiError):
     """An error that is thrown when the SEL is full"""
+
+
+class SELTimestampError(IpmiError):
+    """An error thrown with invalid timestamps"""
