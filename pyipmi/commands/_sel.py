@@ -9,7 +9,8 @@ import tempfile
 import string
 from pyipmi import Command
 from pyipmi.tools.ipmitool import IpmitoolCommandMixIn, str2bool
-from pyipmi.sel import SELTimestamp, SELInfo, SELRecord, SELTimestampError
+from pyipmi.sel import (SELTimestamp, SELInfo, SELRecord,
+                        SELOverflowError, SELTimestampError)
 
 
 class SELTimeSetCommand(Command, IpmitoolCommandMixIn):
@@ -88,8 +89,11 @@ class SELAddCommand(Command, IpmitoolCommandMixIn):
         # TODO: clean up tmpfile
         return ["sel", "add", tmpfile.name]
 
-    def ipmitool_parse_response(self, response, err):
-        print response, err
+    def handle_command_error(self, resp, err):
+        if err.find('Out of space') > 0:
+            raise SELOverflowError(err)
+
+        raise IpmiError(err)
 
 
 class SELGetCommand(Command, IpmitoolCommandMixIn):
