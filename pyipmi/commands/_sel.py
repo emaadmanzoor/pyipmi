@@ -4,6 +4,7 @@
    around SEL commands for ipmitool
 """
 
+import os
 import re
 import tempfile
 import string
@@ -78,16 +79,32 @@ class SELInfoCommand(Command, IpmitoolCommandMixIn):
 
 class SELAddCommand(Command, IpmitoolCommandMixIn):
     """Describes the sel add command"""
+
+    #TODO: get response data from ipmitool
     
     name = "SEL Add"
-    #TODO: get response data from ipmitool
+
+    def __init__(self, *args, **kwargs):
+        super(SELAddCommand, self).__init__(*args, **kwargs)
+        self._tmpfile = tempfile.NamedTemporaryFile(delete=False)
+
+        for e in self._params['records']:
+            # TODO: handle other types of SEL Records
+            # TODO: allow for malformed SEL entries
+            entry = ('%s %s %s %s %s %s %s' %
+                     (hex(e.evm_rev), hex(e.sensor_type), hex(e.sensor_number),
+                      hex((e.event_direction << 7) | e.event_type),
+                      hex(e.event_data[0]), hex(e.event_data[1]), hex(e.event_data[2])))
+            self._tmpfile.write(str(entry) + '\n')
+        self._tmpfile.flush()
+
+    def __del__(self):
+        os.remove(self._tmpfile.name)
 
     @property
     def ipmitool_args(self):
         """return args for ipmitool command"""
-        tmpfile = sel_entries_to_tmpfile(*self._params['records'])
-        # TODO: clean up tmpfile
-        return ["sel", "add", tmpfile.name]
+        return ["sel", "add", self._tmpfile.name]
 
     def handle_command_error(self, resp, err):
         if err.find('Out of space') > 0:
@@ -171,18 +188,3 @@ sel_commands = {
     "sel_clear" : SELClearCommand,
     "sel_list" : SELListCommand
 }
-
-def sel_entries_to_tmpfile(*entries):
-    """Write SELRecords to a file and call ipmitool"""
-    tmpfile = tempfile.NamedTemporaryFile(delete=False)
-    for e in entries:
-        # TODO: handle other types of SEL Records
-        # TODO: allow for malformed SEL entries
-        entry = ('%s %s %s %s %s %s %s' % 
-            (hex(e.evm_rev), hex(e.sensor_type), hex(e.sensor_number),
-             hex((e.event_direction << 7) | e.event_type),
-             hex(e.event_data[0]), hex(e.event_data[1]), hex(e.event_data[2])))
-        tmpfile.write(str(entry) + '\n')
-    tmpfile.flush()
-    return tmpfile
-
