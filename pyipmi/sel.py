@@ -11,6 +11,7 @@ class SEL(object):
     def __init__(self, bmc):
         self.bmc = bmc
         self._info = self.bmc.sel_info()
+        self._alloc_info = self.bmc.sel_alloc_info()
 
     @property
     def entries(self):
@@ -18,7 +19,11 @@ class SEL(object):
 
     @property
     def size(self):
-        return self._info.num_alloc_units
+        return self._alloc_info.num_alloc_units
+
+    @property
+    def size_bytes(self):
+        return self.size * self._alloc_info.alloc_unit_size
 
 
 class SELRecord(object):
@@ -105,7 +110,11 @@ class SELTimestamp(object):
 
 
 class SELInfo(object):
-    """A class to represent SELInfo"""
+    """A class to represent SEL info"""
+
+
+class SELAllocInfo(object):
+    """A class to represent SEL allocation info"""
 
 
 class SELOverflowError(IpmiError):

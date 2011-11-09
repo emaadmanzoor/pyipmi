@@ -10,7 +10,7 @@ import tempfile
 import string
 from pyipmi import Command
 from pyipmi.tools.ipmitool import IpmitoolCommandMixIn, str2bool
-from pyipmi.sel import (SELTimestamp, SELInfo, SELRecord,
+from pyipmi.sel import (SELTimestamp, SELInfo, SELAllocInfo, SELRecord,
                         SELOverflowError, SELTimestampError)
 
 
@@ -56,19 +56,28 @@ class SELInfoCommand(Command, IpmitoolCommandMixIn):
         return vdict
 
     name = "SEL Info"
-
     ipmitool_args = ["sel", "info"]
     result_type = SELInfo
 
     ipmitool_response_fields = {
         'Version' : {'parser': version_parser},
         'Entries' : {'parser': int},
-        'Free Space' : {},
-        'Percent Used' : {},
+        'Free Space' : {'parser': lambda s: int(s[:-6])}, #removes ' bytes'
         'Last Add Time' : {'parser': lambda ts: SELTimestamp(ts)},
         'Last Del Time' : {'parser': lambda ts: SELTimestamp(ts)},
         'Overflow' : {'parser': str2bool},
-        'Supported Cmds' : {'parser': lambda s: re.findall("\w[ \w]+", s)},
+        'Supported Cmds' : {'parser': lambda s: re.findall("\w[ \w]+", s)}
+    }
+
+
+class SELAllocInfoCommand(Command, IpmitoolCommandMixIn):
+    """Describes the sel alloc info command"""
+
+    name = "SEL Alloc Info"
+    ipmitool_args = ["sel", "info"]
+    result_type = SELAllocInfo
+
+    ipmitool_response_fields = {
         '# of Alloc Units' : {'attr': 'num_alloc_units', 'parser': int},
         'Alloc Unit Size' : {'parser': int},
         '# Free Units' : {'attr': 'num_free_units', 'parser': int},
@@ -183,6 +192,7 @@ sel_commands = {
     "set_sel_time" : SELTimeSetCommand,
     "get_sel_time" : SELTimeGetCommand,
     "sel_info" : SELInfoCommand,
+    "sel_alloc_info" : SELAllocInfoCommand,
     "sel_add" : SELAddCommand,
     "sel_get" : SELGetCommand,
     "sel_clear" : SELClearCommand,

@@ -141,6 +141,10 @@ class BMC(object):
         """Get SEL info"""
         return self.handle.sel_info()
 
+    def sel_alloc_info(self):
+        """Get SEL alloc info"""
+        return self.handle.sel_alloc_info()
+
     def sel_add(self, *records):
         """Add records to the SEL"""
         return self.handle.sel_add(records=records)
