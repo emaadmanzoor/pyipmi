@@ -101,9 +101,10 @@ class BMC(object):
                                        tftp_addr=tftp_addr)
 
 
-    def retrieve_firmware(self, filename, slot, tftp_addr):
+    def retrieve_firmware(self, filename, slot, image_type, tftp_addr):
         return self.handle.fw_upload(filename=filename, slot=slot,
-                                       tftp_addr=tftp_addr)
+                                     image_type=image_type,
+                                     tftp_addr=tftp_addr)
 
     def activate_firmware(self, slot):
         return self.handle.fw_activate(slot=slot)
@@ -128,7 +129,7 @@ class BMC(object):
 
     def get_firmware_info(self):
         return self.handle.fw_info()
-        
+
     def get_sel_time(self):
         """Get the time for the SEL"""
         return self.handle.get_sel_time()

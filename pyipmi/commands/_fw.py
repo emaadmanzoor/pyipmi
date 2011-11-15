@@ -61,7 +61,8 @@ class FWUploadCommand(Command, IpmitoolCommandMixIn):
         """
         """
         return ["cxoem", "fw", "upload", self._params['slot'],
-                self._params['filename'], "tftp", self._params['tftp_addr']]
+                self._params['filename'], self._params['image_type'],
+                "tftp", self._params['tftp_addr']]
 
 
 class FWActivateCommand(Command, IpmitoolCommandMixIn):
