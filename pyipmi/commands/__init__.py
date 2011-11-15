@@ -6,11 +6,11 @@ they do. Sometimes, they map to higher level commands provided by
 ipmitool. It's more convenient (and closer to real world use) to use
 these higher level commands than to break stuff down.
 """
-from _chassis import chassis_commands
-from _bmc import bmc_commands
-from _sdr import sdr_commands
-from _fw import fw_commands
-from _sel import sel_commands
+from chassis import chassis_commands
+from bmc import bmc_commands
+from sdr import sdr_commands
+from fw import fw_commands
+from sel import sel_commands
 
 ipmi_commands = {}
 
