@@ -6,8 +6,6 @@ from .. import Command
 from .. sdr import Sdr, AnalogSdr
 from .. tools.ipmitool import IpmitoolCommandMixIn
 
-PAREN_PAIR_VAL = 'CHANGE ME' # FIXME: change
-
 class SdrListCommand(Command, IpmitoolCommandMixIn):
     """Describes the sdr list command
 
@@ -18,7 +16,7 @@ class SdrListCommand(Command, IpmitoolCommandMixIn):
     name = 'SDR List'
     result_type = Sdr
 
-    ipmitool_response_format = IpmitoolCommandMixIn.COLUMN_RECORD_LIST
+    ipmitool_parse_response = IpmitoolCommandMixIn.parse_colon_record_list
     ipmitool_args = ['-v', 'sdr', 'list', 'all']
 
     def ipmitool_types(self, record):
@@ -42,7 +40,6 @@ class SdrListCommand(Command, IpmitoolCommandMixIn):
          Assertion Events      : 
          Assertions Enabled    : unc+ ucr+ unr+ 
          Deassertions Enabled  : unc+ ucr+ unr+ 
-        """
         'Sensor ID' : {
             'attr' : ('sensor_name', 'sensor_id'),
             'parser' : PAREN_PAIR_VAL
@@ -51,6 +48,7 @@ class SdrListCommand(Command, IpmitoolCommandMixIn):
             'attr' : ('entity_id', 'entity_name'),
             'parser' : PAREN_PAIR_VAL
         },
+        """
         'Sensor Type (Analog)'  : { 'attr' : 'sensor_type' },
         'Sensor Reading'        : {},
         'Status'                : {},
