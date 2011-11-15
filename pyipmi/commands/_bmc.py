@@ -1,5 +1,5 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved.
-"""BMC (global) related commands"""
+"""BMC related commands"""
 
 from .. import Command
 from .. bmc import BMCInfo, BMCGuid, BMCEnables
@@ -81,7 +81,7 @@ class GetCommandEnables(Command, IpmitoolCommandMixIn):
     ipmitool_args = ['bmc', 'getenables']
 
 
-global_commands = {
+bmc_commands = {
     'get_device_id' : GetDeviceIdCommand,
     'get_system_guid' : GetSystemGuidCommand,
     'get_command_enables' : GetCommandEnables
