@@ -33,7 +33,8 @@ class FWDownloadCommand(Command, IpmitoolCommandMixIn):
         'Slot' : {},
         'Type' : {},
         'IP' : {},
-        'TFTP Handle ID' : {}
+        'TFTP Handle ID' : {},
+        'Start FW download failed' : {'attr': 'fw_error'}
     }
 
     @property
@@ -58,7 +59,8 @@ class FWUploadCommand(Command, IpmitoolCommandMixIn):
         'Slot' : {},
         'Type' : {},
         'IP' : {},
-        'TFTP Handle ID' : {}
+        'TFTP Handle ID' : {},
+        'Start FW download failed' : {'attr': 'fw_error'}
     }
 
     @property

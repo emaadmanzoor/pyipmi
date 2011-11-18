@@ -11,10 +11,10 @@ class FWInfo(object):
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            return (self.slot == other.slot and \
-                   self.type == other.type and \
-                   self.offset == other.offset and \
-                   self.size == other.size and \
+            return (self.slot == other.slot and
+                   self.type == other.type and
+                   self.offset == other.offset and
+                   self.size == other.size and
                    self.flags == other.flags)
         else:
             return False
@@ -22,12 +22,12 @@ class FWInfo(object):
 
 class FWDownloadResult(object):
     """Object to hold firmware update results"""
-    start_fw_download_failed = None
+    fw_error = None
 
 
 class FWUploadResult(object):
     """Object to hold firmware retrieve results"""
-    pass
+    fw_error = None
 
 
 class FWActivateResult(object):
