@@ -149,11 +149,17 @@ class IpmitoolCommandMixIn(object):
         lines = response.split('\n')
         left_over = []
         for line in lines:
-            if line.find(':') == -1:
+            colon_index = 10000000
+            if line.find(':') != -1:
+                colon_index = line.index(':')
+            equal_index = 10000000
+            if line.find('=') != -1:
+                equal_index = line.index('=')
+            if colon_index == 10000000 and equal_index == 10000000:
                 continue
 
-            field_seperator = line.index(':')
-            field = line[0:field_seperator - 1].strip()
+            field_seperator = min([colon_index, equal_index])
+            field = line[0:field_seperator].strip()
             value = line[field_seperator + 1:].strip()
 
             field_info = mapping.get(field)
