@@ -115,8 +115,8 @@ class BMC(object):
     def set_firmware_flags(self, slot, flags):
         return self.handle.fw_flags(slot=slot, flags=flags)
 
-    def get_firmware_status(self):
-        return self.handle.fw_status()
+    def get_firmware_status(self, tftp_handle):
+        return self.handle.fw_status(tftp_handle=tftp_handle)
 
     def check_firmware(self, slot):
         return self.handle.fw_check(slot=slot)

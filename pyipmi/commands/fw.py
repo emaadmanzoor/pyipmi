@@ -32,7 +32,8 @@ class FWDownloadCommand(Command, IpmitoolCommandMixIn):
         'File Name' : {},
         'Slot' : {},
         'Type' : {},
-        'Start FW download failed' : {}
+        'IP' : {},
+        'TFTP Handle ID' : {}
     }
 
     @property
@@ -53,7 +54,11 @@ class FWUploadCommand(Command, IpmitoolCommandMixIn):
     result_type = FWUploadResult
 
     ipmitool_response_fields = {
-        "" : {}
+        'File Name' : {},
+        'Slot' : {},
+        'Type' : {},
+        'IP' : {},
+        'TFTP Handle ID' : {}
     }
 
     @property
@@ -132,10 +137,14 @@ class FWStatusCommand(Command, IpmitoolCommandMixIn):
     result_type = FWStatus
 
     ipmitool_response_fields = {
-        "" : {}
+        'Status' : {}
     }
 
-    ipmitool_args = ["cxoem", "fw", "status"]
+    @property
+    def ipmitool_args(self):
+        """
+        """
+        return ["cxoem", "fw", "status", self._params['tftp_handle']]
 
 
 class FWCheckCommand(Command, IpmitoolCommandMixIn):
