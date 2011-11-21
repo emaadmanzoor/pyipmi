@@ -1,9 +1,8 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
 """An implementation of Tool for ipmitool support"""
 
-import subprocess, sys
-from .. import Tool
-from pyipmi import IpmiError
+import subprocess, sys, pexpect
+from pyipmi import Tool, IpmiError, InteractiveCommand
 
 class IpmiTool(Tool):
     """Implements interaction with impitool
@@ -14,15 +13,26 @@ class IpmiTool(Tool):
     def run(self, command):
         """Run a command via ipmitool"""
         ipmi_args = self._ipmi_args(command)
+
+        arg_str = 'Running %s' % ' '.join(ipmi_args)
+        self._log(arg_str)
+        print arg_str
+
+        if isinstance(command, InteractiveCommand):
+            command = ipmi_args[0]
+            args = ipmi_args[1:]
+            proc = self._start_command(command, args)
+            return proc
+
         out, err = self._execute(command, ipmi_args)
         return command.ipmitool_parse_results(out, err)
 
     def _ipmi_args(self, command):
         """Return the command line arguments to ipmitool for command"""
-        base = []
-        base.extend(self._config_args)
-        base.extend(command.ipmitool_args)
-        return base
+        args = ['ipmitool']
+        args.extend(self._config_args)
+        args.extend(command.ipmitool_args)
+        return map(str, args)
 
     @property
     def _config_args(self):
@@ -51,12 +61,8 @@ class IpmiTool(Tool):
 
         return base
 
-    def _execute(self, command, ipmi_args):
+    def _execute(self, command, args):
         """Execute an ipmitool command"""
-        args = ['ipmitool']
-        args.extend(map(str, ipmi_args))
-        self._log('Running: ' + ' '.join(args))
-        print 'Running: ' + ' '.join(args)
         proc = subprocess.Popen(args,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE)
@@ -68,6 +74,11 @@ class IpmiTool(Tool):
         if proc.returncode != 0:
             command.handle_command_error(out, err)
         return out, err
+
+    def _start_command(self, command, args, timeout=5):
+        return pexpect.spawn(command, args, timeout=timeout,
+                             logfile=self._handle._log_file)
+
 
 def str2bool(val):
     """True if val is 'true', 'yes' or 'enabled, otherwise false"""

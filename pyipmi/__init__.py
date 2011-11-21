@@ -130,6 +130,9 @@ class Command:
         self._tool = tool
         self._params = params
 
+class InteractiveCommand(Command):
+    """A dummy class for an interactive command"""
+
 def make_bmc(bmc_class, logfile = None, **kwargs):
     """Returns a bmc object with 'default' settings
     
