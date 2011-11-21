@@ -170,6 +170,14 @@ class BMC(object):
         """Get SOL Configuration Parameters"""
         return self.handle.get_sol_config_params()
 
+    def activate_payload(self):
+        """Activate an SOL session"""
+        return self.handle.activate_payload()
+
+    def deactivate_payload(self):
+        """Deactivate an SOL session"""
+        return self.handle.deactivate_payload()
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
