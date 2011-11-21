@@ -162,6 +162,14 @@ class BMC(object):
         """Clear the SEL"""
         return self.handle.sel_clear()
 
+    def set_sol_config_params(self, **params):
+        """Set SOL Configuration Parameters"""
+        return self.handle.set_sol_config_params(**params)
+
+    def get_sol_config_params(self):
+        """Get SOL Configuration Parameters"""
+        return self.handle.get_sol_config_params()
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""

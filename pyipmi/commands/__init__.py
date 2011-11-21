@@ -11,6 +11,7 @@ from bmc import bmc_commands
 from sdr import sdr_commands
 from fw import fw_commands
 from sel import sel_commands
+from sol import sol_commands
 
 ipmi_commands = {}
 
@@ -19,3 +20,4 @@ ipmi_commands.update(chassis_commands)
 ipmi_commands.update(sdr_commands)
 ipmi_commands.update(fw_commands)
 ipmi_commands.update(sel_commands)
+ipmi_commands.update(sol_commands)
