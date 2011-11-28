@@ -23,7 +23,7 @@ TOOL_RESPONSES = {
 class SOLConsole(object):
     """Create and control an SOL session"""
 
-    def __init__(self, bmc):
+    def __init__(self, bmc, hostname, username, password):
         self._bmc = bmc
         self._toolname = bmc.handle._tool.__class__.__name__
         self.escapes = ESCAPE_SEQUENCES[self._toolname]
@@ -34,8 +34,6 @@ class SOLConsole(object):
         self.expect_exact(self.responses['open'])
 
         try:
-            #TODO: change all this
-            hostname, username, password = 'dalek', 'root', 'root'
             self._login(hostname, username, password)
         except IpmiError:
             self.close()
