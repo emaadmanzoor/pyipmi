@@ -109,8 +109,8 @@ class BMC(object):
     def activate_firmware(self, slot):
         return self.handle.fw_activate(slot=slot)
 
-    def deactivate_firmware(self, slot):
-        return self.handle.fw_deactivate(slot=slot)
+    def invalidate_firmware(self, slot):
+        return self.handle.fw_invalidate(slot=slot)
 
     def set_firmware_flags(self, slot, flags):
         return self.handle.fw_flags(slot=slot, flags=flags)

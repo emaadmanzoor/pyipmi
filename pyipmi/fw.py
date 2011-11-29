@@ -57,7 +57,7 @@ class FWCancelResult(object):
 
 class FWCheckResult(object):
     """Object to hold firmware CRC check results"""
-    pass
+    error = None
 
 
 class FWBlowResult(object):

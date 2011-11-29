@@ -91,7 +91,7 @@ class FWActivateCommand(Command, IpmitoolCommandMixIn):
         return ["cxoem", "fw", "activate", self._params['slot']]
 
 
-class FWDeactivateCommand(Command, IpmitoolCommandMixIn):
+class FWInvalidateCommand(Command, IpmitoolCommandMixIn):
     """Describes the cxoem fw deactivate IPMI command
 
     """
@@ -107,7 +107,7 @@ class FWDeactivateCommand(Command, IpmitoolCommandMixIn):
     def ipmitool_args(self):
         """
         """
-        return ["cxoem", "fw", "deactivate", self._params['slot']]
+        return ["cxoem", "fw", "invalidate", self._params['slot']]
 
 
 class FWFlagsCommand(Command, IpmitoolCommandMixIn):
@@ -158,7 +158,9 @@ class FWCheckCommand(Command, IpmitoolCommandMixIn):
     result_type = FWCheckResult
 
     ipmitool_response_fields = {
-        "" : {}
+        'Slot' : {},
+        'CRC32' : {},
+        'Error' : {'attr': 'error'}
     }
 
     @property
@@ -229,7 +231,7 @@ fw_commands = {
     "fw_download"   : FWDownloadCommand,
     "fw_upload"     : FWUploadCommand,
     "fw_activate"   : FWActivateCommand,
-    "fw_deactivate" : FWDeactivateCommand,
+    "fw_invalidate" : FWInvalidateCommand,
     "fw_flags"      : FWFlagsCommand,
     "fw_status"     : FWStatusCommand,
     "fw_check"      : FWCheckCommand,
