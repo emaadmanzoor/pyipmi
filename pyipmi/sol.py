@@ -29,12 +29,19 @@ class SOLConsole(object):
         self.escapes = ESCAPE_SEQUENCES[self._toolname]
         self.responses = TOOL_RESPONSES[self._toolname]
 
+        # save authenication info
+        self._auth_info = {
+            'hostname' : hostname,
+            'username' : username,
+            'password' : password
+        }
+
         # activate SOL session
         self._proc = self._bmc.activate_payload()
         self.expect_exact(self.responses['open'])
 
         try:
-            self._login(hostname, username, password)
+            self._login()
         except IpmiError:
             self.close()
             raise
@@ -58,20 +65,23 @@ class SOLConsole(object):
 
         self.isopen = False
 
-    def _login(self, hostname, username, password):
+    def _login(self):
+        hostname = self._auth_info['hostname']
+        username = self._auth_info['username']
+        password = self._auth_info['password']
         self.prompt = '%s@%s:~[$#] ' % (username, hostname)
 
         # once we've activated a session, either we're logged in,
         # we need to log in, or we're not getting any data back
         self.sendline()
-        index = self.expect(['%s login: ' % hostname,
-                                         self.prompt, pexpect.TIMEOUT,
-                                         pexpect.EOF])
+        index = self.expect(['%s login: ' % hostname, self.prompt,
+                             pexpect.TIMEOUT, pexpect.EOF])
 
-        if index == 1: # we're already logged in
+        if index == 1:
+            # we're already logged in
             return
 
-        if index > 1: # check if we're hosed
+        if index > 1:
             #TODO: check if we're hosed
             raise IpmiError('SOL session unresponsive')
 
