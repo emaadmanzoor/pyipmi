@@ -47,7 +47,7 @@ class FWFlagsResult(object):
 
 class FWStatus(object):
     """Object to hold firmware operation status"""
-    pass
+    error = None
 
 
 class FWCancelResult(object):

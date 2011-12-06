@@ -139,7 +139,8 @@ class FWStatusCommand(Command, IpmitoolCommandMixIn):
     result_type = FWStatus
 
     ipmitool_response_fields = {
-        'Status' : {}
+        'Status' : {},
+        'Error' : {}
     }
 
     @property
