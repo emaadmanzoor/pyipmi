@@ -4,10 +4,7 @@ from .. import Command
 from .. tools.ipmitool import IpmitoolCommandMixIn
 from pyipmi.fw import *
 
-class FWDownloadCommand(Command, IpmitoolCommandMixIn):
-    """Describes the cxoem fw download IPMI command
-
-    """
+class CommandWithErrors(Command, IpmitoolCommandMixIn):
 
     # TODO: Generalize this to base class?  Better way to include
     # error output in parsing?
@@ -24,6 +21,11 @@ class FWDownloadCommand(Command, IpmitoolCommandMixIn):
 
         out = out + err
         return self.ipmitool_parse_response(out, err)
+
+class FWDownloadCommand(CommandWithErrors):
+    """Describes the cxoem fw download IPMI command
+
+    """
 
     name = "Update a Firmware Image"
     result_type = FWDownloadResult
@@ -46,7 +48,7 @@ class FWDownloadCommand(Command, IpmitoolCommandMixIn):
                 "tftp", self._params['tftp_addr']]
 
 
-class FWUploadCommand(Command, IpmitoolCommandMixIn):
+class FWUploadCommand(CommandWithErrors):
     """Describes the cxoem fw upload IPMI command
 
     """
@@ -72,7 +74,7 @@ class FWUploadCommand(Command, IpmitoolCommandMixIn):
                 "tftp", self._params['tftp_addr']]
 
 
-class FWActivateCommand(Command, IpmitoolCommandMixIn):
+class FWActivateCommand(CommandWithErrors):
     """Describes the cxoem fw activate IPMI command
 
     """
@@ -91,7 +93,7 @@ class FWActivateCommand(Command, IpmitoolCommandMixIn):
         return ["cxoem", "fw", "activate", self._params['slot']]
 
 
-class FWInvalidateCommand(Command, IpmitoolCommandMixIn):
+class FWInvalidateCommand(CommandWithErrors):
     """Describes the cxoem fw deactivate IPMI command
 
     """
@@ -110,7 +112,7 @@ class FWInvalidateCommand(Command, IpmitoolCommandMixIn):
         return ["cxoem", "fw", "invalidate", self._params['slot']]
 
 
-class FWFlagsCommand(Command, IpmitoolCommandMixIn):
+class FWFlagsCommand(CommandWithErrors):
     """Describes the cxoem fw flags IPMI command
 
     """
@@ -130,7 +132,7 @@ class FWFlagsCommand(Command, IpmitoolCommandMixIn):
                 self._params['flags']]
 
 
-class FWStatusCommand(Command, IpmitoolCommandMixIn):
+class FWStatusCommand(CommandWithErrors):
     """Describes the cxoem fw status IPMI command
 
     """
@@ -140,7 +142,7 @@ class FWStatusCommand(Command, IpmitoolCommandMixIn):
 
     ipmitool_response_fields = {
         'Status' : {},
-        'Error' : {}
+        'Error' : {'attr': 'error'}
     }
 
     @property
@@ -150,7 +152,7 @@ class FWStatusCommand(Command, IpmitoolCommandMixIn):
         return ["cxoem", "fw", "status", self._params['tftp_handle']]
 
 
-class FWCheckCommand(Command, IpmitoolCommandMixIn):
+class FWCheckCommand(CommandWithErrors):
     """Describes the cxoem fw check IPMI command
 
     """
@@ -171,7 +173,7 @@ class FWCheckCommand(Command, IpmitoolCommandMixIn):
         return ["cxoem", "fw", "check", self._params['slot']]
 
 
-class FWCancelCommand(Command, IpmitoolCommandMixIn):
+class FWCancelCommand(CommandWithErrors):
     """Describes the cxoem fw cancel IPMI command
 
     """
@@ -190,7 +192,7 @@ class FWCancelCommand(Command, IpmitoolCommandMixIn):
         return ["cxoem", "fw", "cancel", self._params['job_id']]
 
 
-class FWInfoCommand(Command, IpmitoolCommandMixIn):
+class FWInfoCommand(CommandWithErrors):
     """Describes the cxoem fw info IPMI command
 
     """
@@ -210,7 +212,7 @@ class FWInfoCommand(Command, IpmitoolCommandMixIn):
     ipmitool_args = ["cxoem", "fw", "info"]
 
 
-class FWBlowCommand(Command, IpmitoolCommandMixIn):
+class FWBlowCommand(CommandWithErrors):
     """Describes the cxoem fw blow IPMI command
 
     """
