@@ -138,12 +138,20 @@ class SOLConsole(object):
         return self._proc.sendline(s)
 
 
-SOL_CONFIGURATION_PARAMETERS = [
-    "set in progress", "enable",
-    "force encryption", "force authentication", "privilege level",
-    "character accumulate interval", "character send threshold",
-    "retry count", "retry interval",
-    "volatile bit rate", "non-volatile bit rate",
-    "payload channel", "payload port number"
+# map config params to range of possible values
+SOL_CONFIGURATION_PARAMETERS = {
+    "set_in_progress" : ["set in progress", "set complete", "commit write"],
+    "enable" : [True, False],
+    "force_encryption" : [True, False],
+    "force_authentication" : [True, False],
+    "privilege_level" : ["USER", "OPERATOR", "ADMINISTRATOR", "OEM"],
+    "character_accumulate_interval" : range(1, 256),
+    "character_send_threshold" : range(256),
+    "retry_count" : range(8),
+    "retry_interval" : range(256),
+    "volatile_bit_rate" : [9.6, 19.2, 38.4, 57.6, 115.2], #TODO: "serial"
+    "non_volatile_bit_rate" : [9.6, 19.2, 38.4, 57.6, 115.2], #TODO: "serial"
+    "payload_channel" : [], # implementation specific
+    "payload_port_number" : [], # implementation specific
     # TODO: support OEM parameters
-]
+}
