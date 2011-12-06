@@ -162,13 +162,13 @@ class BMC(object):
         """Clear the SEL"""
         return self.handle.sel_clear()
 
-    def set_sol_config_params(self, **params):
-        """Set SOL Configuration Parameters"""
-        return self.handle.set_sol_config_params(**params)
+    def set_sol_config_param(self, param, value):
+        """Set SOL Configuration Parameter"""
+        return self.handle.set_sol_config_params(param=param, value=value)
 
-    def get_sol_config_params(self):
+    def get_sol_config_params(self, *params):
         """Get SOL Configuration Parameters"""
-        return self.handle.get_sol_config_params()
+        return self.handle.get_sol_config_params(params=params)
 
     def activate_payload(self):
         """Activate an SOL session"""

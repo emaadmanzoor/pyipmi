@@ -138,5 +138,12 @@ class SOLConsole(object):
         return self._proc.sendline(s)
 
 
-class SOLConfigurationParameters(object):
-    pass
+SOL_CONFIGURATION_PARAMETERS = [
+    "set in progress", "enable",
+    "force encryption", "force authentication", "privilege level",
+    "character accumulate interval", "character send threshold",
+    "retry count", "retry interval",
+    "volatile bit rate", "non-volatile bit rate",
+    "payload channel", "payload port number"
+    # TODO: support OEM parameters
+]
