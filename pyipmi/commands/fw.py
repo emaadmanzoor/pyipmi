@@ -206,7 +206,8 @@ class FWInfoCommand(CommandWithErrors):
         "Type" : {},
         "Offset" : {},
         "Size" : {},
-        "Flags" : {}
+        "Flags" : {},
+        "Error" : {}
     }
 
     ipmitool_args = ["cxoem", "fw", "info"]

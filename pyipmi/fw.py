@@ -4,6 +4,7 @@
 
 class FWInfo(object):
     """Object to hold device-reported SPI flash table"""
+    error = None
 
     def __str__(self):
         return "%s | %s | %s | %s | %s" % (self.slot, self.type, self.offset,
