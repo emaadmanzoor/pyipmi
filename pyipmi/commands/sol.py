@@ -26,7 +26,7 @@ def channel_parser(channel):
     return int(chan)
 
 def bool2str(boolval):
-    """Parse """#TODO: finish
+    """Map True to 'true', False to 'false'"""
     return str(boolval).lower()
 
 # need to know four ipmitool-specific things about each configuration parameter
@@ -38,8 +38,8 @@ IPMITOOL_SOL_PARAMETERS = {
                 'set_in_progress': {
                     'set_name' : 'set-in-progress',
                     'get_name' : 'Set in progress',
-                    'parser' : lambda s: s.replace('-', ' '),
-                    'formatter' : lambda s: s.replace(' ', '-'),
+                    'parser' : lambda s: s.replace('-', '_'),
+                    'formatter' : lambda s: s.replace('_', '-'),
                 },
                 'enable' : {
                     'set_name' : 'enabled',
@@ -116,7 +116,8 @@ IPMITOOL_SOL_PARAMETERS = {
 }
 
 # TODO: why does atom only work with lanplus, but qemu works on the lan iface?
-IPMITOOL_SOL_ARGS = ["-I", "lanplus", "sol"]
+# TODO: enable/disable encryption
+IPMITOOL_SOL_ARGS = ["-I", "lanplus", "-C", "0", "sol"]
 
 class SetSOLConfigurationParametersCommand(Command, IpmitoolCommandMixIn):
     """Describes the Set SOL Configuration Parameters command"""
@@ -136,7 +137,7 @@ class SetSOLConfigurationParametersCommand(Command, IpmitoolCommandMixIn):
         if param is None:
             raise IpmiError('ipmitool does not support "sol set %s" ' % param)
 
-        return IPMITOOL_SOL_ARGS + ["set", ipmitool_param, val]
+        return IPMITOOL_SOL_ARGS + ["set", ipmitool_param, val, 'noguard']
 
 
 class GetSOLConfigurationParametersCommand(Command, IpmitoolCommandMixIn):
