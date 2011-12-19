@@ -12,7 +12,7 @@ class ActivatePayloadCommand(InteractiveCommand, IpmitoolCommandMixIn):
     #TODO: there could be other payload types
 
     name = "Activate Payload"
-    ipmitool_args = ["-I", "lanplus", "sol", "activate"]
+    ipmitool_args = ["-I", "lanplus", "-C", "0", "sol", "activate"]
 
 
 class DeactivatePayloadCommand(Command, IpmitoolCommandMixIn):
