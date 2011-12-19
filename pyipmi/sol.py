@@ -24,6 +24,7 @@ class SOLConsole(object):
     """Create and control an SOL session"""
 
     def __init__(self, bmc, hostname, username, password):
+        self.isopen = False
         self._bmc = bmc
         self._toolname = bmc.handle._tool.__class__.__name__
         self.escapes = ESCAPE_SEQUENCES[self._toolname]
@@ -40,6 +41,10 @@ class SOLConsole(object):
         self._proc = self._bmc.activate_payload()
         self.expect_exact(self.responses['open'])
 
+        # set up log files
+        self._proc.logfile_read = file('sol_read.log', 'w')
+        self._proc.logfile_send = file('sol_write.log', 'w')
+
         try:
             self._login()
         except IpmiError:
@@ -51,16 +56,17 @@ class SOLConsole(object):
     def __del__(self):
         if self.isopen:
             self.close()
+        self._bmc = None
 
     def close(self):
         self._logout()
         self.sendline(self.escapes['terminate'])
         try:
-            self.expect_exact(self.responses['close'])
+            self.expect_exact(self.responses['close'], timeout=2)
         except pexpect.TIMEOUT, pexpect.EOF:
             self._bmc.deactivate_payload()
 
-        if self.isalive():
+        if self._proc.isalive():
             self._proc.close()
 
         self.isopen = False
@@ -69,38 +75,49 @@ class SOLConsole(object):
         hostname = self._auth_info['hostname']
         username = self._auth_info['username']
         password = self._auth_info['password']
-        self.prompt = '%s@%s:~[$#] ' % (username, hostname)
+
+        self.prompt = '%s@%s.*[$#] ' % (username, hostname)
+        self.login_prompt = hostname + ' login: '
 
         # once we've activated a session, either we're logged in,
         # we need to log in, or we're not getting any data back
+        login_patterns = [self.login_prompt, self.prompt,
+                          pexpect.TIMEOUT, pexpect.EOF]
         self.sendline()
-        index = self.expect(['%s login: ' % hostname, self.prompt,
-                             pexpect.TIMEOUT, pexpect.EOF])
+        index = self.expect(login_patterns)
 
-        if index == 1:
+        # if we haven't found a prompt (index > 1),
+        # try sending various control characters
+        # control characters to send
+        controls = ['\\', 'c', 'd']
+        while index > 1:
+            try:
+                self.sendcontrol(controls.pop())
+                index = self.expect(login_patterns)
+            except IndexError:
+                raise IpmiError('SOL session unresponsive')
+
+        if index == 0:
+            # need to log in
+            try:
+                self.sendline(username)
+                self.expect_exact('Password: ')
+                self.sendline(password)
+                self.expect(self.prompt)
+            except pexpect.TIMEOUT:
+                raise #IpmiError('%s@%s: failed login' % (username, hostname))
+        elif index == 1:
             # we're already logged in
-            return
-
-        if index > 1:
-            #TODO: check if we're hosed
-            raise IpmiError('SOL session unresponsive')
-
-        # otherwise: send username/password
-        try:
-            self.sendline(username)
-            self.expect_exact('Password: ')
-            self.sendline(password)
-            self.expect(self.prompt)
-        except pexpect.TIMEOUT:
-            raise IpmiError('%s@%s: failed login' % (username, hostname))
+            pass
 
         # make the prompt more predictable
         self.sendline('export PS1="\u@\h:~\$ "')
         self.expect(self.prompt)
 
     def _logout(self):
-        self.sendline()
-        self._proc.sendline('logout')
+        self.sendcontrol('c')
+        self.sendline('logout')
+        return self.expect([self.login_prompt, pexpect.TIMEOUT]) == 0
 
     ######################################
     #                                    #
@@ -113,9 +130,6 @@ class SOLConsole(object):
 
     def expect_exact(self, pattern, timeout=-1, searchwindowsize=None):
         return self._proc.expect_exact(pattern, timeout, searchwindowsize)
-
-    def isalive(self):
-        return self._proc.isalive()
 
     def read(self, size=-1):
         # pexpect implements this function by expecting the delimiter
@@ -137,10 +151,13 @@ class SOLConsole(object):
     def sendline(self, s=""):
         return self._proc.sendline(s)
 
+    def sendcontrol(self, char):
+        return self._proc.sendcontrol(char)
+
 
 # map config params to range of possible values
 SOL_CONFIGURATION_PARAMETERS = {
-    "set_in_progress" : ["set in progress", "set complete", "commit write"],
+    "set_in_progress" : ["set_in_progress", "set_complete", "commit_write"],
     "enable" : [True, False],
     "force_encryption" : [True, False],
     "force_authentication" : [True, False],
@@ -154,4 +171,9 @@ SOL_CONFIGURATION_PARAMETERS = {
     "payload_channel" : [], # implementation specific
     "payload_port_number" : [], # implementation specific
     # TODO: support OEM parameters
+}
+
+# map tools to a list of unsettable params for that tool
+TOOL_RESTRICTIONS = {
+    "IpmiTool": ["payload_channel", "payload_port_number"],
 }
