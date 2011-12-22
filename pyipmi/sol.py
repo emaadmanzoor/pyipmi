@@ -2,7 +2,10 @@
 
 """Helper objects for various SOL-related commands"""
 
+from sys import stderr
+
 import pexpect
+from pexpect import TIMEOUT, EOF
 from pyipmi import IpmiError
 
 ESCAPE_SEQUENCES = {
@@ -16,9 +19,18 @@ ESCAPE_SEQUENCES = {
 TOOL_RESPONSES = {
     "IpmiTool" : {
         "open" : "[SOL Session operational.  Use ~? for help]",
-        "close" : "[terminated ipmitool]"
+        "close" : "[terminated ipmitool]",
+        "send_error": "Error sending SOL data: FAIL",
+        "bmc_closed": "SOL session closed by BMC",
+        "activation_error": "Error: No response activating SOL payload",
+        "session_error": "Error: Unable to establish IPMI v2 / RMCP+ session",
+        "deactivation_error": "Error: No response de-activating SOL payload",
     }
 }
+
+class SOLError(IpmiError):
+    """SOL error"""
+
 
 class SOLConsole(object):
     """Create and control an SOL session"""
@@ -39,6 +51,7 @@ class SOLConsole(object):
 
         # activate SOL session
         self._proc = self._bmc.activate_payload()
+        self._proc.timeout = 5
         self.expect_exact(self.responses['open'])
 
         # set up log files
@@ -60,11 +73,15 @@ class SOLConsole(object):
 
     def close(self):
         self._logout()
-        self.sendline(self.escapes['terminate'])
+        self.send(self.escapes['terminate'])
         try:
             self.expect_exact(self.responses['close'], timeout=2)
-        except pexpect.TIMEOUT, pexpect.EOF:
-            self._bmc.deactivate_payload()
+        except TIMEOUT, EOF:
+            try:
+                self._bmc.deactivate_payload()
+            except IpmiError as e:
+                assert e.message.find(self.responses['deactivation_error']) > -1
+                stderr.write(e.message)
 
         if self._proc.isalive():
             self._proc.close()
@@ -81,8 +98,7 @@ class SOLConsole(object):
 
         # once we've activated a session, either we're logged in,
         # we need to log in, or we're not getting any data back
-        login_patterns = [self.login_prompt, self.prompt,
-                          pexpect.TIMEOUT, pexpect.EOF]
+        login_patterns = [self.login_prompt, self.prompt, TIMEOUT, EOF]
         self.sendline()
         index = self.expect(login_patterns)
 
@@ -104,7 +120,7 @@ class SOLConsole(object):
                 self.expect_exact('Password: ')
                 self.sendline(password)
                 self.expect(self.prompt)
-            except pexpect.TIMEOUT:
+            except TIMEOUT:
                 raise #IpmiError('%s@%s: failed login' % (username, hostname))
         elif index == 1:
             # we're already logged in
@@ -117,7 +133,7 @@ class SOLConsole(object):
     def _logout(self):
         self.sendcontrol('c')
         self.sendline('logout')
-        return self.expect([self.login_prompt, pexpect.TIMEOUT]) == 0
+        return self.expect([self.login_prompt, TIMEOUT, EOF]) == 0
 
     ######################################
     #                                    #
@@ -134,10 +150,10 @@ class SOLConsole(object):
     def read(self, size=-1):
         # pexpect implements this function by expecting the delimiter
         # the default delimiter is EOF, which for our purposes, is
-        # unlikely to be reached. So instead, use pexpect.TIMEOUT
+        # unlikely to be reached. So instead, use TIMEOUT
         # as the delimiter for now
         prev_delimiter = self._proc.delimiter
-        self._proc.delimiter = pexpect.TIMEOUT
+        self._proc.delimiter = TIMEOUT
         data = self._proc.read(size)
         self._proc.delimiter = prev_delimiter
         return data
@@ -149,7 +165,7 @@ class SOLConsole(object):
         return self._proc.send(s)
 
     def sendline(self, s=""):
-        return self._proc.sendline(s)
+        return self.send(s + "\n")
 
     def sendcontrol(self, char):
         return self._proc.sendcontrol(char)
