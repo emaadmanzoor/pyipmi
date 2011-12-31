@@ -8,7 +8,7 @@ import os
 import re
 import tempfile
 import string
-from pyipmi import Command
+from pyipmi import Command, IpmiError
 from pyipmi.tools.ipmitool import IpmitoolCommandMixIn, str2bool
 from pyipmi.sel import (SELTimestamp, SELInfo, SELAllocInfo, SELRecord,
                         SELOverflowError, SELTimestampError)
