@@ -29,6 +29,13 @@ def bool2str(boolval):
     """Map True to 'true', False to 'false'"""
     return str(boolval).lower()
 
+def priv_level_formatter(level):
+    """Format privilege level"""
+    level = level.lower()
+    if level == "administrator":
+        level = "admin"
+    return level
+
 # need to know four ipmitool-specific things about each configuration parameter
 # set_name: name used in ipmitool's "sol set" command
 # get_name: name printed from ipmitool's "sol info" command
@@ -63,7 +70,7 @@ IPMITOOL_SOL_PARAMETERS = {
                     'set_name' : 'privilege-level',
                     'get_name' : 'Privilege Level',
                     'parser' : str,
-                    'formatter' : lambda s: s.lower(),
+                    'formatter' : priv_level_formatter,
                 },
                 'character_accumulate_interval' : {
                     'set_name' : 'character-accumulate-level',
