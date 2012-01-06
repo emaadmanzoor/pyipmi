@@ -178,6 +178,15 @@ class BMC(object):
         """Deactivate an SOL session"""
         return self.handle.deactivate_payload()
 
+    def dcmi_get_capabilities(self):
+        return self.handle.dcmi_get_capabilities()
+
+    def dcmi_set_asset_tag(self, tag):
+        return self.handle.dcmi_set_asset_tag(tag=tag)
+
+    def dcmi_get_asset_tag(self):
+        return self.handle.dcmi_get_asset_tag()
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""

@@ -13,6 +13,7 @@ from fw import fw_commands
 from sel import sel_commands
 from sol import sol_commands
 from payload import payload_commands
+from dcmi import dcmi_commands
 
 ipmi_commands = {}
 
@@ -23,3 +24,4 @@ ipmi_commands.update(fw_commands)
 ipmi_commands.update(sel_commands)
 ipmi_commands.update(sol_commands)
 ipmi_commands.update(payload_commands)
+ipmi_commands.update(dcmi_commands)
