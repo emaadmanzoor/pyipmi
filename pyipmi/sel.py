@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-from time import strptime, mktime
+from datetime import datetime
+import re
+
 from pyipmi import IpmiError
 
 TIME_FORMAT = '%m/%d/%Y %H:%M:%S'
@@ -81,35 +83,47 @@ class TimestampedOEMSELRecord(OEMSELRecord):
 class SELTimestamp(object):
     """A class to represent a Timestamp"""
 
-    def __init__(self, timestamp=''):
-        self.timestamp = timestamp
+    parser = re.compile('%s/%s/%s %s:%s:%s' % (
+                        '(?P<mon>\d{2})', '(?P<day>\d{2})', '(?P<year>\d{4})',
+                        '(?P<hour>\d{2})', '(?P<min>\d{2})', '(?P<sec>\d{2})'))
+    default_time = parser.match('01/01/1970 00:00:00')
 
-    def mktime(self):
-        return mktime(strptime(self.timestamp, TIME_FORMAT))
+    def __init__(self, timestamp=''):
+        match = self.parser.match(timestamp)
+        if match is None:
+            match = self.default_time
+
+        mdict = {k:int(v) for k, v in match.groupdict().iteritems()}
+        self.time = datetime(mdict['year'], mdict['mon'], mdict['day'],
+                             mdict['hour'], mdict['min'], mdict['sec'])
+
+    @property
+    def timestamp(self):
+        return repr(self)
 
     def __repr__(self):
-        return self.timestamp
+        return self.time.strftime(TIME_FORMAT)
 
     def __str__(self):
-        return self.timestamp
+        return str(self.time)
 
     def __eq__(self, other):
-        return self.timestamp == other.timestamp
+        return self.time == other.time
 
     def __ne__(self, other):
-        return self.timestamp != other.timestamp
+        return self.time != other.time
 
     def __lt__(self, other):
-        return self.mktime() < other.mktime()
+        return self.time < other.time
 
     def __le__(self, other):
-        return self.mktime() <= other.mktime()
+        return self.time <= other.time
 
     def __gt__(self, other):
-        return self.mktime() > other.mktime()
+        return self.time > other.time
 
     def __ge__(self, other):
-        return self.mktime() >= other.mktime()
+        return self.time >= other.time
 
 
 class SELInfo(object):
