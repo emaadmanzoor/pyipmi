@@ -29,7 +29,7 @@ class IpmiDcmi(Tool):
 
     def _ipmi_args(self, command):
         """Return the command line arguments to ipmi-dcmi for command"""
-        args = ['ipmi-dcmi']
+        args = ['/usr/sbin/ipmi-dcmi']
         args.extend(self._config_args)
         args.extend(command.ipmidcmi_args)
         return map(str, args)
