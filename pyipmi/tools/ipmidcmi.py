@@ -9,6 +9,22 @@ class IpmiDcmi(Tool):
 
     Currently only supports one off commands, persistent sessions will come.
     """
+    def __init__(self, *args, **kwargs):
+        super(IpmiDcmi, self).__init__(*args, **kwargs)
+        self._ipmidcmi_path = self._find_ipmidcmi_path()
+
+    def _find_ipmidcmi_path(self):
+        """Get the path to the ipmi-dcmi bin.
+        
+        freeipmi puts all of its binaries in /usr/sbin, which lots of
+        things don't have in their default path. We hardcode the path to
+        it here, but only if it can't be found in $PATH (via bash's which)."""
+        
+        found = subprocess.check_output(['which', 'ipmi-dcmi']).strip()
+        if found:
+            return found
+
+        return '/usr/sbin/ipmi-dcmi'
 
     def run(self, command):
         """Run a command via ipmi-dcmi"""
@@ -29,7 +45,7 @@ class IpmiDcmi(Tool):
 
     def _ipmi_args(self, command):
         """Return the command line arguments to ipmi-dcmi for command"""
-        args = ['/usr/sbin/ipmi-dcmi']
+        args = [self._ipmidcmi_path]
         args.extend(self._config_args)
         args.extend(command.ipmidcmi_args)
         return map(str, args)
