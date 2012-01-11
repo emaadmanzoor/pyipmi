@@ -63,7 +63,7 @@ class Handle:
             print(string, file = self._log_file)
             self._log_file.flush()
 
-class Tool:
+class Tool(object):
     """A tool implements communications with a BMC
    
     Tool is an abstract class - it needs a 'run' method defined to be useful.
