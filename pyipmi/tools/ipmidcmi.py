@@ -20,11 +20,12 @@ class IpmiDcmi(Tool):
         things don't have in their default path. We hardcode the path to
         it here, but only if it can't be found in $PATH (via bash's which)."""
         
-        found = subprocess.check_output(['which', 'ipmi-dcmi']).strip()
-        if found:
-            return found
+        try:
+            found = subprocess.check_output(['which', 'ipmi-dcmi']).strip()
+        except subprocess.CalledProcessError:
+            return '/usr/sbin/ipmi-dcmi'
 
-        return '/usr/sbin/ipmi-dcmi'
+        return found
 
     def run(self, command):
         """Run a command via ipmi-dcmi"""
