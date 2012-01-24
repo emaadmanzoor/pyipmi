@@ -187,6 +187,29 @@ class BMC(object):
     def dcmi_get_asset_tag(self):
         return self.handle.dcmi_get_asset_tag()
 
+    def dcmi_get_controller_id(self):
+        return self.handle.dcmi_get_controller_id()
+
+    def dcmi_get_sensor_info(self):
+        return self.handle.dcmi_get_sensor_info()
+
+    def dcmi_get_power_statistics(self):
+        return self.handle.dcmi_get_power_statistics()
+
+    def dcmi_get_power_limit(self):
+        return self.handle.dcmi_get_power_limit()
+
+    def dcmi_set_power_limit(self):
+        return self.handle.dcmi_set_power_limit()
+
+    def dcmi_power_limit_requested(self, limit):
+        return self.handle.dcmi_power_limit_requested(limit=limit)
+
+    def dcmi_activate_power_limit(self, action):
+        if action != "activate" and action != "deactivate":
+            raise Exception("Invalid argument to dcmi_activate_power_limit: %s" % action)
+        return self.handle.dcmi_activate_power_limit(action=action)
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""

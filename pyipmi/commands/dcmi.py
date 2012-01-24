@@ -23,11 +23,11 @@ class DCMICommandWithErrors(Command, IpmiDcmiCommandMixIn):
         return self.ipmidcmi_parse_response(out, err)
 
 class DCMIGetCapabilitiesCommand(DCMICommandWithErrors):
-    """Describes the cxoem fw download IPMI command
+    """Describes the DCMI get capabilities command
 
     """
 
-    name = "Update a Firmware Image"
+    name = "Get DCMI Capabilities"
     result_type = DCMIGetCapabilitiesResult
 
     ipmidcmi_response_fields = {
@@ -62,11 +62,11 @@ class DCMIGetCapabilitiesCommand(DCMICommandWithErrors):
     ipmidcmi_args = ["--get-dcmi-capability-info"]
 
 class DCMISetAssetTagCommand(DCMICommandWithErrors):
-    """Describes the cxoem fw download IPMI command
+    """Describes the DCMI set asset tag command
 
     """
 
-    name = "Update a Firmware Image"
+    name = "Set DCMI Asset Tag"
     result_type = DCMISetAssetTagResult
 
     # No response -- Have to do a get to confirm
@@ -80,13 +80,13 @@ class DCMISetAssetTagCommand(DCMICommandWithErrors):
         return ["--set-asset-tag", self._params['tag']]
 
 class DCMIGetAssetTagCommand(DCMICommandWithErrors):
-    """Describes the cxoem fw download IPMI command
+    """Describes the dcmi get asset tag command
 
     """
 
     ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
 
-    name = "Update a Firmware Image"
+    name = "Get DCMI Asset Tag"
     result_type = DCMIGetAssetTagResult
 
     ipmidcmi_response_fields = {
@@ -95,8 +95,135 @@ class DCMIGetAssetTagCommand(DCMICommandWithErrors):
 
     ipmidcmi_args = ["--get-asset-tag"]
 
+
+class DCMIGetManagementControllerID(DCMICommandWithErrors):
+    """Describes the DCMI get management controller ID string command
+
+    """
+
+    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+
+    name = "Get Management Controller ID String"
+    result_type = DCMIGetManagementControllerIDResult
+
+    ipmidcmi_response_fields = {
+    }
+
+    ipmidcmi_args = ["--get-management-controller-identifier-string"]
+
+
+class DCMIGetSensorInfo(DCMICommandWithErrors):
+    """Describes the DCMI get sensor info command
+
+    """
+
+    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+
+    name = "Get DCMI Sensor Info"
+    result_type = DCMIGetSensorInfoResult
+
+    ipmidcmi_response_fields = {
+    }
+
+    ipmidcmi_args = ["--get-dcmi-sensor-info"]
+
+
+class DCMIGetPowerStatistics(DCMICommandWithErrors):
+    """Describes the DCMI get system power statistics command
+
+    """
+
+    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+
+    name = "Get Power Statistics"
+    result_type = DCMIGetPowerStatisticsResult
+
+    ipmidcmi_response_fields = {
+    }
+
+    ipmidcmi_args = ["--get-system-power-statistics"]
+
+
+class DCMIGetPowerLimit(DCMICommandWithErrors):
+    """Describes the DCMI get power limit command
+
+    """
+
+    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+
+    name = "Get Power Limit"
+    result_type = DCMIGetPowerLimitResult
+
+    ipmidcmi_response_fields = {
+    }
+
+    ipmidcmi_args = ["--get-power-limit"]
+
+
+class DCMISetPowerLimit(DCMICommandWithErrors):
+    """Describes the DCMI set power limit command
+
+    """
+
+    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+
+    name = "Set Power Limit"
+    result_type = DCMISetPowerLimitResult
+
+    ipmidcmi_response_fields = {
+    }
+
+    ipmidcmi_args = ["--set-power-limit"]
+
+class DCMIPowerLimitRequested(DCMICommandWithErrors):
+    """Describes the DCMI power limit requested command
+
+    """
+
+    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+
+    name = "Power Limit Requested (Watts)"
+    result_type = DCMIPowerLimitRequestedResult
+
+    ipmidcmi_response_fields = {
+    }
+
+    @property
+    def ipmidcmi_args(self):
+        """
+        """
+        return ["--power-limit-requested", self._params['limit']]
+
+
+class DCMIActivatePowerLimit(DCMICommandWithErrors):
+    """Describes the DCMI activate/deactivate power limit command
+
+    """
+
+    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+
+    name = "Activate Or Deactivate Power Limit"
+    result_type = DCMIActivatePowerLimitResult
+
+    ipmidcmi_response_fields = {
+    }
+
+    @property
+    def ipmidcmi_args(self):
+        """
+        """
+        return ["--activate-deactivate-power-limit", self._params['action']]
+
+
 dcmi_commands = {
-    "dcmi_get_capabilities"   : DCMIGetCapabilitiesCommand,
-    "dcmi_set_asset_tag"      : DCMISetAssetTagCommand,
-    "dcmi_get_asset_tag"      : DCMIGetAssetTagCommand
+    "dcmi_get_capabilities"     : DCMIGetCapabilitiesCommand,
+    "dcmi_set_asset_tag"        : DCMISetAssetTagCommand,
+    "dcmi_get_asset_tag"        : DCMIGetAssetTagCommand,
+    "dcmi_get_controller_id"    : DCMIGetManagementControllerID,
+    "dcmi_get_sensor_info"      : DCMIGetSensorInfo,
+    "dcmi_get_power_statistics" : DCMIGetPowerStatistics,
+    "dcmi_get_power_limit"      : DCMIGetPowerLimit,
+    "dcmi_set_power_limit"      : DCMISetPowerLimit,
+    "dcmi_power_limit_requested": DCMIPowerLimitRequested,
+    "dcmi_activate_power_limit" : DCMIActivatePowerLimit
 }
