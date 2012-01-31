@@ -210,6 +210,36 @@ class BMC(object):
             raise Exception("Invalid argument to dcmi_activate_power_limit: %s" % action)
         return self.handle.dcmi_activate_power_limit(action=action)
 
+    def pef_get_info(self):
+        return self.handle.pef_get_info()
+
+    def pef_get_status(self):
+        return self.handle.pef_get_status()
+
+    def pef_get_policies(self):
+        return self.handle.pef_get_policies()
+
+    def pef_list_entries(self):
+        return self.handle.pef_list_entries()
+
+    def pef_config_info(self):
+        return self.handle.pef_config_info()
+
+    def pef_checkout(self, section=None, filename=None, key_value_pair=None):
+        return self.handle.pef_checkout(section=section, filename=filename,
+                                        key_value_pair=key_value_pair)
+
+    def pef_commit(self, filename=None, key_value_pair=None):
+        return self.handle.pef_commit(filename=filename,
+                                      key_value_pair=key_value_pair)
+
+    def pef_diff(self, filename=None, key_value_pair=None):
+        return self.handle.pef_diff(filename=filename,
+                                    key_value_pair=key_value_pair)
+
+    def pef_list_sections(self):
+        return self.handle.pef_list_sections()
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
