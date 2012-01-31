@@ -4,9 +4,9 @@ import re
 
 from .. import Command
 from .. sdr import Sdr, AnalogSdr
-from .. tools.ipmitool import IpmitoolCommandMixIn
+from pyipmi.tools.responseparser import ResponseParserMixIn
 
-class SdrListCommand(Command, IpmitoolCommandMixIn):
+class SdrListCommand(Command, ResponseParserMixIn):
     """Describes the sdr list command
 
     This is not a single IPMI request type - it's an ipmitool
@@ -16,7 +16,7 @@ class SdrListCommand(Command, IpmitoolCommandMixIn):
     name = 'SDR List'
     result_type = Sdr
 
-    ipmitool_parse_response = IpmitoolCommandMixIn.parse_colon_record_list
+    response_parser = ResponseParserMixIn.parse_colon_record_list
     ipmitool_args = ['-v', 'sdr', 'list', 'all']
 
     def sensor_name_parser(string):
@@ -26,7 +26,7 @@ class SdrListCommand(Command, IpmitoolCommandMixIn):
         m = re.search('(\d.\d{1,2})', string)
         return m.groups()[0]
 
-    def ipmitool_types(self, record):
+    def get_response_types(self, record):
         """Only matches Analog sensors right now.
 
            There are several more types of records to match, if they
@@ -48,11 +48,11 @@ class SdrListCommand(Command, IpmitoolCommandMixIn):
      Deassertions Enabled  : unc+ ucr+ unr+
     """
     analog_response_fields = {
-        'Sensor ID'             : { 
+        'Sensor ID'             : {
                 'attr' : 'sensor_name',
                 'parser' : sensor_name_parser
         },
-        'Entity ID'             : { 
+        'Entity ID'             : {
                 'attr' : 'entity_id',
                 'parser' : entity_id_parser
         },

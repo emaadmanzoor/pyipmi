@@ -3,9 +3,9 @@
 
 from .. import Command
 from .. bmc import BMCInfo, BMCGuid, BMCEnables
-from .. tools.ipmitool import str2bool, IpmitoolCommandMixIn
+from pyipmi.tools.responseparser import ResponseParserMixIn, str2bool
 
-class GetDeviceIdCommand(Command, IpmitoolCommandMixIn):
+class GetDeviceIdCommand(Command, ResponseParserMixIn):
     """Describes the get_device_id IPMI command
 
     This is "bmc info" to ipmitool
@@ -13,7 +13,7 @@ class GetDeviceIdCommand(Command, IpmitoolCommandMixIn):
     name = "Get Device ID"
     result_type = BMCInfo
 
-    ipmitool_response_fields = {
+    response_fields = {
         "Device ID" : {},
         "Device Revision" : {},
         "Firmware Revision" : {},
@@ -25,7 +25,7 @@ class GetDeviceIdCommand(Command, IpmitoolCommandMixIn):
 
     ipmitool_args = ["bmc", "info"]
 
-class GetSystemGuidCommand(Command, IpmitoolCommandMixIn):
+class GetSystemGuidCommand(Command, ResponseParserMixIn):
     """Describes the get_system_guid IPMI command
 
     This is "bmc guid" to ipmitool
@@ -33,13 +33,13 @@ class GetSystemGuidCommand(Command, IpmitoolCommandMixIn):
     name = "Get System GUID"
     result_type = BMCGuid
 
-    ipmitool_response_fields = {
+    response_fields = {
         "System GUID" : {}
     }
 
     ipmitool_args = ["bmc", "guid"]
 
-class GetCommandEnables(Command, IpmitoolCommandMixIn):
+class GetCommandEnables(Command, ResponseParserMixIn):
     """The Get Command Enables command
     
     In ipmitool world, this is "bmc getenables"
@@ -47,7 +47,7 @@ class GetCommandEnables(Command, IpmitoolCommandMixIn):
     name = 'Get Command Enables'
     result_type = BMCEnables
 
-    ipmitool_response_fields = {
+    response_fields = {
         'Receive Message Queue Interrupt' : {
                 'attr' : 'recv_msg_intr',
                 'parser' : str2bool

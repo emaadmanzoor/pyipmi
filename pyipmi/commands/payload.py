@@ -3,10 +3,10 @@
 """A series of wrappers around RMCP+ Payload commands"""
 
 from pyipmi import Command, InteractiveCommand, IpmiError
-from pyipmi.tools.ipmitool import IpmitoolCommandMixIn
+from pyipmi.tools.responseparser import ResponseParserMixIn
 
 
-class ActivatePayloadCommand(InteractiveCommand, IpmitoolCommandMixIn):
+class ActivatePayloadCommand(InteractiveCommand, ResponseParserMixIn):
     """Describes the Activate Payload command"""
 
     #TODO: there could be other payload types
@@ -15,7 +15,7 @@ class ActivatePayloadCommand(InteractiveCommand, IpmitoolCommandMixIn):
     ipmitool_args = ["-I", "lanplus", "-C", "0", "sol", "activate"]
 
 
-class DeactivatePayloadCommand(Command, IpmitoolCommandMixIn):
+class DeactivatePayloadCommand(Command, ResponseParserMixIn):
     """Describes the Deactivate Payload command"""
 
     #TODO: there could be other payload types

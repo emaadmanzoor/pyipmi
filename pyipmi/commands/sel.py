@@ -9,14 +9,14 @@ import re
 import tempfile
 import string
 from pyipmi import Command, IpmiError
-from pyipmi.tools.ipmitool import IpmitoolCommandMixIn, str2bool
+from pyipmi.tools.responseparser import ResponseParserMixIn, str2bool
 from pyipmi.sel import (SELTimestamp, SELInfo, SELAllocInfo, SELRecord,
                         SELOverflowError, SELTimestampError)
 
 
-class SELTimeSetCommand(Command, IpmitoolCommandMixIn):
+class SELTimeSetCommand(Command, ResponseParserMixIn):
     """Describes the Set SEL Time command"""
-    
+
     name = "Set SEL Time"
     # TODO: get response data from ipmitool
 
@@ -29,10 +29,10 @@ class SELTimeSetCommand(Command, IpmitoolCommandMixIn):
         raise SELTimestampError(err)
 
 
-class SELTimeGetCommand(Command, IpmitoolCommandMixIn):
+class SELTimeGetCommand(Command, ResponseParserMixIn):
     """Describes the Get SEL Time command"""
- 
-    def ipmitool_parse_response(self, resp, err):
+
+    def response_parser(self, resp, err):
         """A helper function to parse a timestamp returned from 
         an 'sel time get' command
         """
@@ -44,7 +44,7 @@ class SELTimeGetCommand(Command, IpmitoolCommandMixIn):
     ipmitool_args = ["sel", "time", "get"]
 
 
-class SELInfoCommand(Command, IpmitoolCommandMixIn):
+class SELInfoCommand(Command, ResponseParserMixIn):
     """Describes the Get SEL Info command"""
 
     def version_parser(string):
@@ -59,7 +59,7 @@ class SELInfoCommand(Command, IpmitoolCommandMixIn):
     ipmitool_args = ["sel", "info"]
     result_type = SELInfo
 
-    ipmitool_response_fields = {
+    response_fields = {
         'Version' : {'parser': version_parser},
         'Entries' : {'parser': int},
         'Free Space' : {'parser': lambda s: int(s[:-6])}, #removes ' bytes'
@@ -70,14 +70,14 @@ class SELInfoCommand(Command, IpmitoolCommandMixIn):
     }
 
 
-class SELAllocInfoCommand(Command, IpmitoolCommandMixIn):
+class SELAllocInfoCommand(Command, ResponseParserMixIn):
     """Describes the sel alloc info command"""
 
     name = "SEL Alloc Info"
     ipmitool_args = ["sel", "info"]
     result_type = SELAllocInfo
 
-    ipmitool_response_fields = {
+    response_fields = {
         '# of Alloc Units' : {'attr': 'num_alloc_units', 'parser': int},
         'Alloc Unit Size' : {'parser': int},
         '# Free Units' : {'attr': 'num_free_units', 'parser': int},
@@ -86,11 +86,11 @@ class SELAllocInfoCommand(Command, IpmitoolCommandMixIn):
     }
 
 
-class SELAddCommand(Command, IpmitoolCommandMixIn):
+class SELAddCommand(Command, ResponseParserMixIn):
     """Describes the sel add command"""
 
     #TODO: get response data from ipmitool
-    
+
     name = "SEL Add"
 
     def __init__(self, *args, **kwargs):
@@ -122,14 +122,14 @@ class SELAddCommand(Command, IpmitoolCommandMixIn):
         raise IpmiError(err)
 
 
-class SELGetCommand(Command, IpmitoolCommandMixIn):
+class SELGetCommand(Command, ResponseParserMixIn):
     """Describes the sel get command"""
 
     def event_data_parser(string):
         data = int(string, 16)
         return (data >> 16, (data >> 8) & 0xff, data & 0xff)
 
-    def ipmitool_parse_response(self, response, err):
+    def response_parser(self, response, err):
         if err.find("command failed") > 0:
             return None
 
@@ -138,7 +138,7 @@ class SELGetCommand(Command, IpmitoolCommandMixIn):
         return entry
 
 
-    direction_parser= lambda d: 0 if d == 'Assertion Event' else 1
+    direction_parser = lambda d: 0 if d == 'Assertion Event' else 1
     hex_parser = lambda x: int(x, 16)
 
     name = "SEL Get"
@@ -150,7 +150,7 @@ class SELGetCommand(Command, IpmitoolCommandMixIn):
         return ["sel", "get"] + list(self._params['record_ids'])
 
     # TODO: add support for oem records
-    ipmitool_response_fields = {
+    response_fields = {
         'SEL Record ID': {'parser': hex_parser, 'attr': 'record_id'},
         'Record Type' : {'parser': hex_parser},
         'Timestamp': {},
@@ -165,7 +165,7 @@ class SELGetCommand(Command, IpmitoolCommandMixIn):
     }
 
 
-class SELClearCommand(Command, IpmitoolCommandMixIn):
+class SELClearCommand(Command, ResponseParserMixIn):
     """Describes the Clear SEL command"""
 
     name = "Clear SEL"
@@ -173,14 +173,14 @@ class SELClearCommand(Command, IpmitoolCommandMixIn):
     # TODO: get response data from ipmitool
 
 
-class SELListCommand(Command, IpmitoolCommandMixIn):
+class SELListCommand(Command, ResponseParserMixIn):
     """Describes SEL List command
        note: this command is non-standard
     """
 
-    def ipmitool_parse_response(self, resp, err):
+    def response_parser(self, resp, err):
         sel_list = resp.strip().split('\n')
-        sel_list =  map(string.strip, sel_list)
+        sel_list = map(string.strip, sel_list)
         return filter(lambda s: s != '', sel_list) # remove blank entries
 
     name = "List SEL"

@@ -1,10 +1,10 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved.
 
 from .. import Command
-from .. tools.ipmitool import IpmitoolCommandMixIn
+from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.fw import *
 
-class CommandWithErrors(Command, IpmitoolCommandMixIn):
+class CommandWithErrors(Command, ResponseParserMixIn):
 
     # TODO: Generalize this to base class?  Better way to include
     # error output in parsing?
@@ -15,12 +15,12 @@ class CommandWithErrors(Command, IpmitoolCommandMixIn):
         what parser to use to for interpreting the results.
 
         Arguments:
-        out -- the text response of an ipmitool command from stdout
-        err -- the text response of an ipmitool command from stderr
+        out -- the text response of an command from stdout
+        err -- the text response of an command from stderr
         """
 
         out = out + err
-        return self.ipmitool_parse_response(out, err)
+        return self.response_parser(out, err)
 
 class FWDownloadCommand(CommandWithErrors):
     """Describes the cxoem fw download IPMI command
@@ -30,7 +30,7 @@ class FWDownloadCommand(CommandWithErrors):
     name = "Update a Firmware Image"
     result_type = FWDownloadResult
 
-    ipmitool_response_fields = {
+    response_fields = {
         'File Name' : {},
         'Slot' : {},
         'Type' : {},
@@ -56,7 +56,7 @@ class FWUploadCommand(CommandWithErrors):
     name = "Retrieve Firmware From Device"
     result_type = FWUploadResult
 
-    ipmitool_response_fields = {
+    response_fields = {
         'File Name' : {},
         'Slot' : {},
         'Type' : {},
@@ -82,7 +82,7 @@ class FWActivateCommand(CommandWithErrors):
     name = "Mark A Firmware Image As Active"
     result_type = FWActivateResult
 
-    ipmitool_response_fields = {
+    response_fields = {
         "" : {}
     }
 
@@ -101,7 +101,7 @@ class FWInvalidateCommand(CommandWithErrors):
     name = "Mark A Firmware Image As Inactive"
     result_type = FWDeactivateResult
 
-    ipmitool_response_fields = {
+    response_fields = {
         "" : {}
     }
 
@@ -120,7 +120,7 @@ class FWFlagsCommand(CommandWithErrors):
     name = "Set Flags For a Firmware Image"
     result_type = FWFlagsResult
 
-    ipmitool_response_fields = {
+    response_fields = {
         "" : {}
     }
 
@@ -140,7 +140,7 @@ class FWStatusCommand(CommandWithErrors):
     name = "Check Status of Most Recent Upload or Download"
     result_type = FWStatus
 
-    ipmitool_response_fields = {
+    response_fields = {
         'Status' : {},
         'Error' : {'attr': 'error'}
     }
@@ -160,7 +160,7 @@ class FWCheckCommand(CommandWithErrors):
     name = "Perform CRC of a Firmware Image"
     result_type = FWCheckResult
 
-    ipmitool_response_fields = {
+    response_fields = {
         'Slot' : {},
         'CRC32' : {},
         'Error' : {'attr': 'error'}
@@ -181,7 +181,7 @@ class FWCancelCommand(CommandWithErrors):
     name = "Cancel an In-Progress Upload or Download"
     result_type = FWCancelResult
 
-    ipmitool_response_fields = {
+    response_fields = {
         "" : {}
     }
 
@@ -199,9 +199,9 @@ class FWInfoCommand(CommandWithErrors):
 
     name = "Request Firmware Information"
     result_type = FWInfo
-    ipmitool_parse_response = IpmitoolCommandMixIn.parse_colon_record_list
+    response_parser = ResponseParserMixIn.parse_colon_record_list
 
-    ipmitool_response_fields = {
+    response_fields = {
         "Slot" : {},
         "Type" : {},
         "Offset" : {},
@@ -221,7 +221,7 @@ class FWBlowCommand(CommandWithErrors):
     name = "Write a Whole Flash Image"
     result_type = FWBlowResult
 
-    ipmitool_response_fields = {
+    response_fields = {
     }
 
     @property

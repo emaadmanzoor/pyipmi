@@ -1,26 +1,26 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved.
 
 from .. import Command
-from .. tools.ipmidcmi import IpmiDcmiCommandMixIn
+from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.dcmi import *
 
-class DCMICommandWithErrors(Command, IpmiDcmiCommandMixIn):
+class DCMICommandWithErrors(Command, ResponseParserMixIn):
 
     # TODO: Generalize this to base class?  Better way to include
     # error output in parsing?
     def parse_response(self, out, err):
         """Parse the response to a command
 
-        The 'ipmitool_response_format' attribute is used to determine
+        The 'response_format' attribute is used to determine
         what parser to use to for interpreting the results.
 
         Arguments:
-        out -- the text response of an ipmitool command from stdout
-        err -- the text response of an ipmitool command from stderr
+        out -- the text response of a command from stdout
+        err -- the text response of a command from stderr
         """
 
         out = out + err
-        return self.ipmidcmi_parse_response(out, err)
+        return self.response_parser(out, err)
 
 class DCMIGetCapabilitiesCommand(DCMICommandWithErrors):
     """Describes the DCMI get capabilities command
@@ -84,7 +84,7 @@ class DCMIGetAssetTagCommand(DCMICommandWithErrors):
 
     """
 
-    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+    response_parser = ResponseParserMixIn.parse_single_line
 
     name = "Get DCMI Asset Tag"
     result_type = DCMIGetAssetTagResult
@@ -101,7 +101,7 @@ class DCMIGetManagementControllerID(DCMICommandWithErrors):
 
     """
 
-    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+    response_parser = ResponseParserMixIn.parse_single_line
 
     name = "Get Management Controller ID String"
     result_type = DCMIGetManagementControllerIDResult
@@ -117,7 +117,7 @@ class DCMIGetSensorInfo(DCMICommandWithErrors):
 
     """
 
-    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+    response_parser = ResponseParserMixIn.parse_single_line
 
     name = "Get DCMI Sensor Info"
     result_type = DCMIGetSensorInfoResult
@@ -133,7 +133,7 @@ class DCMIGetPowerStatistics(DCMICommandWithErrors):
 
     """
 
-    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+    response_parser = ResponseParserMixIn.parse_single_line
 
     name = "Get Power Statistics"
     result_type = DCMIGetPowerStatisticsResult
@@ -149,7 +149,7 @@ class DCMIGetPowerLimit(DCMICommandWithErrors):
 
     """
 
-    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+    response_parser = ResponseParserMixIn.parse_single_line
 
     name = "Get Power Limit"
     result_type = DCMIGetPowerLimitResult
@@ -165,7 +165,7 @@ class DCMISetPowerLimit(DCMICommandWithErrors):
 
     """
 
-    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+    response_parser = ResponseParserMixIn.parse_single_line
 
     name = "Set Power Limit"
     result_type = DCMISetPowerLimitResult
@@ -180,7 +180,7 @@ class DCMIPowerLimitRequested(DCMICommandWithErrors):
 
     """
 
-    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+    response_parser = ResponseParserMixIn.parse_single_line
 
     name = "Power Limit Requested (Watts)"
     result_type = DCMIPowerLimitRequestedResult
@@ -200,7 +200,7 @@ class DCMIActivatePowerLimit(DCMICommandWithErrors):
 
     """
 
-    ipmidcmi_parse_response = IpmiDcmiCommandMixIn.parse_single_line
+    response_parser = ResponseParserMixIn.parse_single_line
 
     name = "Activate Or Deactivate Power Limit"
     result_type = DCMIActivatePowerLimitResult

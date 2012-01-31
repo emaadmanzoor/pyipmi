@@ -2,9 +2,9 @@
 """Chassis related IPMI commands"""
 from .. import Command
 from .. chassis import ChassisStatus
-from .. tools.ipmitool import str2bool, IpmitoolCommandMixIn
+from pyipmi.tools.responseparser import ResponseParserMixIn, str2bool
 
-class ChassisStatusCommand(Command, IpmitoolCommandMixIn):
+class ChassisStatusCommand(Command, ResponseParserMixIn):
     """Describes the chassis status IPMI command"""
 
     name = 'Chassis Status'
@@ -12,7 +12,7 @@ class ChassisStatusCommand(Command, IpmitoolCommandMixIn):
     ipmitool_args = ['chassis', 'status']
     result_type = ChassisStatus
 
-    ipmitool_response_fields = {
+    response_fields = {
         'System Power' : {'attr' : 'power_on', 'parser' : lambda v: v == 'on'},
         'Power Overload' : {'parser' : str2bool},
         'Power Interlock' : {},
@@ -21,7 +21,7 @@ class ChassisStatusCommand(Command, IpmitoolCommandMixIn):
         'Power Restore Policy' : {}
     }
 
-class ChassisControlCommand(Command, IpmitoolCommandMixIn):
+class ChassisControlCommand(Command, ResponseParserMixIn):
     """Describes the IPMI chassis control command
 
     ipmitool calls this "chassis power"

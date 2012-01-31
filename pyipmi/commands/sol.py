@@ -3,7 +3,7 @@
 """A series of wrappers around SOL commands"""
 
 from pyipmi import Command, IpmiError
-from pyipmi.tools.ipmitool import IpmitoolCommandMixIn, str2bool
+from pyipmi.tools.responseparser import ResponseParserMixIn, str2bool
 
 
 def bit_rate_parser(bit_rate):
@@ -126,7 +126,7 @@ IPMITOOL_SOL_PARAMETERS = {
 # TODO: enable/disable encryption
 IPMITOOL_SOL_ARGS = ["-I", "lanplus", "-C", "0", "sol"]
 
-class SetSOLConfigurationParametersCommand(Command, IpmitoolCommandMixIn):
+class SetSOLConfigurationParametersCommand(Command, ResponseParserMixIn):
     """Describes the Set SOL Configuration Parameters command"""
 
     # ipmitool handles setting set-in-progress/set-complete for us
@@ -147,13 +147,13 @@ class SetSOLConfigurationParametersCommand(Command, IpmitoolCommandMixIn):
         return IPMITOOL_SOL_ARGS + ["set", ipmitool_param, val, 'noguard']
 
 
-class GetSOLConfigurationParametersCommand(Command, IpmitoolCommandMixIn):
+class GetSOLConfigurationParametersCommand(Command, ResponseParserMixIn):
     """Describes the Get SOL Configuration Parameters command"""
 
     name = "Get SOL Configuration Parameters"
     ipmitool_args = IPMITOOL_SOL_ARGS + ["info"]
 
-    def ipmitool_parse_results(self, response, err):
+    def parse_results(self, response, err):
         """Parse the output from "sol info" for the desired parameters,
         format the result, and return it.
         """
