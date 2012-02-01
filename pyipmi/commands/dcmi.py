@@ -30,7 +30,7 @@ class DCMIGetCapabilitiesCommand(DCMICommandWithErrors):
     name = "Get DCMI Capabilities"
     result_type = DCMIGetCapabilitiesResult
 
-    ipmidcmi_response_fields = {
+    response_fields = {
         'DCMI Specification Conformance' : {},
         'Identification Support' : {},
         'SEL logging' : {},
@@ -70,7 +70,7 @@ class DCMISetAssetTagCommand(DCMICommandWithErrors):
     result_type = DCMISetAssetTagResult
 
     # No response -- Have to do a get to confirm
-    ipmidcmi_response_fields = {
+    response_fields = {
     }
 
     @property
@@ -89,7 +89,7 @@ class DCMIGetAssetTagCommand(DCMICommandWithErrors):
     name = "Get DCMI Asset Tag"
     result_type = DCMIGetAssetTagResult
 
-    ipmidcmi_response_fields = {
+    response_fields = {
         'attr' : 'tag'
     }
 
@@ -106,7 +106,7 @@ class DCMIGetManagementControllerID(DCMICommandWithErrors):
     name = "Get Management Controller ID String"
     result_type = DCMIGetManagementControllerIDResult
 
-    ipmidcmi_response_fields = {
+    response_fields = {
     }
 
     ipmidcmi_args = ["--get-management-controller-identifier-string"]
@@ -122,7 +122,7 @@ class DCMIGetSensorInfo(DCMICommandWithErrors):
     name = "Get DCMI Sensor Info"
     result_type = DCMIGetSensorInfoResult
 
-    ipmidcmi_response_fields = {
+    response_fields = {
     }
 
     ipmidcmi_args = ["--get-dcmi-sensor-info"]
@@ -138,7 +138,7 @@ class DCMIGetPowerStatistics(DCMICommandWithErrors):
     name = "Get Power Statistics"
     result_type = DCMIGetPowerStatisticsResult
 
-    ipmidcmi_response_fields = {
+    response_fields = {
     }
 
     ipmidcmi_args = ["--get-system-power-statistics"]
@@ -154,7 +154,7 @@ class DCMIGetPowerLimit(DCMICommandWithErrors):
     name = "Get Power Limit"
     result_type = DCMIGetPowerLimitResult
 
-    ipmidcmi_response_fields = {
+    response_fields = {
     }
 
     ipmidcmi_args = ["--get-power-limit"]
@@ -170,7 +170,7 @@ class DCMISetPowerLimit(DCMICommandWithErrors):
     name = "Set Power Limit"
     result_type = DCMISetPowerLimitResult
 
-    ipmidcmi_response_fields = {
+    response_fields = {
     }
 
     ipmidcmi_args = ["--set-power-limit"]
@@ -185,7 +185,7 @@ class DCMIPowerLimitRequested(DCMICommandWithErrors):
     name = "Power Limit Requested (Watts)"
     result_type = DCMIPowerLimitRequestedResult
 
-    ipmidcmi_response_fields = {
+    response_fields = {
     }
 
     @property
@@ -205,7 +205,7 @@ class DCMIActivatePowerLimit(DCMICommandWithErrors):
     name = "Activate Or Deactivate Power Limit"
     result_type = DCMIActivatePowerLimitResult
 
-    ipmidcmi_response_fields = {
+    response_fields = {
     }
 
     @property

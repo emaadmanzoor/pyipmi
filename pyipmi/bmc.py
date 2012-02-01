@@ -222,7 +222,7 @@ class BMC(object):
     def pef_list_entries(self):
         return self.handle.pef_list_entries()
 
-    def pef_config_info(self):
+    def pef_config_get_info(self):
         return self.handle.pef_config_info()
 
     def pef_checkout(self, section=None, filename=None, key_value_pair=None):
