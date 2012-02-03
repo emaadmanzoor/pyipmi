@@ -14,7 +14,7 @@ class PEFGetInfoCommand(Command, ResponseParserMixIn):
     name = "Get PEF Capabilities"
     result_type = PEFInfoResult
 
-    ipmi_pef_config_response_fields = {
+    response_fields = {
         'Version' : {},
         'PEF table size' : {},
         'Alert policy table size' : {},

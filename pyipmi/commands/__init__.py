@@ -14,6 +14,9 @@ from sel import sel_commands
 from sol import sol_commands
 from payload import payload_commands
 from dcmi import dcmi_commands
+from pef import pef_commands
+from freeipmi_pef import freeipmi_pef_commands
+from pet import pet_commands
 
 ipmi_commands = {}
 
@@ -25,3 +28,6 @@ ipmi_commands.update(sel_commands)
 ipmi_commands.update(sol_commands)
 ipmi_commands.update(payload_commands)
 ipmi_commands.update(dcmi_commands)
+ipmi_commands.update(pef_commands)
+ipmi_commands.update(freeipmi_pef_commands)
+ipmi_commands.update(pet_commands)

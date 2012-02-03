@@ -14,7 +14,7 @@ class FreeIPMIPEFInfoCommand(Command, ResponseParserMixIn):
     name = "Get PEF Info and Capabilities"
     result_type = FreeIPMIPEFInfoResult
 
-    ipmi_pef_config_response_fields = {
+    response_fields = {
         'PEF version' : {},
         'Alert action' : {},
         'Power down action' : {},
@@ -37,29 +37,64 @@ class FreeIPMIPEFCheckout(Command, ResponseParserMixIn):
 
     """
     name = "Checkout PEF Configuration"
-    result_type = FreeIPMIPEFCheckoutResult
 
-    ipmi_pef_config_response_fields = {
-    }
+    def get_next_line(self, text):
+        line, c, rest = text.partition('\n')
+        line = line.strip()
+        return line, rest
+
+    def parse_section(self, rest):
+        config_dict = {}
+        line, rest = self.get_next_line(rest)
+        while line != "EndSection":
+            if line[0] == '#':
+                line, rest = self.get_next_line(rest)
+                continue
+            keyname, c, value = line.partition(" ")
+            config_dict[keyname.strip()] = value.strip()
+            line, rest = self.get_next_line(rest)
+        return config_dict, rest
+
+    def parse_results(self, response, err):
+        """Parse the output from "pef checkout."  If a filename was given,
+        there will be no response
+        """
+
+        section_list = {}
+        line, rest = self.get_next_line(response)
+        while line != "":
+            if line[0] == '#':
+                line, rest = self.get_next_line(rest)
+                continue
+            keyword, c, value = line.partition(' ')
+            if keyword.strip() == "Section":
+                param_list, rest = self.parse_section(rest)
+                section_list[value.strip()] = param_list
+            line, rest = self.get_next_line(rest)
+        return section_list
 
     @property
     def ipmi_pef_config_args(self):
         """
         """
-        section = ""
-        if self._params.get("section"):
-            section = "--section=%s" % self._params.get("section")
-
+        section = self._params.get("section")
         filename = self._params.get('filename')
+        key = self._params.get('key')
 
         if filename:
+            if section:
+                section = "--section=%s" % section
+            else:
+                section = ""
             return ["--checkout", "--filename=" + filename, section]
 
-        key_value_pair = self._params.get('key_value_pair')
-        if key_value_pair:
-            return ["--checkout", "--key-pair=" + key_value_pair, section]
+        if key and section:
+            return ["--checkout", "--key-pair=" + section + ":" + key]
 
-        return ["--checkout", section]
+        if section:
+            return ["--checkout", "--section=" + section]
+
+        return ["--checkout"]
 
 
 class FreeIPMIPEFCommit(Command, ResponseParserMixIn):
@@ -70,7 +105,7 @@ class FreeIPMIPEFCommit(Command, ResponseParserMixIn):
     name = "Update PEF Configuration"
     result_type = FreeIPMIPEFCommitResult
 
-    ipmi_pef_config_response_fields = {
+    response_fields = {
     }
 
     @property
@@ -83,20 +118,21 @@ class FreeIPMIPEFCommit(Command, ResponseParserMixIn):
             return ["--commit", "--filename=" + filename]
 
         key_value_pair = self._params.get('key_value_pair')
-        if key_value_pair:
-            return ["--commit", "--key-pair=" + key_value_pair]
+        section = self._params.get('section')
+        if key_value_pair and section:
+            return ["--commit", "--key-pair=" + section + ":" + key_value_pair]
 
         raise Exception("Command pef-config --commit requires either filename or key-value pair")
 
 
-class FreeIPMIPEFDiff(Command, IpmiPEFConfigCommandMixIn):
+class FreeIPMIPEFDiff(Command, ResponseParserMixIn):
     """ Command to diff current PEF configuration against a file or key-value pair
     
     """
     name = "PEF Diff"
     result_type = FreeIPMIDiffResult
 
-    ipmi_pef_config_response_fields = {
+    response_fields = {
     }
 
     @property
@@ -104,15 +140,20 @@ class FreeIPMIPEFDiff(Command, IpmiPEFConfigCommandMixIn):
         """
         """
         filename = self._params.get('filename')
+        section = self._params.get('section')
+        key = self._params.get('key')
 
         if filename:
-            return ["--diff", "--filename=" + filename]
+            if section:
+                section = "--section=%s" % section
+            else:
+                section = ""
+            return ["--diff", "--filename=" + filename, section]
 
-        key_value_pair = self._params.get('key_value_pair')
-        if key_value_pair:
-            return ["--diff", "--key-pair=" + key_value_pair]
+        if key and section:
+            return ["--diff", "--key-pair=" + section + ":" + key]
 
-        raise Exception("Command pef-config --diff requires either filename or key-value pair")
+        raise Exception("Command pef-config --diff requires either filename or key")
 
 
 class FreeIPMIPEFListSections(Command, ResponseParserMixIn):
@@ -120,15 +161,18 @@ class FreeIPMIPEFListSections(Command, ResponseParserMixIn):
 
     """
     name = "List PEF Table Sections"
-    result_type = FreeIPMIPEFListSectionsResult
 
-    ipmi_pef_config_response_fields = {
-    }
+    def parse_results(self, response, err):
+        """Parse the output from "--listsections," which is a list
+        of section names separated by a single line break
+        """
+        result = map(lambda x: x.strip(), response.splitlines())
+        return result
 
     ipmi_pef_config_args = ["--listsections"]
 
 
-pef_commands = {
+freeipmi_pef_commands = {
     'pef_config_info'   : FreeIPMIPEFInfoCommand,
     'pef_checkout'      : FreeIPMIPEFCheckout,
     'pef_commit'        : FreeIPMIPEFCommit,

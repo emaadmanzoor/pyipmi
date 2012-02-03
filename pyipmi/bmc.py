@@ -225,17 +225,17 @@ class BMC(object):
     def pef_config_get_info(self):
         return self.handle.pef_config_info()
 
-    def pef_checkout(self, section=None, filename=None, key_value_pair=None):
+    def pef_checkout(self, section=None, filename=None, key=None):
         return self.handle.pef_checkout(section=section, filename=filename,
+                                        key=key)
+
+    def pef_commit(self, section=None, filename=None, key_value_pair=None):
+        return self.handle.pef_commit(section=section, filename=filename,
                                         key_value_pair=key_value_pair)
 
-    def pef_commit(self, filename=None, key_value_pair=None):
-        return self.handle.pef_commit(filename=filename,
-                                      key_value_pair=key_value_pair)
-
-    def pef_diff(self, filename=None, key_value_pair=None):
-        return self.handle.pef_diff(filename=filename,
-                                    key_value_pair=key_value_pair)
+    def pef_diff(self, section=None, filename=None, key=None):
+        return self.handle.pef_diff(section=section, filename=filename,
+                                        key=key)
 
     def pef_list_sections(self):
         return self.handle.pef_list_sections()
