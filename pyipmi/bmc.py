@@ -240,6 +240,12 @@ class BMC(object):
     def pef_list_sections(self):
         return self.handle.pef_list_sections()
 
+    def generate_generic_event(self, event_type):
+        return self.handle.generic_event(event_type=event_type)
+
+    def generate_sensor_event(self, sensor_id, state):
+        return self.handle.assert_sensor_event(sensor_id=sensor_id,
+                                               state=state)
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
