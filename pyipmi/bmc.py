@@ -247,6 +247,16 @@ class BMC(object):
         return self.handle.assert_sensor_event(sensor_id=sensor_id,
                                                state=state)
 
+    def get_watchdog_status(self):
+        return self.handle.watchdog_get()
+
+    def reset_watchdog(self):
+        return self.handle.watchdog_reset()
+
+    def disable_watchdog(self):
+        return self.handle.watchdog_off()
+
+
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
     def __init__(self,

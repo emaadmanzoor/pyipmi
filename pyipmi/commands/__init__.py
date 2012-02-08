@@ -18,6 +18,7 @@ from pef import pef_commands
 from freeipmi_pef import freeipmi_pef_commands
 from pet import pet_commands
 from event import event_commands
+from watchdog import watchdog_commands
 
 ipmi_commands = {}
 
@@ -33,3 +34,5 @@ ipmi_commands.update(pef_commands)
 ipmi_commands.update(freeipmi_pef_commands)
 ipmi_commands.update(pet_commands)
 ipmi_commands.update(event_commands)
+ipmi_commands.update(watchdog_commands)
+
