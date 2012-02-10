@@ -256,6 +256,15 @@ class BMC(object):
     def disable_watchdog(self):
         return self.handle.watchdog_off()
 
+    def fru_get_inventory(self):
+        return self.handle.fru_print()
+
+    def fru_read(self, fru_id, filename):
+        return self.handle.fru_read(fru_id=fru_id, filename=filename)
+
+    def fru_write(self, fru_id, filename):
+        return self.handle.fru_write(fru_id=fru_id, filename=filename)
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
