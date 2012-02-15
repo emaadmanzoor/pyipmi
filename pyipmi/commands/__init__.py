@@ -20,6 +20,7 @@ from pet import pet_commands
 from event import event_commands
 from watchdog import watchdog_commands
 from fru import fru_commands
+from lan import lan_commands
 
 ipmi_commands = {}
 
@@ -37,4 +38,4 @@ ipmi_commands.update(pet_commands)
 ipmi_commands.update(event_commands)
 ipmi_commands.update(watchdog_commands)
 ipmi_commands.update(fru_commands)
-
+ipmi_commands.update(lan_commands)

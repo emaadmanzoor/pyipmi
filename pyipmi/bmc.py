@@ -265,6 +265,13 @@ class BMC(object):
     def fru_write(self, fru_id, filename):
         return self.handle.fru_write(fru_id=fru_id, filename=filename)
 
+    def lan_print(self, channel=''):
+        return self.handle.lan_print(channel=channel)
+
+    def lan_set(self, channel, command, param):
+        return self.handle.lan_set(channel=channel, command=command,
+                                   param=param)
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
