@@ -2,14 +2,42 @@
 """Tool-independent mix-in for parsing IPMI results"""
 
 from pyipmi import IpmiError
+import string
 
 
-def str2bool(val):
+def str_to_list(val, **params):
+    """convert string to list of substrings (default: single words)"""
+    val = val.strip()
+    if val == '':
+        return []
+
+    delimiter = params.get('delimiter', " ")
+    return map(string.strip, val.split(delimiter))
+
+
+def str2bool(val, **params):
     """True if val is 'true', 'yes' or 'enabled, otherwise false"""
     return val.lower() in ['true', 'yes', 'enabled']
 
 
-def paren_pair(val):
+def str_to_dict(val, **params):
+    """Returns the contents of the string 'val' as a dictionary"""
+    result = {}
+    operator = params.get('operator', ':')
+    delimiter = params.get('delimiter', '\n')
+    value_parser = params.get('value_parser', str)
+
+    params['operator'] = params.get('value_operator', None)
+    params['delimiter'] = params.get('value_delimiter', None)
+
+    entries = val.split(delimiter)
+    for entry in entries:
+        key, op, value = entry.partition(operator)
+        result[field_to_attr(key.strip())] = value_parser(value)
+    return result
+
+
+def paren_pair(val, **params):
     """Convert 'foo (bar)' to ['foo', 'bar']"""
     return [p.strip(' )') for p in val.split('(')]
 
@@ -21,9 +49,13 @@ def field_to_attr(field_name):
     (replace space with underscore)
     """
     result = field_name.lower()
+    if result[0:1].isdigit():
+        result = "n_" + result
     result = result.replace(' ', '_')
     result = result.replace('/', '_')
     result = result.replace('-', '_')
+    result = result.replace('.', '_')
+    result = result.replace('+', '_plus')
     return result
 
 
@@ -62,9 +94,9 @@ class ResponseParserMixIn(object):
             return None
 
         obj = result_type()
-        lines = response.split('\n')
+        line, sep, rest = response.partition('\n')
         left_over = []
-        for line in lines:
+        while sep != '':
             colon_index = 10000000
             if line.find(':') != -1:
                 colon_index = line.index(':')
@@ -72,6 +104,7 @@ class ResponseParserMixIn(object):
             if line.find('=') != -1:
                 equal_index = line.index('=')
             if colon_index == 10000000 and equal_index == 10000000:
+                line, sep, rest = rest.partition('\n')
                 continue
 
             field_seperator = min([colon_index, equal_index])
@@ -82,10 +115,17 @@ class ResponseParserMixIn(object):
 
             if field_info == None:
                 left_over.append((field, value))
+                line, sep, rest = rest.partition('\n')
                 continue
 
-            self.field_to_objval(obj, field_info, field, value)
+            lines_to_get = field_info.get('lines', 1) - 1
+            while lines_to_get > 0:
+                line, sep, rest = rest.partition('\n')
+                value += '\n' + line
+                lines_to_get -= 1
 
+            self.field_to_objval(obj, field_info, field, value)
+            line, sep, rest = rest.partition('\n')
         return obj
 
 
@@ -144,10 +184,12 @@ class ResponseParserMixIn(object):
         it, and the result will be assigned to the attribute. The default
         parser is str().
         """
-        attr_name = field_info.get('attr', field_to_attr(field_name))
-        attr_parser = field_info.get('parser', str)
+        str_params = lambda x, **y: str(x)
 
-        setattr(obj, attr_name, attr_parser(value))
+        attr_name = field_info.get('attr', field_to_attr(field_name))
+        attr_parser = field_info.get('parser', str_params)
+
+        setattr(obj, attr_name, attr_parser(value, **field_info))
 
     def get_response_types(self, response):
         """Return the result type and field mappings
