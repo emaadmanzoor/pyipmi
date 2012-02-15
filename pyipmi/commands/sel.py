@@ -61,7 +61,7 @@ class SELInfoCommand(Command, ResponseParserMixIn):
 
     response_fields = {
         'Version' : {'parser': version_parser},
-        'Entries' : {'parser': int},
+        'Entries' : {'parser': lambda s: int(s)},
         'Free Space' : {'parser': lambda s: int(s[:-6])}, #removes ' bytes'
         'Last Add Time' : {'parser': lambda ts: SELTimestamp(ts)},
         'Last Del Time' : {'parser': lambda ts: SELTimestamp(ts)},
@@ -78,11 +78,11 @@ class SELAllocInfoCommand(Command, ResponseParserMixIn):
     result_type = SELAllocInfo
 
     response_fields = {
-        '# of Alloc Units' : {'attr': 'num_alloc_units', 'parser': int},
-        'Alloc Unit Size' : {'parser': int},
-        '# Free Units' : {'attr': 'num_free_units', 'parser': int},
-        'Largest Free Blk' : {'parser': int},
-        'Max Record Size' : {'parser': int}
+        '# of Alloc Units' : {'attr': 'num_alloc_units', 'parser': lambda s: int(s)},
+        'Alloc Unit Size' : {'parser': lambda s: int(s)},
+        '# Free Units' : {'attr': 'num_free_units', 'parser': lambda s: int(s)},
+        'Largest Free Blk' : {'parser': lambda s: int(s)},
+        'Max Record Size' : {'parser': lambda s: int(s)}
     }
 
 

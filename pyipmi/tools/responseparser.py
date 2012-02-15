@@ -3,6 +3,7 @@
 
 from pyipmi import IpmiError
 import string
+import inspect
 
 
 def str_to_list(val, **params):
@@ -15,7 +16,7 @@ def str_to_list(val, **params):
     return map(string.strip, val.split(delimiter))
 
 
-def str2bool(val, **params):
+def str2bool(val):
     """True if val is 'true', 'yes' or 'enabled, otherwise false"""
     return val.lower() in ['true', 'yes', 'enabled']
 
@@ -37,7 +38,7 @@ def str_to_dict(val, **params):
     return result
 
 
-def paren_pair(val, **params):
+def paren_pair(val):
     """Convert 'foo (bar)' to ['foo', 'bar']"""
     return [p.strip(' )') for p in val.split('(')]
 
@@ -96,7 +97,7 @@ class ResponseParserMixIn(object):
         obj = result_type()
         line, sep, rest = response.partition('\n')
         left_over = []
-        while sep != '':
+        while line != '':
             colon_index = 10000000
             if line.find(':') != -1:
                 colon_index = line.index(':')
@@ -143,7 +144,7 @@ class ResponseParserMixIn(object):
         results = []
         records = response.split('\n\n')
         for record in records:
-            obj = self.parse_colon_record(record, err)
+            obj = self.parse_colon_record(record.strip(), err)
 
             if obj == None:
                 continue
@@ -184,11 +185,13 @@ class ResponseParserMixIn(object):
         it, and the result will be assigned to the attribute. The default
         parser is str().
         """
-        str_params = lambda x, **y: str(x)
-
+        str_func = lambda x: str(x)
         attr_name = field_info.get('attr', field_to_attr(field_name))
-        attr_parser = field_info.get('parser', str_params)
+        attr_parser = supplied_parser = field_info.get('parser', str_func)
 
+        args, varargs, keywords, defaults = inspect.getargspec(attr_parser)
+        if keywords == None:
+            attr_parser = lambda x, **y: supplied_parser(x)
         setattr(obj, attr_name, attr_parser(value, **field_info))
 
     def get_response_types(self, response):
