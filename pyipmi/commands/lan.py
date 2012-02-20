@@ -22,6 +22,10 @@ class LANPrintCommand(Command, ResponseParserMixIn):
 
         return self.response_parser(new_out, err)
 
+    def first_word_only(line):
+        y = line.split(' ')
+        return y[0]
+
     response_fields = {
         'Set in Progress'       : {},
         'Auth Type Support'     : {'parser' : str_to_list},
@@ -40,7 +44,7 @@ class LANPrintCommand(Command, ResponseParserMixIn):
                                    'delimiter' : ' '},
         'BMC ARP Control'       : {'parser' : str_to_list,
                                    'delimiter' : ','},
-        'Gratituous ARP Intrvl' : {},
+        'Gratituous ARP Intrvl' : {'parser' : first_word_only},
         'Default Gateway IP'    : {},
         'Default Gateway MAC'   : {},
         'TFTP Server IP'        : {},
@@ -71,8 +75,14 @@ class LANSetCommand(Command, ResponseParserMixIn):
 
     @property
     def ipmitool_args(self):
-        return ["lan", "set", self._params['channel'], self._params['command'],
-                self._params['param']]
+        command = "lan set %s %s" % (self._params['channel'], self._params['command'])
+        command_array = command.split(' ')
+        params = self._params['param']
+        param_array = [params]
+        if self._params['command'] == 'auth':
+            param_array = params.split(' ')
+        command_array.extend(param_array)
+        return command_array
 
 
 lan_commands = {
