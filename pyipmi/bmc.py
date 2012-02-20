@@ -272,6 +272,8 @@ class BMC(object):
         return self.handle.lan_set(channel=channel, command=command,
                                    param=param)
 
+    def channel_info(self):
+        return self.handle.channel_info()
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
