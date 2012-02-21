@@ -275,6 +275,15 @@ class BMC(object):
     def channel_info(self):
         return self.handle.channel_info()
 
+    def channel_get_access(self, channel, userid=""):
+        return self.handle.channel_get_access(channel=channel, userid=userid)
+
+    def channel_set_access(self, channel, userid, callin=None, ipmi=None,
+                           link=None, priv_level=None):
+        return self.handle.channel_set_access(channel=channel, userid=userid,
+                                              callin=callin, ipmi=ipmi,
+                                              link=link, priv_level=priv_level)
+
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
     def __init__(self,

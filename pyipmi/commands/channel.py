@@ -67,6 +67,68 @@ class ChannelInfoCommand(Command, ResponseParserMixIn):
     ipmitool_args = ["channel", "info"]
 
 
+class ChannelGetAccessCommand(Command, ResponseParserMixIn):
+    """Describes the get channel access IPMI command
+
+    This is "channel getaccess" to ipmitool
+    """
+
+    response_parser = ResponseParserMixIn.parse_colon_record_list
+
+    name = "Channel Get Access"
+    result_type = ChannelGetAccessResult
+
+    response_fields = {
+        'Maximum User IDs' : {},
+        'Enabled User IDs' : {},
+        'User ID' : {},
+        'User Name' : {},
+        'Fixed Name' : {},
+        'Access Available' : {},
+        'Link Authentication' : {},
+        'IPMI Messaging' : {},
+        'Privilege Level' : {}
+    }
+
+    @property
+    def ipmitool_args(self):
+        """
+        """
+        return ["channel", "getaccess", self._params['channel'],
+                self._params['userid']]
+
+
+class ChannelSetAccessCommand(Command, ResponseParserMixIn):
+    """Describes the set channel access IPMI command
+
+    This is "channel setaccess" to ipmitool
+    """
+
+    name = "Channel Set Access"
+    result_type = ChannelSetAccessResult
+
+    response_fields = {
+    }
+
+    @property
+    def ipmitool_args(self):
+        callin = ipmi = link = priv_level = ""
+
+        if self._params.get('callin'):
+            callin = "callin=%s" % self._params.get('callin')
+        if self._params.get('ipmi'):
+            ipmi = "ipmi=%s" % self._params.get('ipmi')
+        if self._params.get('link'):
+            link = "link=%s" % self._params.get('link')
+        if self._params.get('priv_level'):
+            priv_level = "privilege=%s" % self._params.get('priv_level')
+
+        return ["channel", "setaccess", self._params['channel'],
+                self._params['userid'], callin, ipmi, link, priv_level]
+
+
 channel_commands = {
-    'channel_info'            : ChannelInfoCommand
+    'channel_info'            : ChannelInfoCommand,
+    'channel_get_access'      : ChannelGetAccessCommand,
+    'channel_set_access'      : ChannelSetAccessCommand
 }
