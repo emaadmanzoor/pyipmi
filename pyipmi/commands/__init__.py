@@ -22,6 +22,7 @@ from watchdog import watchdog_commands
 from fru import fru_commands
 from lan import lan_commands
 from channel import channel_commands
+from user import user_commands
 
 ipmi_commands = {}
 
@@ -41,3 +42,4 @@ ipmi_commands.update(watchdog_commands)
 ipmi_commands.update(fru_commands)
 ipmi_commands.update(lan_commands)
 ipmi_commands.update(channel_commands)
+ipmi_commands.update(user_commands)

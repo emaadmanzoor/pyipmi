@@ -284,6 +284,26 @@ class BMC(object):
                                               callin=callin, ipmi=ipmi,
                                               link=link, priv_level=priv_level)
 
+    def user_list(self, channel=None):
+        return self.handle.user_list(channel=channel)
+
+    def user_set_name(self, userid, name):
+        return self.handle.user_set_name(userid=userid, name=name)
+
+    def user_set_password(self, userid, password=None):
+        return self.handle.user_set_password(userid=userid, password=password)
+
+    def user_enable(self, userid):
+        return self.handle.user_enable(userid=userid)
+
+    def user_disable(self, userid):
+        return self.handle.user_disable(userid=userid)
+
+    def user_priv(self, userid, priv_level, channel=None):
+        return self.handle.user_priv(userid=userid, priv_level=priv_level,
+                                     channel=channel)
+
+
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
     def __init__(self,
