@@ -19,20 +19,22 @@ class UserListCommand(Command, ResponseParserMixIn):
         ID  Name         Callin  Link Auth    IPMI Msg   Channel Priv Limit
         1   anonymous    true    false        false      NO ACCESS
         """
-        result = []
+        result = {}
         for line in out.strip().split('\n')[1:]:
             user_info = self.result_type()
 
             user_info_list = line.strip().split()
-            print str(user_info_list)
-            user_info.user_id = user_info_list[0].strip()
-            user_info.name = user_info_list[1].strip()
-            user_info.callin = user_info_list[2].strip()
-            user_info.link_auth = user_info_list[3].strip()
-            user_info.ipmi_msg = user_info_list[4].strip()
-            user_info.channel_priv_limit = ' '.join(user_info_list[5:]).strip()
+            if len(user_info_list) < 5:
+                continue
 
-            result.append(user_info)
+            key = line[0:3].strip()
+            user_info.name = line[4:20].strip()
+            user_info.callin = line[22:28].strip()
+            user_info.link_auth = line[29:39].strip()
+            user_info.ipmi_msg = line[40:48].strip()
+            user_info.channel_priv_limit = line[51:].strip()
+
+            result[key] = user_info
 
         return result
 
