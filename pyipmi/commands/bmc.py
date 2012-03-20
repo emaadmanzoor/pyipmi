@@ -2,7 +2,7 @@
 """BMC related commands"""
 
 from .. import Command
-from .. bmc import BMCInfo, BMCGuid, BMCEnables
+from .. bmc import BMCInfo, BMCGuid, BMCEnables, BMCResult
 from pyipmi.tools.responseparser import ResponseParserMixIn, str2bool
 
 class GetDeviceIdCommand(Command, ResponseParserMixIn):
@@ -24,6 +24,22 @@ class GetDeviceIdCommand(Command, ResponseParserMixIn):
     }
 
     ipmitool_args = ["bmc", "info"]
+
+
+class BMCSelfTestCommand(Command, ResponseParserMixIn):
+    """Describes the get self test results IPMI command
+
+    This is "bmc selftest" to ipmitool
+    """
+    name = "BMC Self Test"
+    result_type = BMCResult
+
+    response_fields = {
+        "Selftest" : { }
+    }
+
+    ipmitool_args = ["bmc", "selftest"]
+
 
 class GetSystemGuidCommand(Command, ResponseParserMixIn):
     """Describes the get_system_guid IPMI command
@@ -84,5 +100,6 @@ class GetCommandEnables(Command, ResponseParserMixIn):
 bmc_commands = {
     'get_device_id' : GetDeviceIdCommand,
     'get_system_guid' : GetSystemGuidCommand,
-    'get_command_enables' : GetCommandEnables
+    'get_command_enables' : GetCommandEnables,
+    'selftest' : BMCSelfTestCommand
 }

@@ -80,6 +80,10 @@ class BMC(object):
         """Get the BMC's info"""
         return self.handle.get_device_id()
 
+    def selftest(self):
+        """Get BMC self test results"""
+        return self.handle.selftest()
+
     def guid(self):
         """Get the BMC's guid"""
         return self.handle.get_system_guid()
