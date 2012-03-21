@@ -288,6 +288,9 @@ class BMC(object):
                                               callin=callin, ipmi=ipmi,
                                               link=link, priv_level=priv_level)
 
+    def channel_get_ciphers(self, mode='ipmi'):
+        return self.handle.channel_get_ciphers(mode=mode)
+
     def user_list(self, channel=None):
         return self.handle.user_list(channel=channel)
 

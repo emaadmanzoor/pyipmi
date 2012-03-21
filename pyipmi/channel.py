@@ -13,3 +13,10 @@ class ChannelGetAccessResult(object):
 class ChannelSetAccessResult(object):
     """Object to hold channel set access results"""
     pass
+
+class ChannelGetCiphersResult(object):
+    """Object to hold get channel cipher suites results"""
+    iana = None
+    auth_alg = None
+    integrity_alg = None
+    confidentiality_alg = None

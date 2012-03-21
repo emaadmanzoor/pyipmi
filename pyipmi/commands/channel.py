@@ -127,8 +127,45 @@ class ChannelSetAccessCommand(Command, ResponseParserMixIn):
                 self._params['userid'], callin, ipmi, link, priv_level]
 
 
+class ChannelGetCiphersCommand(Command, ResponseParserMixIn):
+    """Describes the get channel cipher suites IPMI command
+
+    This is "channel getciphers <ipmi | sol>" to ipmitool
+    """
+
+    def parse_response(self, out, err):
+        """ Strip out extraneous colons to allow more generic parsing
+        """
+        out.strip()
+        output_list = map(lambda x: x.strip(), out.split('\n'))
+        result = {}
+
+        for line in output_list:
+            if line == '':
+                continue
+            line_list = map(lambda x: x.strip(), line.split())
+            if line_list[0] == 'ID':
+                continue
+            suite = line_list[0]
+            result[suite] = ChannelGetCiphersResult()
+            result[suite].iana = line_list[1]
+            result[suite].auth_alg = line_list[2]
+            result[suite].integrity_alg = line_list[3]
+            result[suite].confidentiality_alg = line_list[4]
+
+        return result
+
+    name = "Channel Get Cipher Suites"
+    result_type = ChannelGetCiphersResult
+
+    @property
+    def ipmitool_args(self):
+        return ["channel", "getciphers", self._params['mode']]
+
+
 channel_commands = {
     'channel_info'            : ChannelInfoCommand,
     'channel_get_access'      : ChannelGetAccessCommand,
-    'channel_set_access'      : ChannelSetAccessCommand
+    'channel_set_access'      : ChannelSetAccessCommand,
+    'channel_get_ciphers'     : ChannelGetCiphersCommand
 }
