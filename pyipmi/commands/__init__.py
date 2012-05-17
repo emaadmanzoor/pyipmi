@@ -1,4 +1,4 @@
-#Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
+#Copyright 2012 Calxeda, Inc.  All Rights Reserved.
 """IPMI commands that are implemented
 
 These don't always map directly to IPMI requests, although sometimes
@@ -23,6 +23,7 @@ from fru import fru_commands
 from lan import lan_commands
 from channel import channel_commands
 from user import user_commands
+from fabric import fabric_commands
 
 ipmi_commands = {}
 
@@ -43,3 +44,4 @@ ipmi_commands.update(fru_commands)
 ipmi_commands.update(lan_commands)
 ipmi_commands.update(channel_commands)
 ipmi_commands.update(user_commands)
+ipmi_commands.update(fabric_commands)

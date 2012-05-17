@@ -310,6 +310,14 @@ class BMC(object):
         return self.handle.user_priv(userid=userid, priv_level=priv_level,
                                      channel=channel)
 
+    def get_ip_list(self, filename, tftp_addr):
+        return self.handle.fabric_iplist(filename=filename,
+                                         tftp_addr=tftp_addr)
+
+    def get_mac_list(self, filename, tftp_addr):
+        return self.handle.fabric_maclist(filename=filename,
+                                          tftp_addr=tftp_addr)
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
