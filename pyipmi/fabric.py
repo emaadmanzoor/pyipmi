@@ -2,10 +2,10 @@
 
 """
 
-class FabricIPListResult(object):
+class FabricGetIPInfoResult(object):
     """Object to hold fabric ip list results"""
     pass
 
-class FabricMACListResult(object):
+class FabricGetMACAddressesResult(object):
     """Object to hold fabric mac list results"""
     pass
