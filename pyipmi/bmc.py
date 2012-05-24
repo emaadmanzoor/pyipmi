@@ -317,7 +317,14 @@ class BMC(object):
     def get_mac_list(self, filename, tftp_addr):
         return self.handle.fabric_maclist(filename=filename,
                                           tftp_addr=tftp_addr)
-
+    def set_bootdev(self, device, options=None):
+        return self.handle.bootdev_set(device=device, options=options)
+    
+    def get_bootdev(self):
+        return self.handle.bootdev_get()
+    
+    def get_bootparam(self, param):
+        return self.handle.bootparam_get(param=param)
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
