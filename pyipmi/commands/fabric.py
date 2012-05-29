@@ -17,8 +17,14 @@ class FabricGetIPInfoCommand(Command, ResponseParserMixIn):
 
     @property
     def ipmitool_args(self):
-        return ["cxoem", "fabric", "config", "get", "ipinfo", "tftp",
-                self._params['tftp_addr'], "file", self._params['filename']]
+        tftp_args = self._params['tftp_addr'].split(":")
+        if len(tftp_args) == 1:
+            return ["cxoem", "fabric", "config", "get", "ipinfo", "tftp",
+                    tftp_args[0], "file", self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "config", "get", "ipinfo", "tftp",
+                    tftp_args[0], "port", tftp_args[1], "file",
+                    self._params['filename']]
 
 class FabricGetMACAddressesCommand(Command, ResponseParserMixIn):
     """ Describes the cxoem fabric list_macs IPMI command
@@ -33,8 +39,14 @@ class FabricGetMACAddressesCommand(Command, ResponseParserMixIn):
 
     @property
     def ipmitool_args(self):
-        return ["cxoem", "fabric", "config", "get", "macaddrs", "tftp",
-                self._params['tftp_addr'], "file", self._params['filename']]
+        tftp_args = self._params['tftp_addr'].split(":")
+        if len(tftp_args) == 1:
+            return ["cxoem", "fabric", "config", "get", "macaddrs", "tftp",
+                    tftp_args[0], "file", self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "config", "get", "macaddrs", "tftp",
+                    tftp_args[0], "port", tftp_args[1], "file",
+                    self._params['filename']]
 
 fabric_commands = {
     "fabric_getipinfo"  : FabricGetIPInfoCommand,
