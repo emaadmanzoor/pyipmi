@@ -327,6 +327,9 @@ class BMC(object):
     def get_bootparam(self, param):
         return self.handle.bootparam_get(param=param)
 
+    def mc_reset(self, mode):
+        return self.handle.mc_reset(mode=mode)
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
