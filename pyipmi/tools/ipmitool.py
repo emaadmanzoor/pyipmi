@@ -48,7 +48,8 @@ class IpmiTool(Tool):
             'username' : '-U',
             'authtype' : '-A',
             'level' : '-L',
-            'port' : '-p'
+            'port' : '-p',
+            'interface' : '-I'
         }
 
         base = []

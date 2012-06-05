@@ -340,6 +340,7 @@ class LanBMC(BMC):
                     authtype=None,
                     level=None,
                     port=623,
+                    interface='lan',
                     **kwargs):
 
         self.params = {
@@ -348,7 +349,8 @@ class LanBMC(BMC):
             'password' : password,
             'authtype' : authtype,
             'level'    : level,
-            'port'     : port
+            'port'     : port,
+            'interface' : interface
         }
 
         super(LanBMC, self).__init__(**kwargs)
