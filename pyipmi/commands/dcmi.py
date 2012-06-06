@@ -1,7 +1,7 @@
 #Copyright 2011 Calxeda, Inc.  All Rights Reserved.
 
 from .. import Command
-from pyipmi.tools.responseparser import ResponseParserMixIn
+from pyipmi.tools.responseparser import *
 from pyipmi.dcmi import *
 
 class DCMICommandWithErrors(Command, ResponseParserMixIn):
@@ -107,23 +107,55 @@ class DCMIGetManagementControllerID(DCMICommandWithErrors):
     result_type = DCMIGetManagementControllerIDResult
 
     response_fields = {
+        'attr' : 'DCMI'
     }
 
     ipmidcmi_args = ["--get-management-controller-identifier-string"]
 
+class DCMISetManagementControllerID(DCMICommandWithErrors):
+    """Describes the DCMI get management controller ID string command
 
+    """
+    response_parser = ResponseParserMixIn.parse_single_line
+
+    name = "Set Management Controller ID String"
+    result_type = DCMISetManagementControllerIDResult
+
+    response_fields = {
+        'attr' : 'DCMI'
+    }
+    
+    @property
+    def ipmidcmi_args(self):
+        """
+        """
+        return ["--set-management-controller-identifier-string",  self._params['controller']]
 class DCMIGetSensorInfo(DCMICommandWithErrors):
     """Describes the DCMI get sensor info command
 
     """
-
-    response_parser = ResponseParserMixIn.parse_single_line
-
+    def parse_response(self, out, err):
+        """ Output is a number of lines with some info
+        """
+        new_out_list = []
+        expected_fields = ['Inlet Temperature','CPU Temperature','Baseboard temperature']
+        for line in out.strip().split('\n'):
+            for field in expected_fields:
+                if field in line:
+                    value = line.lstrip(field)
+                    new_line = field + " : " + value
+                    new_out_list.append(new_line)
+        new_output= "\n".join(new_out_list)
+        return self.response_parser(new_output, err)
+    
     name = "Get DCMI Sensor Info"
     result_type = DCMIGetSensorInfoResult
-
     response_fields = {
+        'Inlet Temperature':{},
+        'CPU Temperature' : {},
+        'Baseboard temperature' :{}                        
     }
+
 
     ipmidcmi_args = ["--get-dcmi-sensor-info"]
 
@@ -133,12 +165,17 @@ class DCMIGetPowerStatistics(DCMICommandWithErrors):
 
     """
 
-    response_parser = ResponseParserMixIn.parse_single_line
-
     name = "Get Power Statistics"
     result_type = DCMIGetPowerStatisticsResult
 
     response_fields = {
+        'Current Power' : {},
+        'Minimum Power over sampling duration' : {},
+        'Maximum Power over sampling duration' : {},
+        'Average Power over sampling duration' : {},
+        'Time Stamp'                           : {},
+        'Statistics reporting time period'     : {},
+        'Power Measurement'                    : {}        
     }
 
     ipmidcmi_args = ["--get-system-power-statistics"]
@@ -148,13 +185,14 @@ class DCMIGetPowerLimit(DCMICommandWithErrors):
     """Describes the DCMI get power limit command
 
     """
-
-    response_parser = ResponseParserMixIn.parse_single_line
-
     name = "Get Power Limit"
     result_type = DCMIGetPowerLimitResult
 
     response_fields = {
+        'Exception Actions' : {} ,
+        'Power Limit Requested' : {},
+        'Correction time limit' : {},
+        'Management application Statistics Sampling period' :{}                       
     }
 
     ipmidcmi_args = ["--get-power-limit"]
@@ -164,8 +202,6 @@ class DCMISetPowerLimit(DCMICommandWithErrors):
     """Describes the DCMI set power limit command
 
     """
-
-    response_parser = ResponseParserMixIn.parse_single_line
 
     name = "Set Power Limit"
     result_type = DCMISetPowerLimitResult
@@ -180,8 +216,6 @@ class DCMIPowerLimitRequested(DCMICommandWithErrors):
 
     """
 
-    response_parser = ResponseParserMixIn.parse_single_line
-
     name = "Power Limit Requested (Watts)"
     result_type = DCMIPowerLimitRequestedResult
 
@@ -190,9 +224,52 @@ class DCMIPowerLimitRequested(DCMICommandWithErrors):
 
     @property
     def ipmidcmi_args(self):
+        """ """
+        if self._params['exception'] is None:
+            return ["--set-power-limit","--power-limit-requested", self._params['limit']]
+        else:
+            return ["--set-power-limit","--power-limit-requested", self._params['limit'],
+                      "--exception-actions", self._params['exception']]
+
+class DCMICorrectionTimeLimit(DCMICommandWithErrors):
+    """Describes the DCMI correction time limit command
+
+    """
+
+    name = "Power Correction Time Limit (Milliseconds)"
+    result_type = DCMICorrectionTimeLimitResult
+
+    response_fields = {
+    }
+
+    @property
+    def ipmidcmi_args(self):
         """
         """
-        return ["--power-limit-requested", self._params['limit']]
+        if self._params['exception'] is None:
+            return ["--set-power-limit","--correction-time-limit", self._params['time_limit']]
+        else:
+            return ["--set-power-limit","--correction-time-limit", self._params['time_limit'],
+                      "--exception-actions", self._params['exception']]
+
+class DCMIStatisticsSamplingPeriod(DCMICommandWithErrors):
+    """Describes the DCMI statistics sampling period command
+
+    """
+    name = "Power Statistics Sampling Period ( seconds)"
+    result_type = DCMIStatisticsSamplingPeriodResult
+
+    response_fields = {
+    }
+
+    @property
+    def ipmidcmi_args(self):
+        """        """
+        if self._params['exception'] is None:
+            return ["--set-power-limit","--statistics-sampling-period", self._params['period']]
+        else:
+            return ["--set-power-limit","--statistics-sampling-period", self._params['period'],
+                      "--exception-actions", self._params['exception']]
 
 
 class DCMIActivatePowerLimit(DCMICommandWithErrors):
@@ -214,16 +291,18 @@ class DCMIActivatePowerLimit(DCMICommandWithErrors):
         """
         return ["--activate-deactivate-power-limit", self._params['action']]
 
-
 dcmi_commands = {
     "dcmi_get_capabilities"     : DCMIGetCapabilitiesCommand,
     "dcmi_set_asset_tag"        : DCMISetAssetTagCommand,
     "dcmi_get_asset_tag"        : DCMIGetAssetTagCommand,
     "dcmi_get_controller_id"    : DCMIGetManagementControllerID,
+    "dcmi_set_controller_id"    : DCMISetManagementControllerID,
     "dcmi_get_sensor_info"      : DCMIGetSensorInfo,
     "dcmi_get_power_statistics" : DCMIGetPowerStatistics,
     "dcmi_get_power_limit"      : DCMIGetPowerLimit,
     "dcmi_set_power_limit"      : DCMISetPowerLimit,
     "dcmi_power_limit_requested": DCMIPowerLimitRequested,
-    "dcmi_activate_power_limit" : DCMIActivatePowerLimit
+    "dcmi_activate_power_limit" : DCMIActivatePowerLimit,
+    "dcmi_correction_time_limit" : DCMICorrectionTimeLimit,
+    "dcmi_statistics_sampling_period": DCMIStatisticsSamplingPeriod
 }

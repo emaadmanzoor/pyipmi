@@ -90,7 +90,7 @@ class FRUShowCommand(Command, ResponseParserMixIn):
 
     @property
     def ipmitool_args(self):
-        return ["fru", "ekanalyzer", 'frushow',
+        return ["ekanalyzer", 'frushow',
                 'oc=%s' % self._params['filename']]
 
 

@@ -21,11 +21,13 @@ class DCMIGetManagementControllerIDResult(object):
     """Object to hold DCMI get management controller ID result"""
     pass
 
+class DCMISetManagementControllerIDResult(object):
+    """Object to hold DCMI get management controller ID result"""
+    pass
 
 class DCMIGetSensorInfoResult(object):
     """Object to hold DCMI get sensor info result"""
     pass
-
 
 class DCMIGetPowerStatisticsResult(object):
     """Object to hold DCMI power statistics result"""
@@ -50,3 +52,12 @@ class DCMIPowerLimitRequestedResult(object):
 class DCMIActivatePowerLimitResult(object):
     """Object to hold DCMI activate power limit result"""
     pass
+
+class DCMICorrectionTimeLimitResult(object):
+    """Object to hold DCMI correcttion time limit result"""
+    pass
+
+class DCMIStatisticsSamplingPeriodResult(object):
+    """Object to hold DCMI Statistic Sampling result"""
+    pass
+

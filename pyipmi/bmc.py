@@ -194,6 +194,9 @@ class BMC(object):
     def dcmi_get_controller_id(self):
         return self.handle.dcmi_get_controller_id()
 
+    def dcmi_set_controller_id(self, controller):
+        return self.handle.dcmi_set_controller_id(controller= controller)
+
     def dcmi_get_sensor_info(self):
         return self.handle.dcmi_get_sensor_info()
 
@@ -206,8 +209,15 @@ class BMC(object):
     def dcmi_set_power_limit(self):
         return self.handle.dcmi_set_power_limit()
 
-    def dcmi_power_limit_requested(self, limit):
-        return self.handle.dcmi_power_limit_requested(limit=limit)
+    def dcmi_power_limit_requested(self, limit, exception=None):
+        return self.handle.dcmi_power_limit_requested(limit=limit, exception=exception)
+
+    def dcmi_correction_time_limit(self, time_limit, exception=None):
+        return self.handle.dcmi_correction_time_limit(time_limit=time_limit, exception=exception)
+
+    def dcmi_statistics_sampling_period(self, period, exception=None):
+        return self.handle.dcmi_statistics_sampling_period(period=period, exception=exception)
+            
 
     def dcmi_activate_power_limit(self, action):
         if action != "activate" and action != "deactivate":
@@ -268,6 +278,12 @@ class BMC(object):
 
     def fru_write(self, fru_id, filename):
         return self.handle.fru_write(fru_id=fru_id, filename=filename)
+    
+    def fru_upg_e_key(self, fru_id, filename):
+        return self.handle.fru_upg_e_key(fru_id=fru_id, filename=filename)
+
+    def fru_show(self,  filename):
+        return self.handle.fru_show(filename=filename)    
 
     def lan_print(self, channel=''):
         return self.handle.lan_print(channel=channel)
