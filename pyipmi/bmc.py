@@ -128,9 +128,6 @@ class BMC(object):
     def cancel_firmware(self, job_id):
         return self.handle.fw_cancel(job_id=job_id)
 
-    def blow_firmware(self, filename):
-        return self.handle.fw_cancel(filename=filename)
-
     def get_firmware_info(self):
         return self.handle.fw_info()
 

@@ -213,24 +213,6 @@ class FWInfoCommand(CommandWithErrors):
     ipmitool_args = ["cxoem", "fw", "info"]
 
 
-class FWBlowCommand(CommandWithErrors):
-    """Describes the cxoem fw blow IPMI command
-
-    """
-
-    name = "Write a Whole Flash Image"
-    result_type = FWBlowResult
-
-    response_fields = {
-    }
-
-    @property
-    def ipmitool_args(self):
-        """
-        """
-        return ["cxoem", "fw", "blow", self._params['filename']]
-
-
 fw_commands = {
     "fw_download"   : FWDownloadCommand,
     "fw_upload"     : FWUploadCommand,
@@ -240,6 +222,5 @@ fw_commands = {
     "fw_status"     : FWStatusCommand,
     "fw_check"      : FWCheckCommand,
     "fw_cancel"     : FWCancelCommand,
-    "fw_info"       : FWInfoCommand,
-    "fw_blow"       : FWBlowCommand
+    "fw_info"       : FWInfoCommand
 }
