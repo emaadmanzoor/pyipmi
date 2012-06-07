@@ -16,7 +16,9 @@ class FWInfo(object):
                    self.type == other.type and
                    self.offset == other.offset and
                    self.size == other.size and
-                   self.flags == other.flags)
+                   self.flags == other.flags and
+                   self.version == other.version and
+                   self.daddr == other.daddr)
         else:
             return False
 

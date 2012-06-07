@@ -207,6 +207,8 @@ class FWInfoCommand(CommandWithErrors):
         "Offset" : {},
         "Size" : {},
         "Flags" : {},
+        "Version" : {},
+        "Daddr" : {},
         "Error" : {}
     }
 
