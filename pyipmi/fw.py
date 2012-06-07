@@ -59,3 +59,14 @@ class FWCancelResult(object):
 class FWCheckResult(object):
     """Object to hold firmware CRC check results"""
     error = None
+
+
+class FWGetResult(object):
+    """Object to hold firmware get results"""
+    fw_error = None
+
+
+class FWPutResult(object):
+    """Object to hold firmware put results"""
+    fw_error = None
+

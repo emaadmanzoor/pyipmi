@@ -128,6 +128,14 @@ class BMC(object):
     def cancel_firmware(self, job_id):
         return self.handle.fw_cancel(job_id=job_id)
 
+    def update_raw_firmware(self, filename, offset, size, tftp_addr):
+        return self.handle.fw_put(filename=filename, offset=offset,
+                                  size=size, tftp_addr=tftp_addr)
+
+    def retrieve_raw_firmware(self, filename, offset, size, tftp_addr):
+        return self.handle.fw_get(filename=filename, offset=offset,
+                                  size=size, tftp_addr=tftp_addr)
+
     def get_firmware_info(self):
         return self.handle.fw_info()
 

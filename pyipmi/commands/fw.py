@@ -213,6 +213,58 @@ class FWInfoCommand(CommandWithErrors):
     ipmitool_args = ["cxoem", "fw", "info"]
 
 
+class FWGetCommand(CommandWithErrors):
+    """Describes the cxoem fw get IPMI command
+
+    """
+
+    name = "Retrieve Raw Firmware From Device"
+    result_type = FWGetResult
+
+    response_fields = {
+        'File Name' : {},
+        'Address' : {},
+        'Size' : {},
+        'IP' : {},
+        'TFTP Handle ID' : {},
+        'Start raw transfer failed' : {'attr': 'fw_error'}
+    }
+
+    @property
+    def ipmitool_args(self):
+        """
+        """
+        return ["cxoem", "fw", "get", self._params['filename'],
+                self._params['offset'], self._params['size'],
+                "tftp", self._params['tftp_addr']]
+
+
+class FWPutCommand(CommandWithErrors):
+    """Describes the cxoem fw put IPMI command
+
+    """
+
+    name = "Update Raw Firmware To Device"
+    result_type = FWPutResult
+
+    response_fields = {
+        'File Name' : {},
+        'Address' : {},
+        'TSize' : {},
+        'IP' : {},
+        'TFTP Handle ID' : {},
+        'Start raw transfer failed' : {'attr': 'fw_error'}
+    }
+
+    @property
+    def ipmitool_args(self):
+        """
+        """
+        return ["cxoem", "fw", "put", self._params['filename'],
+                self._params['offset'], self._params['size'],
+                "tftp", self._params['tftp_addr']]
+
+
 fw_commands = {
     "fw_download"   : FWDownloadCommand,
     "fw_upload"     : FWUploadCommand,
@@ -222,5 +274,7 @@ fw_commands = {
     "fw_status"     : FWStatusCommand,
     "fw_check"      : FWCheckCommand,
     "fw_cancel"     : FWCancelCommand,
-    "fw_info"       : FWInfoCommand
+    "fw_info"       : FWInfoCommand,
+    "fw_get"        : FWGetCommand,
+    "fw_put"        : FWPutCommand
 }
