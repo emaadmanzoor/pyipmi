@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
 
 from datetime import datetime
 import re

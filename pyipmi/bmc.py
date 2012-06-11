@@ -1,3 +1,5 @@
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
+
 """Stuff about BMC's"""
 
 __all__ = ['BMC', 'BMCInfo', 'BMCGuid', 'BMCEnables', 'LanBMC']

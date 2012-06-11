@@ -1,3 +1,5 @@
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
+
 """Generic stuff about IPMI chassis
 
 A chassis in IPMI isn't necessarily the same as a physical chassis. Logically,

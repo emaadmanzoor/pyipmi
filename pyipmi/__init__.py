@@ -1,3 +1,5 @@
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved. 
+
 """pyipmi provides IPMI client functionality"""
 from __future__ import print_function
 

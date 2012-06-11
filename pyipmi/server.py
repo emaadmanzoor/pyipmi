@@ -1,6 +1,6 @@
-#Copyright 2011 Calxeda, Inc.  All Rights Reserved.
-"""
-A representation of a server.
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
+
+"""A representation of a server.
 
 This may go away - it doesn't do anything other than what chassis does.
 

@@ -1,6 +1,6 @@
-"""ipmitool channel Results
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
 
-"""
+"""ipmitool channel Results"""
 
 class ChannelInfoResult(object):
     """Object to hold channel info results"""

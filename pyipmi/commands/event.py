@@ -1,4 +1,5 @@
 #Copyright 2012 Calxeda, Inc.  All Rights Reserved.
+
 """event related commands -- for generating test events"""
 
 from .. import Command

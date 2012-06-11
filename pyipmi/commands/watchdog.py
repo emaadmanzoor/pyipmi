@@ -1,4 +1,5 @@
 #Copyright 2012 Calxeda, Inc.  All Rights Reserved.
+
 """watchdog related commands"""
 
 from .. import Command

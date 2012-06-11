@@ -1,6 +1,6 @@
-"""FW records
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
 
-"""
+"""FW records"""
 
 class FWInfo(object):
     """Object to hold device-reported SPI flash table"""

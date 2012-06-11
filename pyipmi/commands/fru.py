@@ -1,4 +1,5 @@
 #Copyright 2012 Calxeda, Inc.  All Rights Reserved.
+
 """FRU related commands"""
 
 from .. import Command

@@ -1,4 +1,5 @@
-#Copyright 2011 Calxeda, Inc.  All Rights Reserved.
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
+
 """Chassis related IPMI commands"""
 from .. import Command
 from .. chassis import ChassisStatus

@@ -1,6 +1,6 @@
-"""ipmitool lan Results
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
 
-"""
+"""ipmitool lan Results"""
 
 class LANPrintResults(object):
     """Object to hold lan print results"""

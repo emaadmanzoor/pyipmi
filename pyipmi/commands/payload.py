@@ -1,4 +1,4 @@
-#Copyright 2011 Calxeda, In.  All Rights Reserved.
+#Copyright 2011-2012 Calxeda, In.  All Rights Reserved.
 
 """A series of wrappers around RMCP+ Payload commands"""
 

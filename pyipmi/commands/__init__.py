@@ -1,4 +1,5 @@
 #Copyright 2012 Calxeda, Inc.  All Rights Reserved.
+
 """IPMI commands that are implemented
 
 These don't always map directly to IPMI requests, although sometimes

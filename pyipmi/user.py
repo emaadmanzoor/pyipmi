@@ -1,6 +1,6 @@
-"""ipmitool user Results
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
 
-"""
+"""ipmitool user Results"""
 
 class UserListResults(object):
     """Object to hold user list [channel] results"""

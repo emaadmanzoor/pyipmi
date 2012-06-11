@@ -1,6 +1,6 @@
-"""ipmitool fru Results
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved. 
 
-"""
+"""ipmitool fru Results"""
 
 class FRUPrintResult(object):
     """Object to hold fru print results"""

@@ -1,4 +1,4 @@
-#Copyright 2011 Calxeda, Inc.  All Rights Reserved.
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
 
 """This module contains a series of wrappers
    around SEL commands for ipmitool

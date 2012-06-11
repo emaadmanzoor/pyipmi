@@ -1,6 +1,6 @@
-"""Fabric results
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved. 
 
-"""
+"""Fabric results"""
 
 class FabricGetIPInfoResult(object):
     """Object to hold fabric ip list results"""

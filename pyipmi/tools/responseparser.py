@@ -1,4 +1,5 @@
 #Copyright 2012 Calxeda, Inc.  All Rights Reserved. 
+
 """Tool-independent mix-in for parsing IPMI results"""
 
 from pyipmi import IpmiError

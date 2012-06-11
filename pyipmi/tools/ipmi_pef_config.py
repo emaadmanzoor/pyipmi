@@ -1,4 +1,5 @@
-#Copyright 2011 Calxeda, Inc.  All Rights Reserved. 
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved. 
+
 """An implementation of Tool for ipmi-pef-config (module of FreeIPMI) support"""
 
 import subprocess, sys, pexpect

@@ -1,6 +1,6 @@
-"""DCMI records
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
 
-"""
+"""DCMI records"""
 
 class DCMIGetCapabilitiesResult(object):
     """Object to hold DCMI capabilities request results"""

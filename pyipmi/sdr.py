@@ -1,3 +1,5 @@
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
+
 """SDR records
 
 These are really bare right now - look at the SDR commands to see
