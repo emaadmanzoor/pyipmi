@@ -296,6 +296,9 @@ class BMC(object):
     def lan_set(self, channel, command, param):
         return self.handle.lan_set(channel=channel, command=command,
                                    param=param)
+    
+    def fabric_updateconfig(self):
+        return self.handle.fabric_updateconfig()
 
     def channel_info(self):
         return self.handle.channel_info()

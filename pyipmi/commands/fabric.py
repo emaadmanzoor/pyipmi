@@ -48,7 +48,20 @@ class FabricGetMACAddressesCommand(Command, ResponseParserMixIn):
                     tftp_args[0], "port", tftp_args[1], "file",
                     self._params['filename']]
 
+class FabricUpdateConfigCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric update config command"""
+    name = "Update Config"
+    result_type = FabricUpdateConfigResult
+    
+    response_fields = {
+    }
+    
+    @property
+    def ipmitool_args(self):
+        return ["cxoem", "fabric", "update_config"]
+
 fabric_commands = {
     "fabric_getipinfo"  : FabricGetIPInfoCommand,
-    "fabric_getmacaddresses" : FabricGetMACAddressesCommand
+    "fabric_getmacaddresses" : FabricGetMACAddressesCommand,
+    "fabric_updateconfig"  :FabricUpdateConfigCommand
 }
