@@ -36,7 +36,16 @@ class ChassisControlCommand(Command, ResponseParserMixIn):
         """
         return ['chassis', 'power', self._params['mode']]
 
+class ChassisPolicyCommand(Command, ResponseParserMixIn):
+    """Describes the IPMI chassis policy command"""
+
+    @property
+    def ipmitool_args(self):
+        """The chassis policy command takes a 'state' parameter"""
+        return ['chassis', 'policy', self._params['state']]
+
 chassis_commands = {
     'chassis_status' : ChassisStatusCommand,
     'chassis_control' : ChassisControlCommand,
+    'chassis_policy' : ChassisPolicyCommand
 }

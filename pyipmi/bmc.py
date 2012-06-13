@@ -6,7 +6,7 @@ __all__ = ['BMC', 'BMCInfo', 'BMCGuid', 'BMCEnables', 'LanBMC']
 
 class BMCResult(object):
     """superclass for BMC result objects
-    
+
     Sets attribute names from a dict passed to init, and allows comparison
     with other results based on dict equality.
     """
@@ -21,7 +21,7 @@ class BMCResult(object):
 
 class BMCInfo(BMCResult):
     """Describes a BMC info record result
-    
+
     "bmc info" is just the ipmitool name - this is really "get device id"
     """
     device_id = None
@@ -64,7 +64,7 @@ class BMCEnables(BMCResult):
 
 class BMC(object):
     """A BMC - what you're talking to when you're talking IPMI
-    
+
     I think this should ultimately be the interface for all commands issued
     from IPMI.. or maybe just commands "about the bmc". This needs to be
     resolved!
@@ -97,6 +97,15 @@ class BMC(object):
     def enables(self):
         """Return a BMCEnables object for the BMC"""
         return self.handle.get_command_enables()
+
+    def set_chassis_power(self, mode):
+        return self.handle.chassis_control(mode=mode)
+
+    def set_chassis_policy(self, state):
+        return self.handle.chassis_policy(state=state)
+
+    def get_chassis_status(self):
+        return self.handle.chassis_status()
 
     def update_socman(self, filename, slot, tftp_addr):
         return self.update_firmware(filename, slot, '3', tftp_addr)
@@ -224,7 +233,7 @@ class BMC(object):
 
     def dcmi_statistics_sampling_period(self, period, exception=None):
         return self.handle.dcmi_statistics_sampling_period(period=period, exception=exception)
-            
+
 
     def dcmi_activate_power_limit(self, action):
         if action != "activate" and action != "deactivate":
@@ -285,12 +294,12 @@ class BMC(object):
 
     def fru_write(self, fru_id, filename):
         return self.handle.fru_write(fru_id=fru_id, filename=filename)
-    
+
     def fru_upg_e_key(self, fru_id, filename):
         return self.handle.fru_upg_e_key(fru_id=fru_id, filename=filename)
 
     def fru_show(self,  filename):
-        return self.handle.fru_show(filename=filename)    
+        return self.handle.fru_show(filename=filename)
 
     def lan_print(self, channel=''):
         return self.handle.lan_print(channel=channel)
@@ -298,7 +307,7 @@ class BMC(object):
     def lan_set(self, channel, command, param):
         return self.handle.lan_set(channel=channel, command=command,
                                    param=param)
-    
+
     def fabric_updateconfig(self):
         return self.handle.fabric_updateconfig()
 
@@ -346,10 +355,10 @@ class BMC(object):
 
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
-    
+
     def get_bootdev(self):
         return self.handle.bootdev_get()
-    
+
     def get_bootparam(self, param):
         return self.handle.bootparam_get(param=param)
 
