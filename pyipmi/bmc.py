@@ -356,6 +356,22 @@ class BMC(object):
     def mc_reset(self, mode):
         return self.handle.mc_reset(mode=mode)
 
+    def mem_read(self, length, address, fmt=None):
+        return self.handle.data_memread(length=length, addr=address,
+                                        fmt=fmt)
+
+    def mem_write(self, length, address, value):
+        return self.handle.data_memwrite(length=length, addr=address,
+                                         value=value)
+
+    def cdb_read(self, length, cid, fmt=None):
+        return self.handle.data_cdbread(length=length, cid=cid,
+                                        fmt=fmt)
+
+    def cdb_write(self, length, cid, value):
+        return self.handle.data_cdbwrite(length=length, cid=cid,
+                                         value=value)
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""

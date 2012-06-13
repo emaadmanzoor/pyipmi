@@ -28,6 +28,7 @@ from fabric import fabric_commands
 from bootdev import bootdev_commands
 from bootparam import bootparam_commands
 from mc import mc_commands
+from data import data_commands
 
 ipmi_commands = {}
 
@@ -52,3 +53,4 @@ ipmi_commands.update(fabric_commands)
 ipmi_commands.update(bootdev_commands)
 ipmi_commands.update(bootparam_commands)
 ipmi_commands.update(mc_commands)
+ipmi_commands.update(data_commands)
