@@ -1,4 +1,4 @@
-#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved. 
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
 
 """pyipmi provides IPMI client functionality"""
 from __future__ import print_function
@@ -30,7 +30,7 @@ class Handle:
 
     def _add_command_stubs(self, command_list):
         """Adds command methods to an instance of Handle
-        
+
         Each command in the command_list supplied to init will add a method to
         this handle instance. Calling that method causes the command to be issued.
         """
@@ -48,11 +48,19 @@ class Handle:
 
     def set_log(self, log_file):
         """Setup a logger for the handle
-        
+
         Arguments:
         log_file -- a file like object
         """
         self._log_file = log_file
+
+    def set_verbose(self, verbose):
+        """Set verbosity for the handle
+
+        Arguments:
+        verbose -- true or false
+        """
+        self._verbose = verbose
 
     def log(self, string):
         """Write a string to a log
@@ -61,13 +69,16 @@ class Handle:
 
         Arguments:
         string -- the string to log."""
-        if (self._log_file):
-            print(string, file = self._log_file)
-            self._log_file.flush()
+        if len(string) > 0:
+            if (self._log_file):
+                print(string, file = self._log_file)
+                self._log_file.flush()
+            if (self._verbose):
+                print(string)
 
 class Tool(object):
     """A tool implements communications with a BMC
-   
+
     Tool is an abstract class - it needs a 'run' method defined to be useful.
 
     Tool implementations vary in the way they implement IPMI communications.
@@ -83,7 +94,7 @@ class Tool(object):
     Tool instances are created with a list of commands - each command in the
     list causes a method (named after the command) to be added to the tool
     for executing the command. Commands in the list must implement support
-    for the tool - each tool has 
+    for the tool - each tool has
 
     Concrete implementations should go in the tools directory. An example
     concrete implementation is the ImpiTool class.
@@ -110,7 +121,7 @@ class Tool(object):
         """Add an individual command method"""
         def _cmd(*args, **kwargs):
             """An individual command method.
-            
+
             Uses this tool's run method to execute a command in this
             tool's special way."""
             inst = self._command_list[command](self, *args, **kwargs)
@@ -135,9 +146,9 @@ class Command:
 class InteractiveCommand(Command):
     """A dummy class for an interactive command"""
 
-def make_bmc(bmc_class, logfile = None, **kwargs):
+def make_bmc(bmc_class, logfile = None, verbose = True, **kwargs):
     """Returns a bmc object with 'default' settings
-    
+
     This uses IpmiTool for the tool,the base Handle class, and
     the default "ipmi_commands" list of IPMI commands.
 
@@ -164,6 +175,7 @@ def make_bmc(bmc_class, logfile = None, **kwargs):
     bmc_kwargs.update(kwargs)
     bmc_obj = bmc_class(**bmc_kwargs)
     bmc_obj.handle.set_log(logfile)
+    bmc_obj.handle.set_verbose(verbose)
 
     return bmc_obj
 

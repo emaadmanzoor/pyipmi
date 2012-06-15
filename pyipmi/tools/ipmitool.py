@@ -1,4 +1,4 @@
-#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved. 
+#Copyright 2011-2012 Calxeda, Inc.  All Rights Reserved.
 
 """An implementation of Tool for ipmitool support"""
 
@@ -17,7 +17,6 @@ class IpmiTool(Tool):
 
         arg_str = 'Running %s' % ' '.join(ipmi_args)
         self._log(arg_str)
-        print arg_str
 
         if isinstance(command, InteractiveCommand):
             command = ipmi_args[0]
@@ -38,7 +37,7 @@ class IpmiTool(Tool):
     @property
     def _config_args(self):
         """Return the config dependent command line arguments
-        
+
         This arguments are generated from the BMC's config, not from
         a specific command. They will be the same from command to
         command.
@@ -71,8 +70,6 @@ class IpmiTool(Tool):
         out, err = proc.communicate()
         self._log(out)
         self._log(err)
-        sys.stdout.write(out)
-        sys.stderr.write(err)
         if proc.returncode != 0:
             command.handle_command_error(out, err)
         return out, err
