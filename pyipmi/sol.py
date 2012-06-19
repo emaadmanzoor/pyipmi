@@ -170,6 +170,10 @@ class SOLConsole(object):
     def sendcontrol(self, char):
         return self._proc.sendcontrol(char)
 
+    @property
+    def match(self):
+        return self._proc.match
+
 
 # map config params to range of possible values
 SOL_CONFIGURATION_PARAMETERS = {
