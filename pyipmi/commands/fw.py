@@ -268,6 +268,21 @@ class FWPutCommand(CommandWithErrors):
                 "tftp", self._params['tftp_addr']]
 
 
+class FWResetCommand(CommandWithErrors):
+    """Describes the cxoem fw reset IPMI command
+
+    """
+
+    name = "Reset to factory default"
+    result_type = FWResetResult
+
+    response_fields = {
+        "Error" : {}
+    }
+
+    ipmitool_args = ["cxoem", "fw", "reset"]
+
+
 fw_commands = {
     "fw_download"   : FWDownloadCommand,
     "fw_upload"     : FWUploadCommand,
@@ -279,5 +294,6 @@ fw_commands = {
     "fw_cancel"     : FWCancelCommand,
     "fw_info"       : FWInfoCommand,
     "fw_get"        : FWGetCommand,
-    "fw_put"        : FWPutCommand
+    "fw_put"        : FWPutCommand,
+    "fw_reset"      : FWResetCommand
 }

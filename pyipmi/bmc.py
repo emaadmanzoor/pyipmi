@@ -150,6 +150,9 @@ class BMC(object):
     def get_firmware_info(self):
         return self.handle.fw_info()
 
+    def reset_firmware(self):
+        return self.handle.fw_reset()
+
     def get_sel_time(self):
         """Get the time for the SEL"""
         return self.handle.get_sel_time()

@@ -72,3 +72,8 @@ class FWPutResult(object):
     """Object to hold firmware put results"""
     fw_error = None
 
+
+class FWResetResult(object):
+    """Object to hold firmware reset results"""
+    pass
+
