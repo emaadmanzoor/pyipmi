@@ -81,16 +81,74 @@ class FabricUpdateConfigCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric update config command"""
     name = "Update Config"
     result_type = FabricUpdateConfigResult
-    
+
     response_fields = {
     }
-    
+
     @property
     def ipmitool_args(self):
         return ["cxoem", "fabric", "update_config"]
 
+class FabricGetNodeIDCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric get nodeid command"""
+    name = "Get NodeID command"
+    result_type = int
+
+    def parse_response(self, out, err):
+        return int(out)
+
+    response_fields = {
+    }
+
+    ipmitool_args = ["cxoem", "fabric", "get", "nodeid"]
+
+class FabricGetIPAddrCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric get ipaddr command"""
+    name = "Get ipaddr command"
+    result_type = str
+
+    def parse_response(self, out, err):
+        return out
+
+    response_fields = {
+    }
+
+    @property
+    def ipmitool_args(self):
+        result = ["cxoem", "fabric", "get", "ipaddr"]
+        if self._params.get('nodeid', None):
+            result.extend(['node', self._params['nodeid']])
+        if self._params.get('iface', None):
+            result.extend(['interface', self._params['iface']])
+        return result
+
+
+class FabricGetIPSrcCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric get ipsrc command"""
+    name = "Get ipsrc command"
+    result_type = int
+
+    def parse_response(self, out, err):
+        return int(out)
+
+    response_fields = {
+    }
+
+    @property
+    def ipmitool_args(self):
+        result = ["cxoem", "fabric", "get", "ipsrc"]
+        if self._params.get('nodeid', None):
+            result.extend(['node', self._params['nodeid']])
+        if self._params.get('iface', None):
+            result.extend(['interface', self._params['iface']])
+        return result
+
+
 fabric_commands = {
     "fabric_getipinfo"  : FabricGetIPInfoCommand,
     "fabric_getmacaddresses" : FabricGetMACAddressesCommand,
-    "fabric_updateconfig"  :FabricUpdateConfigCommand
+    "fabric_updateconfig"  :FabricUpdateConfigCommand,
+    "fabric_getnodeid"  : FabricGetNodeIDCommand,
+    "fabric_getipaddr" : FabricGetIPAddrCommand,
+    "fabric_getipsrc" : FabricGetIPSrcCommand
 }

@@ -32,7 +32,7 @@
 """BMC related commands"""
 
 from .. import Command
-from .. bmc import BMCInfo, BMCGuid, BMCEnables, BMCResult
+from .. bmc import BMCInfo, BMCGuid, BMCEnables, BMCResult, BMCResetResult
 from pyipmi.tools.responseparser import ResponseParserMixIn, str2bool
 
 class GetDeviceIdCommand(Command, ResponseParserMixIn):
@@ -127,9 +127,26 @@ class GetCommandEnables(Command, ResponseParserMixIn):
     ipmitool_args = ['bmc', 'getenables']
 
 
+class BMCResetCommand(Command, ResponseParserMixIn):
+    """The Get Command Enables command
+    
+    In ipmitool world, this is "bmc reset [warm|cold]"
+    """
+    name = 'BMC Reset'
+    result_type = BMCResetResult
+
+    response_fields = {
+    }
+
+    @property
+    def ipmitool_args(self):
+        return ['bmc', 'reset', self._params['type']]
+
+
 bmc_commands = {
     'get_device_id' : GetDeviceIdCommand,
     'get_system_guid' : GetSystemGuidCommand,
     'get_command_enables' : GetCommandEnables,
-    'selftest' : BMCSelfTestCommand
+    'selftest' : BMCSelfTestCommand,
+    'bmc_reset' : BMCResetCommand
 }

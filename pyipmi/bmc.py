@@ -91,6 +91,10 @@ class BMCEnables(BMCResult):
     oem1 = None
     oem2 = None
 
+class BMCResetResult(BMCResult):
+    """Result record for bmc reset command"""
+    pass
+
 class BMC(object):
     """A BMC - what you're talking to when you're talking IPMI
 
@@ -114,6 +118,9 @@ class BMC(object):
     def selftest(self):
         """Get BMC self test results"""
         return self.handle.selftest()
+
+    def bmc_reset(self, type='warm'):
+        return self.handle.bmc_reset(type=type)
 
     def guid(self):
         """Get the BMC's guid"""
@@ -243,7 +250,7 @@ class BMC(object):
         return self.handle.dcmi_get_controller_id()
 
     def dcmi_set_controller_id(self, controller):
-        return self.handle.dcmi_set_controller_id(controller= controller)
+        return self.handle.dcmi_set_controller_id(controller=controller)
 
     def dcmi_get_sensor_info(self):
         return self.handle.dcmi_get_sensor_info()
@@ -330,7 +337,7 @@ class BMC(object):
     def fru_upg_e_key(self, fru_id, filename):
         return self.handle.fru_upg_e_key(fru_id=fru_id, filename=filename)
 
-    def fru_show(self,  filename):
+    def fru_show(self, filename):
         return self.handle.fru_show(filename=filename)
 
     def lan_print(self, channel=''):
@@ -384,6 +391,15 @@ class BMC(object):
     def get_fabric_macaddresses(self, filename, tftp_addr):
         return self.handle.fabric_getmacaddresses(filename=filename,
                                                   tftp_addr=tftp_addr)
+
+    def get_fabric_nodeid(self):
+        return self.handle.fabric_getnodeid()
+
+    def get_fabric_ipaddr(self, nodeid="", iface=""):
+        return self.handle.fabric_getipaddr(nodeid=nodeid, iface=iface)
+
+    def get_fabric_ipsrc(self, nodeid="", iface=""):
+        return self.handle.fabric_getipsrc(nodeid=nodeid, iface=iface)
 
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
