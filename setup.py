@@ -38,6 +38,7 @@ setup(
                 'pyipmi.tools'],
     description='Wrapper for IPMI clients',
     author='Calxeda',
+    install_requires=['pexpect'],
     classifiers=[
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 2.7']
