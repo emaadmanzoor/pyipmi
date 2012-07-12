@@ -122,7 +122,7 @@ class SELTimestamp(object):
         if match is None:
             match = self.default_time
 
-        mdict = {k:int(v) for k, v in match.groupdict().iteritems()}
+        mdict = dict((k, int(v)) for k, v in match.groupdict().iteritems())
         self.time = datetime(mdict['year'], mdict['mon'], mdict['day'],
                              mdict['hour'], mdict['min'], mdict['sec'])
 
