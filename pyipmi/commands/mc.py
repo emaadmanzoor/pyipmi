@@ -50,10 +50,10 @@ class CommandWithErrors(Command, ResponseParserMixIn):
         return self.response_parser(out, err)
 
 class MCResetCommand(CommandWithErrors):
-    """ Describes the cxoem fabric list_ip_addrs IPMI command
+    """ Describes the cxoem MC reset IPMI command
     """
 
-    name = "Retrieve fabric IP info"
+    name = "Reset the MC"
     result_type = MCResetResult
 
     response_fields = {
