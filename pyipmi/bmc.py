@@ -429,6 +429,9 @@ class BMC(object):
         return self.handle.data_cdbwrite(length=length, cid=cid,
                                          value=value)
 
+    def get_info_basic(self):
+        return self.handle.info_basic()
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""

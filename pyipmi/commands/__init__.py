@@ -58,6 +58,7 @@ from bootdev import bootdev_commands
 from bootparam import bootparam_commands
 from mc import mc_commands
 from data import data_commands
+from info import info_commands
 
 ipmi_commands = {}
 
@@ -83,3 +84,4 @@ ipmi_commands.update(bootdev_commands)
 ipmi_commands.update(bootparam_commands)
 ipmi_commands.update(mc_commands)
 ipmi_commands.update(data_commands)
+ipmi_commands.update(info_commands)
