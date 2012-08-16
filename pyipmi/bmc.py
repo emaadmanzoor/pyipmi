@@ -143,34 +143,34 @@ class BMC(object):
     def get_chassis_status(self):
         return self.handle.chassis_status()
 
-    def update_socman(self, filename, slot, tftp_addr):
-        return self.update_firmware(filename, slot, '3', tftp_addr)
+    def update_socman(self, filename, partition, tftp_addr):
+        return self.update_firmware(filename, partition, '3', tftp_addr)
 
-    def update_firmware(self, filename, slot, image_type, tftp_addr):
-        return self.handle.fw_download(filename=filename, slot=slot,
+    def update_firmware(self, filename, partition, image_type, tftp_addr):
+        return self.handle.fw_download(filename=filename, partition=partition,
                                        image_type=image_type,
                                        tftp_addr=tftp_addr)
 
 
-    def retrieve_firmware(self, filename, slot, image_type, tftp_addr):
-        return self.handle.fw_upload(filename=filename, slot=slot,
+    def retrieve_firmware(self, filename, partition, image_type, tftp_addr):
+        return self.handle.fw_upload(filename=filename, partition=partition,
                                      image_type=image_type,
                                      tftp_addr=tftp_addr)
 
-    def activate_firmware(self, slot):
-        return self.handle.fw_activate(slot=slot)
+    def activate_firmware(self, partition):
+        return self.handle.fw_activate(partition=partition)
 
-    def invalidate_firmware(self, slot):
-        return self.handle.fw_invalidate(slot=slot)
+    def invalidate_firmware(self, partition):
+        return self.handle.fw_invalidate(partition=partition)
 
-    def set_firmware_flags(self, slot, flags):
-        return self.handle.fw_flags(slot=slot, flags=flags)
+    def set_firmware_flags(self, partition, flags):
+        return self.handle.fw_flags(partition=partition, flags=flags)
 
     def get_firmware_status(self, tftp_handle):
         return self.handle.fw_status(tftp_handle=tftp_handle)
 
-    def check_firmware(self, slot):
-        return self.handle.fw_check(slot=slot)
+    def check_firmware(self, partition):
+        return self.handle.fw_check(partition=partition)
 
     def cancel_firmware(self, job_id):
         return self.handle.fw_cancel(job_id=job_id)

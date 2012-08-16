@@ -61,7 +61,8 @@ class FWDownloadCommand(CommandWithErrors):
 
     response_fields = {
         'File Name' : {},
-        'Slot' : {},
+        'Partition' : {},
+        'Slot' : {'attr': 'partition'},
         'Type' : {},
         'IP' : {},
         'TFTP Handle ID' : {},
@@ -73,7 +74,7 @@ class FWDownloadCommand(CommandWithErrors):
         """
         """
         return ["cxoem", "fw", "download", self._params['filename'],
-                self._params['slot'], self._params['image_type'],
+                self._params['partition'], self._params['image_type'],
                 "tftp", self._params['tftp_addr']]
 
 
@@ -87,7 +88,8 @@ class FWUploadCommand(CommandWithErrors):
 
     response_fields = {
         'File Name' : {},
-        'Slot' : {},
+        'Partition' : {},
+        'Slot' : {'attr': 'partition'},
         'Type' : {},
         'IP' : {},
         'TFTP Handle ID' : {},
@@ -98,7 +100,7 @@ class FWUploadCommand(CommandWithErrors):
     def ipmitool_args(self):
         """
         """
-        return ["cxoem", "fw", "upload", self._params['slot'],
+        return ["cxoem", "fw", "upload", self._params['partition'],
                 self._params['filename'], self._params['image_type'],
                 "tftp", self._params['tftp_addr']]
 
@@ -119,7 +121,7 @@ class FWActivateCommand(CommandWithErrors):
     def ipmitool_args(self):
         """
         """
-        return ["cxoem", "fw", "activate", self._params['slot']]
+        return ["cxoem", "fw", "activate", self._params['partition']]
 
 
 class FWInvalidateCommand(CommandWithErrors):
@@ -138,7 +140,7 @@ class FWInvalidateCommand(CommandWithErrors):
     def ipmitool_args(self):
         """
         """
-        return ["cxoem", "fw", "invalidate", self._params['slot']]
+        return ["cxoem", "fw", "invalidate", self._params['partition']]
 
 
 class FWFlagsCommand(CommandWithErrors):
@@ -157,7 +159,7 @@ class FWFlagsCommand(CommandWithErrors):
     def ipmitool_args(self):
         """
         """
-        return ["cxoem", "fw", "flags", self._params['slot'],
+        return ["cxoem", "fw", "flags", self._params['partition'],
                 self._params['flags']]
 
 
@@ -171,7 +173,7 @@ class FWStatusCommand(CommandWithErrors):
 
     response_fields = {
         'Status' : {},
-        'Error' : {'attr': 'error'}
+        'Error' : {}
     }
 
     @property
@@ -190,16 +192,17 @@ class FWCheckCommand(CommandWithErrors):
     result_type = FWCheckResult
 
     response_fields = {
-        'Slot' : {},
+        'Partition' : {},
+        'Slot' : {'attr': 'partition'},
         'CRC32' : {},
-        'Error' : {'attr': 'error'}
+        'Error' : {}
     }
 
     @property
     def ipmitool_args(self):
         """
         """
-        return ["cxoem", "fw", "check", self._params['slot']]
+        return ["cxoem", "fw", "check", self._params['partition']]
 
 
 class FWCancelCommand(CommandWithErrors):
@@ -231,7 +234,8 @@ class FWInfoCommand(CommandWithErrors):
     response_parser = ResponseParserMixIn.parse_colon_record_list
 
     response_fields = {
-        "Slot" : {},
+        "Partition" : {},
+        "Slot" : {"attr": "partition"},
         "Type" : {},
         "Offset" : {},
         "Size" : {},
