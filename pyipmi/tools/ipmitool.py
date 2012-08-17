@@ -31,7 +31,7 @@
 
 """An implementation of Tool for ipmitool support"""
 
-import subprocess, sys, pexpect
+import os, subprocess, pexpect
 from pyipmi import Tool, InteractiveCommand
 
 class IpmiTool(Tool):
@@ -58,7 +58,10 @@ class IpmiTool(Tool):
 
     def _ipmi_args(self, command):
         """Return the command line arguments to ipmitool for command"""
-        args = ['ipmitool']
+        if 'IPMITOOL_PATH' in os.environ:
+            args = [os.environ['IPMITOOL_PATH']]
+        else:
+            args = ['ipmitool']
         args.extend(self._config_args)
         args.extend(command.ipmitool_args)
         return map(str, args)
