@@ -33,7 +33,24 @@ from .. import Command
 from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.fabric import *
 
-class FabricGetIPInfoCommand(Command, ResponseParserMixIn):
+class CommandWithErrors(Command, ResponseParserMixIn):
+
+    def parse_response(self, out, err):
+        """Parse the response to a command
+
+        The 'ipmitool_response_format' attribute is used to determine
+        what parser to use to for interpreting the results.
+
+        Arguments:
+        out -- the text response of an command from stdout
+        err -- the text response of an command from stderr
+        """
+
+        out = out + err
+        return self.response_parser(out, err)
+
+
+class FabricGetIPInfoCommand(CommandWithErrors):
     """ Describes the cxoem fabric list_ip_addrs IPMI command
     """
 
@@ -41,7 +58,8 @@ class FabricGetIPInfoCommand(Command, ResponseParserMixIn):
     result_type = FabricGetIPInfoResult
 
     response_fields = {
-        'File Name' : {}
+        'File Name' : {},
+        'Error' : {}
     }
 
     @property
@@ -55,7 +73,7 @@ class FabricGetIPInfoCommand(Command, ResponseParserMixIn):
                     tftp_args[0], "port", tftp_args[1], "file",
                     self._params['filename']]
 
-class FabricGetMACAddressesCommand(Command, ResponseParserMixIn):
+class FabricGetMACAddressesCommand(CommandWithErrors):
     """ Describes the cxoem fabric list_macs IPMI command
     """
 
@@ -63,7 +81,8 @@ class FabricGetMACAddressesCommand(Command, ResponseParserMixIn):
     result_type = FabricGetMACAddressesResult
 
     response_fields = {
-        'File Name' : {}
+        'File Name' : {},
+        'Error' : {}
     }
 
     @property
