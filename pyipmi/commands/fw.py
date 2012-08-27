@@ -239,10 +239,11 @@ class FWInfoCommand(CommandWithErrors):
         "Type" : {},
         "Offset" : {},
         "Size" : {},
-        "Version" : {},
+        "Priority" : {},
         "Daddr" : {},
         "Flags" : {},
         "In Use" : {},
+        "Version" : {},
         "Error" : {}
     }
 
