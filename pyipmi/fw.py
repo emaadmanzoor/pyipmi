@@ -106,3 +106,7 @@ class FWResetResult(object):
     """Object to hold firmware reset results"""
     pass
 
+class FWVersionResult(object):
+    """Object to hold firmware version results"""
+    pass
+

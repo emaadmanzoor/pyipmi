@@ -317,6 +317,24 @@ class FWResetCommand(CommandWithErrors):
     ipmitool_args = ["cxoem", "fw", "reset"]
 
 
+
+class FWVersionCommand(CommandWithErrors):
+    """Describes the cxoem fw version IPMI command
+
+    """
+
+    name = "Set the firmware version"
+    result_type = FWVersionResult
+
+    response_fields = {
+        "Error" : {}
+    }
+
+    @property
+    def ipmitool_args(self):
+        return ["cxoem", "fw", "version", self._params['version']]
+
+
 fw_commands = {
     "fw_download"   : FWDownloadCommand,
     "fw_upload"     : FWUploadCommand,
@@ -329,5 +347,6 @@ fw_commands = {
     "fw_info"       : FWInfoCommand,
     "fw_get"        : FWGetCommand,
     "fw_put"        : FWPutCommand,
-    "fw_reset"      : FWResetCommand
+    "fw_reset"      : FWResetCommand,
+    "fw_version"    : FWVersionCommand
 }

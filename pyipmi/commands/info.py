@@ -48,9 +48,20 @@ class InfoBasicCommand(Command):
         if out.startswith("Calxeda SoC"):
             lines = out.splitlines()
             setattr(result, "header", lines[0])
-            setattr(result, "version", lines[1].split()[1])
-            setattr(result, "build_number", lines[2].split()[2])
-            setattr(result, "timestamp", lines[3].split()[1].strip("():"))
+            if lines[1].lstrip().startswith("Firmware"):
+                try:
+                    setattr(result, "version", lines[1].split()[2])
+                except IndexError:
+                    setattr(result, "version", "Unknown")
+                setattr(result, "soc_version", lines[2].split()[2])
+                setattr(result, "build_number", lines[3].split()[2])
+                setattr(result, "timestamp", lines[4].split()[1].strip("():"))
+            else:
+                # Old IPMItool version, use the old format
+                setattr(result, "version", "Unknown")
+                setattr(result, "soc_version", lines[1].split()[1])
+                setattr(result, "build_number", lines[2].split()[2])
+                setattr(result, "timestamp", lines[3].split()[1].strip("():"))
         elif err.startswith("Error: "):
             setattr(result, "error", err.splitlines()[0][7:])
         else:

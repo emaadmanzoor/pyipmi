@@ -189,6 +189,9 @@ class BMC(object):
     def reset_firmware(self):
         return self.handle.fw_reset()
 
+    def set_firmware_version(self, version):
+        return self.handle.fw_version(version=version)
+
     def get_sel_time(self):
         """Get the time for the SEL"""
         return self.handle.get_sel_time()
