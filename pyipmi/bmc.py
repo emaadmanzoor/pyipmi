@@ -435,6 +435,9 @@ class BMC(object):
     def get_info_basic(self):
         return self.handle.info_basic()
 
+    def get_info_card(self):
+        return self.handle.info_card()
+
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""

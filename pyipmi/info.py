@@ -34,3 +34,7 @@
 class InfoBasicResult(object):
     """Object to hold info basic results"""
     pass
+
+class InfoCardResult(object):
+    """Object to hold info card results"""
+    pass

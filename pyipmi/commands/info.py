@@ -31,6 +31,8 @@
 
 from .. import Command
 from pyipmi.info import *
+from pyipmi.tools.responseparser import ResponseParserMixIn
+from pyipmi import IpmiError
 
 class InfoBasicCommand(Command):
     """ Describes the cxoem info basic IPMI command
@@ -69,6 +71,27 @@ class InfoBasicCommand(Command):
 
         return result
 
+class InfoCardCommand(Command, ResponseParserMixIn):
+    """ Describes the cxoem info card IPMI command
+    """
+
+    name = "Retrieve card info"
+
+    ipmitool_args = ["cxoem", "info", "card"]
+
+    result_type = InfoCardResult
+    response_fields = {
+        'Board Type' : {'attr' : 'type'},
+        'Board Revision' : {'attr' : 'revision'}
+    }
+
+    def parse_results(self, out, err):
+        result = ResponseParserMixIn.parse_results(self, out, err)
+        if not (hasattr(result, 'type') and hasattr(result, 'revision')):
+            raise IpmiError(out.strip())
+        return result
+
 info_commands = {
-    "info_basic" : InfoBasicCommand
+    "info_basic" : InfoBasicCommand,
+    "info_card" : InfoCardCommand
 }
