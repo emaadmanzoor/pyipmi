@@ -401,6 +401,9 @@ class BMC(object):
     def get_fabric_ipaddr(self, nodeid="", iface=""):
         return self.handle.fabric_getipaddr(nodeid=nodeid, iface=iface)
 
+    def get_fabric_macaddr(self, nodeid="", iface=0):
+        return self.handle.fabric_getmacaddr(nodeid=nodeid, iface=iface)
+
     def get_fabric_ipsrc(self, nodeid="", iface=""):
         return self.handle.fabric_getipsrc(nodeid=nodeid, iface=iface)
 

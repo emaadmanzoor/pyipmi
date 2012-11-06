@@ -141,6 +141,24 @@ class FabricGetIPAddrCommand(Command, ResponseParserMixIn):
             result.extend(['interface', self._params['iface']])
         return result
 
+class FabricGetMacAddrCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric get macaddr command"""
+    name = "Get macaddr command"
+    result_type = str
+
+    def parse_response(self, out, err):
+        return out
+
+    response_fields = {
+    }
+
+    @property
+    def ipmitool_args(self):
+        result = ["cxoem", "fabric", "get", "macaddr", "interface",
+                self._params['iface']]
+        if self._params.get('nodeid', None):
+            result.extend(['node', self._params['nodeid']])
+        return result
 
 class FabricGetIPSrcCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get ipsrc command"""
@@ -169,5 +187,6 @@ fabric_commands = {
     "fabric_updateconfig"  :FabricUpdateConfigCommand,
     "fabric_getnodeid"  : FabricGetNodeIDCommand,
     "fabric_getipaddr" : FabricGetIPAddrCommand,
+    "fabric_getmacaddr" : FabricGetMacAddrCommand,
     "fabric_getipsrc" : FabricGetIPSrcCommand
 }
