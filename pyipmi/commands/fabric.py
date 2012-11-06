@@ -127,7 +127,7 @@ class FabricGetIPAddrCommand(Command, ResponseParserMixIn):
     result_type = str
 
     def parse_response(self, out, err):
-        return out
+        return out.strip()
 
     response_fields = {
     }
@@ -147,7 +147,7 @@ class FabricGetMacAddrCommand(Command, ResponseParserMixIn):
     result_type = str
 
     def parse_response(self, out, err):
-        return out
+        return out.strip()
 
     response_fields = {
     }
