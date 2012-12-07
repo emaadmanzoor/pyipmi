@@ -48,22 +48,22 @@ class InfoBasicCommand(Command):
         result = InfoBasicResult()
 
         if out.startswith("Calxeda SoC"):
-            lines = out.splitlines()
-            setattr(result, "header", lines[0])
-            if lines[1].lstrip().startswith("Firmware"):
-                try:
-                    setattr(result, "version", lines[1].split()[2])
-                except IndexError:
-                    setattr(result, "version", "Unknown")
-                setattr(result, "soc_version", lines[2].split()[2])
-                setattr(result, "build_number", lines[3].split()[2])
-                setattr(result, "timestamp", lines[4].split()[1].strip("():"))
-            else:
-                # Old IPMItool version, use the old format
-                setattr(result, "version", "Unknown")
-                setattr(result, "soc_version", lines[1].split()[1])
-                setattr(result, "build_number", lines[2].split()[2])
-                setattr(result, "timestamp", lines[3].split()[1].strip("():"))
+            for line in out.splitlines():
+                if line.lstrip().startswith("Calxeda SoC"):
+                    setattr(result, "iana",
+                            int(line.split()[2].strip("()"), 16))
+                elif line.lstrip().startswith("Firmware Version"):
+                    setattr(result, "firmware_version",
+                            line.partition(":")[2].strip())
+                elif line.lstrip().startswith("SoC Version"):
+                    setattr(result, "ecme_version",
+                            line.partition(":")[2].strip())
+                elif line.lstrip().startswith("Build Number"):
+                    setattr(result, "ecme_build_number",
+                            line.partition(":")[2].strip())
+                elif line.lstrip().startswith("Timestamp"):
+                    setattr(result, "ecme_timestamp",
+                            int(line.split()[1].strip(":()")))
         elif err.startswith("Error: "):
             setattr(result, "error", err.splitlines()[0][7:])
         else:
