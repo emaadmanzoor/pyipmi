@@ -50,24 +50,19 @@ class InfoBasicCommand(Command):
         if out.startswith("Calxeda SoC"):
             for line in out.splitlines():
                 if line.lstrip().startswith("Calxeda SoC"):
-                    setattr(result, "iana",
-                            int(line.split()[2].strip("()"), 16))
+                    result.iana = int(line.split()[2].strip("()"), 16)
                 elif line.lstrip().startswith("Firmware Version"):
-                    setattr(result, "firmware_version",
-                            line.partition(":")[2].strip())
+                    result.firmware_version = line.partition(":")[2].strip()
                 elif line.lstrip().startswith("SoC Version"):
-                    setattr(result, "ecme_version",
-                            line.partition(":")[2].strip())
+                    result.ecme_version = line.partition(":")[2].strip()
                 elif line.lstrip().startswith("Build Number"):
-                    setattr(result, "ecme_build_number",
-                            line.partition(":")[2].strip())
+                    result.ecme_build_number = line.partition(":")[2].strip()
                 elif line.lstrip().startswith("Timestamp"):
-                    setattr(result, "ecme_timestamp",
-                            int(line.split()[1].strip(":()")))
+                    result.ecme_timestamp = int(line.split()[1].strip(":()"))
         elif err.startswith("Error: "):
-            setattr(result, "error", err.splitlines()[0][7:])
+            result.error = err.splitlines()[0][7:]
         else:
-            setattr(result, "error", "Unknown Error")
+            result.error = "Unknown Error"
 
         return result
 
