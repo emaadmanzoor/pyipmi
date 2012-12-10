@@ -32,6 +32,7 @@
 from .. import Command
 from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.fabric import *
+from pyipmi import IpmiError
 
 class CommandWithErrors(Command, ResponseParserMixIn):
 
@@ -147,6 +148,8 @@ class FabricGetMacAddrCommand(Command, ResponseParserMixIn):
     result_type = str
 
     def parse_response(self, out, err):
+        if err:
+            raise IpmiError(err)
         return out.strip()
 
     response_fields = {
