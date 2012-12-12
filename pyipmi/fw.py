@@ -36,18 +36,13 @@ class FWInfo(object):
     error = None
 
     def __str__(self):
-        return "%s | %s | %s | %s | %s" % (self.slot, self.type, self.offset,
-                                           self.size, self.flags)
+        return "\n".join("%s: %r" % (x, getattr(self, x))
+                for x in ["partition", "type", "offset", "size", "priority",
+                "daddr", "flags", "version", "in_use"])
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            return (self.slot == other.slot and
-                   self.type == other.type and
-                   self.offset == other.offset and
-                   self.size == other.size and
-                   self.flags == other.flags and
-                   self.version == other.version and
-                   self.daddr == other.daddr)
+            return vars(self) == vars(other)
         else:
             return False
 

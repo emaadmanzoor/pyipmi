@@ -37,7 +37,8 @@ how they actually get filled out.
 
 class Sdr(object):
     """Base SDR record type for others to inherit"""
-    pass
+    def __str__(self):
+        return "\n".join("%s: %r" % x for x in sorted(vars(self).iteritems()))
 
 class AnalogSdr(Sdr):
     """An analog SDR record"""

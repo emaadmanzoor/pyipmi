@@ -33,7 +33,8 @@
 
 class InfoBasicResult(object):
     """Object to hold info basic results"""
-    pass
+    def __str__(self):
+        return "\n".join("%s: %r" % x for x in sorted(vars(self).iteritems()))
 
 class InfoCardResult(object):
     """Object to hold info card results"""
