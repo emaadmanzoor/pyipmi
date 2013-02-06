@@ -29,7 +29,7 @@
 # DAMAGE.
 
 
-from .. import Command
+from .. import Command, IpmiError
 from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.fw import *
 
@@ -103,6 +103,52 @@ class FWUploadCommand(CommandWithErrors):
         return ["cxoem", "fw", "upload", self._params['partition'],
                 self._params['filename'], self._params['image_type'],
                 "tftp", self._params['tftp_addr']]
+
+
+class FWRegisterReadCommand(CommandWithErrors):
+    """ cxoem fw register read command """
+    name = "Register Firmware Read"
+    result_type = FWRegisterReadResult
+    
+    response_fields = {
+        'File Name' : {},
+        'Partition' : {},
+        'Type' : {},
+        'Error' : {}
+    }
+    
+    def parse_response(self, out, err):
+        result = super(FWRegisterReadCommand, self).parse_response(out, err)
+        if hasattr(result, "error"):
+            raise IpmiError(result.error)
+    
+    @property
+    def ipmitool_args(self):
+        return ["cxoem", "fw", "register", "read", self._params['partition'],
+                self._params['filename'], self._params['image_type']]
+
+
+class FWRegisterWriteCommand(CommandWithErrors):
+    """ cxoem fw register write command """
+    name = "Register Firmware Write"
+    result_type = FWRegisterWriteResult
+    
+    response_fields = {
+        'File Name' : {},
+        'Partition' : {},
+        'Type' : {},
+        'Error' : {}
+    }
+    
+    def parse_response(self, out, err):
+        result = super(FWRegisterWriteCommand, self).parse_response(out, err)
+        if hasattr(result, "error"):
+            raise IpmiError(result.error)
+    
+    @property
+    def ipmitool_args(self):
+        return ["cxoem", "fw", "register", "write", self._params['partition'],
+                self._params['filename'], self._params['image_type']]
 
 
 class FWActivateCommand(CommandWithErrors):
@@ -336,17 +382,19 @@ class FWVersionCommand(CommandWithErrors):
 
 
 fw_commands = {
-    "fw_download"   : FWDownloadCommand,
-    "fw_upload"     : FWUploadCommand,
-    "fw_activate"   : FWActivateCommand,
-    "fw_invalidate" : FWInvalidateCommand,
-    "fw_flags"      : FWFlagsCommand,
-    "fw_status"     : FWStatusCommand,
-    "fw_check"      : FWCheckCommand,
-    "fw_cancel"     : FWCancelCommand,
-    "fw_info"       : FWInfoCommand,
-    "fw_get"        : FWGetCommand,
-    "fw_put"        : FWPutCommand,
-    "fw_reset"      : FWResetCommand,
-    "fw_version"    : FWVersionCommand
+    "fw_download"       : FWDownloadCommand,
+    "fw_upload"         : FWUploadCommand,
+    "fw_register_read"  : FWRegisterReadCommand,
+    "fw_register_write" : FWRegisterWriteCommand,
+    "fw_activate"       : FWActivateCommand,
+    "fw_invalidate"     : FWInvalidateCommand,
+    "fw_flags"          : FWFlagsCommand,
+    "fw_status"         : FWStatusCommand,
+    "fw_check"          : FWCheckCommand,
+    "fw_cancel"         : FWCancelCommand,
+    "fw_info"           : FWInfoCommand,
+    "fw_get"            : FWGetCommand,
+    "fw_put"            : FWPutCommand,
+    "fw_reset"          : FWResetCommand,
+    "fw_version"        : FWVersionCommand
 }

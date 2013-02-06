@@ -57,6 +57,14 @@ class FWUploadResult(object):
     fw_error = None
 
 
+class FWRegisterReadResult(object):
+    pass
+
+
+class FWRegisterWriteResult(object):
+    pass
+
+
 class FWActivateResult(object):
     """Object to hold firmware activate results"""
     pass

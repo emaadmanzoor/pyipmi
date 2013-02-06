@@ -157,6 +157,16 @@ class BMC(object):
                                      image_type=image_type,
                                      tftp_addr=tftp_addr)
 
+    def register_firmware_read(self, filename, partition, image_type):
+        return self.handle.fw_register_read(filename=filename,
+                                            partition=partition,
+                                            image_type=image_type)
+
+    def register_firmware_write(self, filename, partition, image_type):
+        return self.handle.fw_register_write(filename=filename,
+                                             partition=partition,
+                                             image_type=image_type)
+
     def activate_firmware(self, partition):
         return self.handle.fw_activate(partition=partition)
 
