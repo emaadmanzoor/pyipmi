@@ -397,11 +397,11 @@ class BMC(object):
         return self.handle.user_priv(userid=userid, priv_level=priv_level,
                                      channel=channel)
 
-    def get_fabric_ipinfo(self, filename, tftp_addr):
+    def get_fabric_ipinfo(self, filename, tftp_addr=None):
         return self.handle.fabric_getipinfo(filename=filename,
                                             tftp_addr=tftp_addr)
 
-    def get_fabric_macaddresses(self, filename, tftp_addr):
+    def get_fabric_macaddresses(self, filename, tftp_addr=None):
         return self.handle.fabric_getmacaddresses(filename=filename,
                                                   tftp_addr=tftp_addr)
 

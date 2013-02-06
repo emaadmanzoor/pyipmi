@@ -65,13 +65,17 @@ class FabricGetIPInfoCommand(CommandWithErrors):
 
     @property
     def ipmitool_args(self):
-        tftp_args = self._params['tftp_addr'].split(":")
-        if len(tftp_args) == 1:
-            return ["cxoem", "fabric", "config", "get", "ipinfo", "tftp",
-                    tftp_args[0], "file", self._params['filename']]
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "config", "get", "ipinfo", "tftp",
+                        tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "config", "get", "ipinfo", "tftp",
+                        tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
         else:
-            return ["cxoem", "fabric", "config", "get", "ipinfo", "tftp",
-                    tftp_args[0], "port", tftp_args[1], "file",
+            return ["cxoem", "fabric", "config", "get", "ipinfo", "file",
                     self._params['filename']]
 
 class FabricGetMACAddressesCommand(CommandWithErrors):
@@ -88,13 +92,17 @@ class FabricGetMACAddressesCommand(CommandWithErrors):
 
     @property
     def ipmitool_args(self):
-        tftp_args = self._params['tftp_addr'].split(":")
-        if len(tftp_args) == 1:
-            return ["cxoem", "fabric", "config", "get", "macaddrs", "tftp",
-                    tftp_args[0], "file", self._params['filename']]
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "config", "get", "macaddrs", "tftp",
+                        tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "config", "get", "macaddrs", "tftp",
+                        tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
         else:
-            return ["cxoem", "fabric", "config", "get", "macaddrs", "tftp",
-                    tftp_args[0], "port", tftp_args[1], "file",
+            return ["cxoem", "fabric", "config", "get", "macaddrs", "file",
                     self._params['filename']]
 
 class FabricUpdateConfigCommand(Command, ResponseParserMixIn):
