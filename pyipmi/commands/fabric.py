@@ -123,6 +123,8 @@ class FabricGetNodeIDCommand(Command, ResponseParserMixIn):
     result_type = int
 
     def parse_response(self, out, err):
+        if err:
+            raise IpmiError(err)
         return int(out)
 
     response_fields = {
