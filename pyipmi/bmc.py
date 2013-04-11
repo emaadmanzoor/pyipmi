@@ -360,6 +360,9 @@ class BMC(object):
         return self.handle.lan_set(channel=channel, command=command,
                                    param=param)
 
+    def fabric_config_updateconfig(self):
+        return self.handle.fabric_config_updateconfig()
+
     def fabric_updateconfig(self):
         return self.handle.fabric_updateconfig()
 
@@ -425,6 +428,21 @@ class BMC(object):
 
     def fabric_get_ipaddr_base(self):
         return self.handle.fabric_get_ipaddr_base()
+
+    def get_fabric_linkspeed(self, link=None, actual=None):
+        return self.handle.fabric_getlinkspeed(link=link, actual=actual)
+
+    def get_fabric_config_linkspeed(self):
+        return self.handle.fabric_config_getlinkspeed()
+
+    def set_fabric_config_linkspeed(self, linkspeed):
+        return self.handle.fabric_config_setlinkspeed(linkspeed=linkspeed)
+
+    def get_fabric_config_linkspeed_policy(self):
+        return self.handle.fabric_config_getlinkspeedpolicy()
+
+    def set_fabric_config_linkspeed_policy(self, ls_policy):
+        return self.handle.fabric_config_setlinkspeedpolicy(ls_policy=ls_policy)
 
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
