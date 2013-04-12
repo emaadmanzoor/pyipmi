@@ -423,6 +423,9 @@ class BMC(object):
     def fabric_factory_default(self):
         return self.handle.fabric_factory_default()
 
+    def fabric_get_ipaddr_base(self):
+        return self.handle.fabric_get_ipaddr_base()
+
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
 

@@ -207,6 +207,16 @@ class FabricConfigFactoryDefaultCommand(Command, ResponseParserMixIn):
     
     ipmitool_args = ['cxoem', 'fabric', 'config', 'factory_default']
 
+class FabricConfigGetIPAddrBase(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config get ipaddr_base command"""
+    name = "Get fabric config ipaddr_base command"
+    result_type = str
+
+    ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'ipaddr_base']
+
+    def parse_response(self, out, err):
+        return out.strip()
+
 fabric_commands = {
     "fabric_getipinfo"  : FabricGetIPInfoCommand,
     "fabric_getmacaddresses" : FabricGetMACAddressesCommand,
@@ -216,5 +226,6 @@ fabric_commands = {
     "fabric_getmacaddr" : FabricGetMacAddrCommand,
     "fabric_getipsrc" : FabricGetIPSrcCommand,
     "fabric_setipsrc" : FabricSetIPSrcCommand,
-    "fabric_factory_default" : FabricConfigFactoryDefaultCommand
+    "fabric_factory_default" : FabricConfigFactoryDefaultCommand,
+    "fabric_get_ipaddr_base" : FabricConfigGetIPAddrBase
 }
