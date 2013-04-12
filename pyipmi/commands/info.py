@@ -34,7 +34,7 @@ from pyipmi.info import *
 from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi import IpmiError
 
-class InfoBasicCommand(Command):
+class InfoBasicCommand(Command, ResponseParserMixIn):
     """ Describes the cxoem info basic IPMI command
     """
 
@@ -60,9 +60,9 @@ class InfoBasicCommand(Command):
                 elif line.lstrip().startswith("Timestamp"):
                     result.ecme_timestamp = int(line.split()[1].strip(":()"))
         elif err.startswith("Error: "):
-            result.error = err.splitlines()[0][7:]
+            raise IpmiError(err.splitlines()[0][7:])
         else:
-            result.error = "Unknown Error"
+            raise IpmiError("Unknown Error")
 
         return result
 
