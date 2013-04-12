@@ -186,13 +186,7 @@ class FabricGetIPSrcCommand(Command, ResponseParserMixIn):
 
     @property
     def ipmitool_args(self):
-        result = ["cxoem", "fabric", "get", "ipsrc"]
-        if self._params.get('nodeid', None):
-            result.extend(['node', self._params['nodeid']])
-        if self._params.get('iface', None):
-            result.extend(['interface', self._params['iface']])
-        return result
-
+        return ["cxoem", "fabric", "config", "get", "ipsrc"]
 
 fabric_commands = {
     "fabric_getipinfo"  : FabricGetIPInfoCommand,

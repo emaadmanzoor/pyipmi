@@ -414,8 +414,8 @@ class BMC(object):
     def get_fabric_macaddr(self, nodeid="", iface=0):
         return self.handle.fabric_getmacaddr(nodeid=nodeid, iface=iface)
 
-    def get_fabric_ipsrc(self, nodeid="", iface=""):
-        return self.handle.fabric_getipsrc(nodeid=nodeid, iface=iface)
+    def get_fabric_ipsrc(self):
+        return self.handle.fabric_getipsrc()
 
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
