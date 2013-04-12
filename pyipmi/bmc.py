@@ -420,6 +420,9 @@ class BMC(object):
     def set_fabric_ipsrc(self, ipsrc_mode):
         return self.handle.fabric_setipsrc(ipsrc_mode=ipsrc_mode)
 
+    def fabric_factory_default(self):
+        return self.handle.fabric_factory_default()
+
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
 
