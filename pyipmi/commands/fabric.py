@@ -188,6 +188,19 @@ class FabricGetIPSrcCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ["cxoem", "fabric", "config", "get", "ipsrc"]
 
+class FabricSetIPSrcCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric set ipsrc command"""
+    name = "Set ipsrc command"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem',
+                'fabric',
+                'config',
+                'set',
+                'ipsrc',
+                self._params['ipsrc_mode']]
+
 fabric_commands = {
     "fabric_getipinfo"  : FabricGetIPInfoCommand,
     "fabric_getmacaddresses" : FabricGetMACAddressesCommand,
@@ -195,5 +208,6 @@ fabric_commands = {
     "fabric_getnodeid"  : FabricGetNodeIDCommand,
     "fabric_getipaddr" : FabricGetIPAddrCommand,
     "fabric_getmacaddr" : FabricGetMacAddrCommand,
-    "fabric_getipsrc" : FabricGetIPSrcCommand
+    "fabric_getipsrc" : FabricGetIPSrcCommand,
+    "fabric_setipsrc" : FabricSetIPSrcCommand
 }
