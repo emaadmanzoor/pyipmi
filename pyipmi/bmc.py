@@ -476,6 +476,12 @@ class BMC(object):
     def fabric_config_set_uplink(self, uplink=0, iface=0):
         return self.handle.fabric_config_setuplink(uplink=uplink, iface=iface)
 
+    def fabric_config_get_link_users_factor(self):
+        return self.handle.fabric_config_getlinkusersfactor()
+
+    def fabric_config_set_link_users_factor(self, lu_factor):
+        return self.handle.fabric_config_setlinkusersfactor(lu_factor=lu_factor)
+
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
 

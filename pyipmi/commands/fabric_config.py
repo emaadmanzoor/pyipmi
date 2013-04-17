@@ -247,6 +247,27 @@ class SetUplinkCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'uplink',
                 self._params['uplink'], 'interface', self._params['iface']]
 
+class GetLinkUsersFactorCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config get lu_factor command"""
+    name = "Get global link users factor command"
+    result_type = int
+
+    def parse_response(self, out, err):
+        if err:
+            raise IpmiError(err)
+        return int(out)
+
+    ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'lu_factor']
+
+class SetLinkUsersFactorCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config set lu_factor command"""
+    name = "Set global link users factor command"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'set', 'lu_factor',
+                   self._params['lu_factor']]
+
 fabric_config_commands = {
     "fabric_config_getipinfo"  : GetIPInfoCommand,
     "fabric_config_getmacaddresses" : GetMACAddressesCommand,
@@ -261,5 +282,7 @@ fabric_config_commands = {
     "fabric_config_setlinkspeedpolicy" : SetLinkspeedPolicyCommand,
     "fabric_config_getuplinkinfo" : GetUplinkInfoCommand,
     "fabric_config_getuplink" : GetUplinkCommand,
-    "fabric_config_setuplink" : SetUplinkCommand
+    "fabric_config_setuplink" : SetUplinkCommand,
+    "fabric_config_getlinkusersfactor" : GetLinkUsersFactorCommand,
+    "fabric_config_setlinkusersfactor" : SetLinkUsersFactorCommand
 }
