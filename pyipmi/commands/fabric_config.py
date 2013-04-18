@@ -50,8 +50,7 @@ class CommandWithErrors(Command, ResponseParserMixIn):
         out = out + err
         return self.response_parser(out, err)
 
-
-class FabricGetIPInfoCommand(CommandWithErrors):
+class GetIPInfoCommand(CommandWithErrors):
     """ Describes the cxoem fabric list_ip_addrs IPMI command
     """
 
@@ -78,7 +77,7 @@ class FabricGetIPInfoCommand(CommandWithErrors):
             return ["cxoem", "fabric", "config", "get", "ipinfo", "file",
                     self._params['filename']]
 
-class FabricGetMACAddressesCommand(CommandWithErrors):
+class GetMACAddressesCommand(CommandWithErrors):
     """ Describes the cxoem fabric list_macs IPMI command
     """
 
@@ -105,13 +104,13 @@ class FabricGetMACAddressesCommand(CommandWithErrors):
             return ["cxoem", "fabric", "config", "get", "macaddrs", "file",
                     self._params['filename']]
 
-class FabricConfigUpdateConfigCommand(Command, ResponseParserMixIn):
+class UpdateConfigCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config update config command"""
     name = "Update Config"
 
     ipmitool_args = ['cxoem', 'fabric', 'config', 'update_config']
 
-class FabricGetIPSrcCommand(Command, ResponseParserMixIn):
+class GetIPSrcCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get ipsrc command"""
     name = "Get ipsrc command"
     result_type = int
@@ -126,7 +125,7 @@ class FabricGetIPSrcCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ["cxoem", "fabric", "config", "get", "ipsrc"]
 
-class FabricSetIPSrcCommand(Command, ResponseParserMixIn):
+class SetIPSrcCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric set ipsrc command"""
     name = "Set ipsrc command"
 
@@ -139,13 +138,13 @@ class FabricSetIPSrcCommand(Command, ResponseParserMixIn):
                 'ipsrc',
                 self._params['ipsrc_mode']]
 
-class FabricConfigFactoryDefaultCommand(Command, ResponseParserMixIn):
+class FactoryDefaultCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config factory_default command"""
     name = "Fabric config factory_default command"
     
     ipmitool_args = ['cxoem', 'fabric', 'config', 'factory_default']
 
-class FabricConfigGetIPAddrBase(Command, ResponseParserMixIn):
+class GetIPAddrBase(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get ipaddr_base command"""
     name = "Get fabric config ipaddr_base command"
     result_type = str
@@ -155,7 +154,7 @@ class FabricConfigGetIPAddrBase(Command, ResponseParserMixIn):
     def parse_response(self, out, err):
         return out.strip()
 
-class FabricConfigGetLinkspeedCommand(Command, ResponseParserMixIn):
+class GetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get linkspeed command"""
     name = "Get global linkspeed command"
     result_type = int
@@ -167,7 +166,7 @@ class FabricConfigGetLinkspeedCommand(Command, ResponseParserMixIn):
 
     ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'linkspeed']
 
-class FabricConfigSetLinkspeedCommand(Command, ResponseParserMixIn):
+class SetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config set linkspeed command"""
     name = "Set linkspeed command"
 
@@ -176,7 +175,7 @@ class FabricConfigSetLinkspeedCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'linkspeed',
                    self._params['linkspeed']]
 
-class FabricConfigGetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
+class GetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get ls_policy command"""
     name = "Get global ls_policy command"
     result_type = int
@@ -188,7 +187,7 @@ class FabricConfigGetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
 
     ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'ls_policy']
 
-class FabricConfigSetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
+class SetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config set ls_policy command"""
     name = "Set linkspeed command"
 
@@ -198,15 +197,15 @@ class FabricConfigSetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
                    self._params['ls_policy']]
 
 fabric_config_commands = {
-    "fabric_getipinfo"  : FabricGetIPInfoCommand,
-    "fabric_getmacaddresses" : FabricGetMACAddressesCommand,
-    "fabric_config_updateconfig"  :FabricConfigUpdateConfigCommand,
-    "fabric_getipsrc" : FabricGetIPSrcCommand,
-    "fabric_setipsrc" : FabricSetIPSrcCommand,
-    "fabric_factory_default" : FabricConfigFactoryDefaultCommand,
-    "fabric_get_ipaddr_base" : FabricConfigGetIPAddrBase,
-    "fabric_config_getlinkspeed" : FabricConfigGetLinkspeedCommand,
-    "fabric_config_setlinkspeed" : FabricConfigSetLinkspeedCommand,
-    "fabric_config_getlinkspeedpolicy" : FabricConfigGetLinkspeedPolicyCommand,
-    "fabric_config_setlinkspeedpolicy" : FabricConfigSetLinkspeedPolicyCommand
+    "fabric_getipinfo"  : GetIPInfoCommand,
+    "fabric_getmacaddresses" : GetMACAddressesCommand,
+    "fabric_config_updateconfig"  : UpdateConfigCommand,
+    "fabric_getipsrc" : GetIPSrcCommand,
+    "fabric_setipsrc" : SetIPSrcCommand,
+    "fabric_factory_default" : FactoryDefaultCommand,
+    "fabric_get_ipaddr_base" : GetIPAddrBase,
+    "fabric_config_getlinkspeed" : GetLinkspeedCommand,
+    "fabric_config_setlinkspeed" : SetLinkspeedCommand,
+    "fabric_config_getlinkspeedpolicy" : GetLinkspeedPolicyCommand,
+    "fabric_config_setlinkspeedpolicy" : SetLinkspeedPolicyCommand
 }

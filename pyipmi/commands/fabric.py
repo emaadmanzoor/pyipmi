@@ -38,7 +38,7 @@ from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.fabric import *
 from pyipmi import IpmiError
 
-class FabricUpdateConfigCommand(Command, ResponseParserMixIn):
+class UpdateConfigCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric update config command"""
     name = "Update Config"
     result_type = FabricUpdateConfigResult
@@ -50,7 +50,7 @@ class FabricUpdateConfigCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ["cxoem", "fabric", "update_config"]
 
-class FabricGetNodeIDCommand(Command, ResponseParserMixIn):
+class GetNodeIDCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get nodeid command"""
     name = "Get NodeID command"
     result_type = int
@@ -65,7 +65,7 @@ class FabricGetNodeIDCommand(Command, ResponseParserMixIn):
 
     ipmitool_args = ["cxoem", "fabric", "get", "nodeid"]
 
-class FabricGetIPAddrCommand(Command, ResponseParserMixIn):
+class GetIPAddrCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get ipaddr command"""
     name = "Get ipaddr command"
     result_type = str
@@ -85,7 +85,7 @@ class FabricGetIPAddrCommand(Command, ResponseParserMixIn):
             result.extend(['interface', self._params['iface']])
         return result
 
-class FabricGetMacAddrCommand(Command, ResponseParserMixIn):
+class GetMacAddrCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get macaddr command"""
     name = "Get macaddr command"
     result_type = str
@@ -106,7 +106,7 @@ class FabricGetMacAddrCommand(Command, ResponseParserMixIn):
             result.extend(['node', self._params['nodeid']])
         return result
 
-class FabricGetLinkspeedCommand(Command, ResponseParserMixIn):
+class GetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get linkspeed command"""
     name = "Get linkspeed command"
     result_type = float
@@ -126,9 +126,9 @@ class FabricGetLinkspeedCommand(Command, ResponseParserMixIn):
         return result
 
 fabric_commands = {
-    "fabric_updateconfig"  :FabricUpdateConfigCommand,
-    "fabric_getnodeid"  : FabricGetNodeIDCommand,
-    "fabric_getipaddr" : FabricGetIPAddrCommand,
-    "fabric_getmacaddr" : FabricGetMacAddrCommand,
-    "fabric_getlinkspeed" : FabricGetLinkspeedCommand,
+    "fabric_updateconfig"  :UpdateConfigCommand,
+    "fabric_getnodeid"  : GetNodeIDCommand,
+    "fabric_getipaddr" : GetIPAddrCommand,
+    "fabric_getmacaddr" : GetMacAddrCommand,
+    "fabric_getlinkspeed" : GetLinkspeedCommand
 }
