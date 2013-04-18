@@ -360,12 +360,6 @@ class BMC(object):
         return self.handle.lan_set(channel=channel, command=command,
                                    param=param)
 
-    def fabric_config_updateconfig(self):
-        return self.handle.fabric_config_updateconfig()
-
-    def fabric_updateconfig(self):
-        return self.handle.fabric_updateconfig()
-
     def channel_info(self):
         return self.handle.channel_info()
 
@@ -399,14 +393,12 @@ class BMC(object):
     def user_priv(self, userid, priv_level, channel=None):
         return self.handle.user_priv(userid=userid, priv_level=priv_level,
                                      channel=channel)
+    #
+    # fabric commands
+    #
 
-    def get_fabric_ipinfo(self, filename, tftp_addr=None):
-        return self.handle.fabric_config_getipinfo(filename=filename,
-                                            tftp_addr=tftp_addr)
-
-    def get_fabric_macaddresses(self, filename, tftp_addr=None):
-        return self.handle.fabric_config_getmacaddresses(filename=filename,
-                                                  tftp_addr=tftp_addr)
+    def fabric_updateconfig(self):
+        return self.handle.fabric_updateconfig()
 
     def get_fabric_nodeid(self):
         return self.handle.fabric_getnodeid()
@@ -416,6 +408,24 @@ class BMC(object):
 
     def get_fabric_macaddr(self, nodeid="", iface=0):
         return self.handle.fabric_getmacaddr(nodeid=nodeid, iface=iface)
+
+    def get_fabric_linkspeed(self, link=None, actual=None):
+        return self.handle.fabric_getlinkspeed(link=link, actual=actual)
+
+    #
+    # fabric config commands
+    #
+
+    def fabric_config_updateconfig(self):
+        return self.handle.fabric_config_updateconfig()
+
+    def get_fabric_ipinfo(self, filename, tftp_addr=None):
+        return self.handle.fabric_config_getipinfo(filename=filename,
+                                            tftp_addr=tftp_addr)
+
+    def get_fabric_macaddresses(self, filename, tftp_addr=None):
+        return self.handle.fabric_config_getmacaddresses(filename=filename,
+                                                  tftp_addr=tftp_addr)
 
     def get_fabric_ipsrc(self):
         return self.handle.fabric_config_getipsrc()
@@ -428,9 +438,6 @@ class BMC(object):
 
     def fabric_get_ipaddr_base(self):
         return self.handle.fabric_config_get_ipaddr_base()
-
-    def get_fabric_linkspeed(self, link=None, actual=None):
-        return self.handle.fabric_getlinkspeed(link=link, actual=actual)
 
     def get_fabric_config_linkspeed(self):
         return self.handle.fabric_config_getlinkspeed()
