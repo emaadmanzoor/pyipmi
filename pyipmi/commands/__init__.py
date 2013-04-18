@@ -54,6 +54,7 @@ from lan import lan_commands
 from channel import channel_commands
 from user import user_commands
 from fabric import fabric_commands
+from fabric_config import fabric_config_commands
 from bootdev import bootdev_commands
 from bootparam import bootparam_commands
 from mc import mc_commands
@@ -80,6 +81,7 @@ ipmi_commands.update(lan_commands)
 ipmi_commands.update(channel_commands)
 ipmi_commands.update(user_commands)
 ipmi_commands.update(fabric_commands)
+ipmi_commands.update(fabric_config_commands)
 ipmi_commands.update(bootdev_commands)
 ipmi_commands.update(bootparam_commands)
 ipmi_commands.update(mc_commands)

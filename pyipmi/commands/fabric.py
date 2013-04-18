@@ -28,88 +28,15 @@
 # THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 # DAMAGE.
 
+"""
+This module holdes cxoem "fabric" commands other than "fabric config"
+commands.
+"""
 
 from .. import Command
 from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.fabric import *
 from pyipmi import IpmiError
-
-class CommandWithErrors(Command, ResponseParserMixIn):
-
-    def parse_response(self, out, err):
-        """Parse the response to a command
-
-        The 'ipmitool_response_format' attribute is used to determine
-        what parser to use to for interpreting the results.
-
-        Arguments:
-        out -- the text response of an command from stdout
-        err -- the text response of an command from stderr
-        """
-
-        out = out + err
-        return self.response_parser(out, err)
-
-
-class FabricGetIPInfoCommand(CommandWithErrors):
-    """ Describes the cxoem fabric list_ip_addrs IPMI command
-    """
-
-    name = "Retrieve fabric IP info"
-    result_type = FabricGetIPInfoResult
-
-    response_fields = {
-        'File Name' : {},
-        'Error' : {}
-    }
-
-    @property
-    def ipmitool_args(self):
-        if self._params['tftp_addr'] != None:
-            tftp_args = self._params['tftp_addr'].split(":")
-            if len(tftp_args) == 1:
-                return ["cxoem", "fabric", "config", "get", "ipinfo", "tftp",
-                        tftp_args[0], "file", self._params['filename']]
-            else:
-                return ["cxoem", "fabric", "config", "get", "ipinfo", "tftp",
-                        tftp_args[0], "port", tftp_args[1], "file",
-                        self._params['filename']]
-        else:
-            return ["cxoem", "fabric", "config", "get", "ipinfo", "file",
-                    self._params['filename']]
-
-class FabricGetMACAddressesCommand(CommandWithErrors):
-    """ Describes the cxoem fabric list_macs IPMI command
-    """
-
-    name = "Retrieve fabric MAC addresses"
-    result_type = FabricGetMACAddressesResult
-
-    response_fields = {
-        'File Name' : {},
-        'Error' : {}
-    }
-
-    @property
-    def ipmitool_args(self):
-        if self._params['tftp_addr'] != None:
-            tftp_args = self._params['tftp_addr'].split(":")
-            if len(tftp_args) == 1:
-                return ["cxoem", "fabric", "config", "get", "macaddrs", "tftp",
-                        tftp_args[0], "file", self._params['filename']]
-            else:
-                return ["cxoem", "fabric", "config", "get", "macaddrs", "tftp",
-                        tftp_args[0], "port", tftp_args[1], "file",
-                        self._params['filename']]
-        else:
-            return ["cxoem", "fabric", "config", "get", "macaddrs", "file",
-                    self._params['filename']]
-
-class FabricConfigUpdateConfigCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric config update config command"""
-    name = "Update Config"
-
-    ipmitool_args = ['cxoem', 'fabric', 'config', 'update_config']
 
 class FabricUpdateConfigCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric update config command"""
@@ -179,71 +106,6 @@ class FabricGetMacAddrCommand(Command, ResponseParserMixIn):
             result.extend(['node', self._params['nodeid']])
         return result
 
-class FabricGetIPSrcCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric get ipsrc command"""
-    name = "Get ipsrc command"
-    result_type = int
-
-    def parse_response(self, out, err):
-        return int(out)
-
-    response_fields = {
-    }
-
-    @property
-    def ipmitool_args(self):
-        return ["cxoem", "fabric", "config", "get", "ipsrc"]
-
-class FabricSetIPSrcCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric set ipsrc command"""
-    name = "Set ipsrc command"
-
-    @property
-    def ipmitool_args(self):
-        return ['cxoem',
-                'fabric',
-                'config',
-                'set',
-                'ipsrc',
-                self._params['ipsrc_mode']]
-
-class FabricConfigFactoryDefaultCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric config factory_default command"""
-    name = "Fabric config factory_default command"
-    
-    ipmitool_args = ['cxoem', 'fabric', 'config', 'factory_default']
-
-class FabricConfigGetIPAddrBase(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric config get ipaddr_base command"""
-    name = "Get fabric config ipaddr_base command"
-    result_type = str
-
-    ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'ipaddr_base']
-
-    def parse_response(self, out, err):
-        return out.strip()
-
-class FabricConfigGetLinkspeedCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric config get linkspeed command"""
-    name = "Get global linkspeed command"
-    result_type = int
-
-    def parse_response(self, out, err):
-        if err:
-            raise IpmiError(err)
-        return int(out)
-
-    ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'linkspeed']
-
-class FabricConfigSetLinkspeedCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric config set linkspeed command"""
-    name = "Set linkspeed command"
-
-    @property
-    def ipmitool_args(self):
-        return ['cxoem', 'fabric', 'config', 'set', 'linkspeed',
-                   self._params['linkspeed']]
-
 class FabricGetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get linkspeed command"""
     name = "Get linkspeed command"
@@ -263,42 +125,10 @@ class FabricGetLinkspeedCommand(Command, ResponseParserMixIn):
             result.extend(['actual'])
         return result
 
-class FabricConfigGetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric config get ls_policy command"""
-    name = "Get global ls_policy command"
-    result_type = int
-
-    def parse_response(self, out, err):
-        if err:
-            raise IpmiError(err)
-        return int(out)
-
-    ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'ls_policy']
-
-class FabricConfigSetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric config set ls_policy command"""
-    name = "Set linkspeed command"
-
-    @property
-    def ipmitool_args(self):
-        return ['cxoem', 'fabric', 'config', 'set', 'ls_policy',
-                   self._params['ls_policy']]
-
 fabric_commands = {
-    "fabric_getipinfo"  : FabricGetIPInfoCommand,
-    "fabric_getmacaddresses" : FabricGetMACAddressesCommand,
-    "fabric_config_updateconfig"  :FabricConfigUpdateConfigCommand,
     "fabric_updateconfig"  :FabricUpdateConfigCommand,
     "fabric_getnodeid"  : FabricGetNodeIDCommand,
     "fabric_getipaddr" : FabricGetIPAddrCommand,
     "fabric_getmacaddr" : FabricGetMacAddrCommand,
-    "fabric_getipsrc" : FabricGetIPSrcCommand,
-    "fabric_setipsrc" : FabricSetIPSrcCommand,
-    "fabric_factory_default" : FabricConfigFactoryDefaultCommand,
-    "fabric_get_ipaddr_base" : FabricConfigGetIPAddrBase,
-    "fabric_config_getlinkspeed" : FabricConfigGetLinkspeedCommand,
-    "fabric_config_setlinkspeed" : FabricConfigSetLinkspeedCommand,
     "fabric_getlinkspeed" : FabricGetLinkspeedCommand,
-    "fabric_config_getlinkspeedpolicy" : FabricConfigGetLinkspeedPolicyCommand,
-    "fabric_config_setlinkspeedpolicy" : FabricConfigSetLinkspeedPolicyCommand
 }
