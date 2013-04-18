@@ -397,58 +397,58 @@ class BMC(object):
     # fabric commands
     #
 
-    def fabric_updateconfig(self):
+    def fabric_update_config(self):
         return self.handle.fabric_updateconfig()
 
-    def get_fabric_nodeid(self):
+    def fabric_get_node_id(self):
         return self.handle.fabric_getnodeid()
 
-    def get_fabric_ipaddr(self, nodeid="", iface=""):
+    def fabric_get_ip_addr(self, nodeid="", iface=""):
         return self.handle.fabric_getipaddr(nodeid=nodeid, iface=iface)
 
-    def get_fabric_macaddr(self, nodeid="", iface=0):
+    def fabric_get_mac_addr(self, nodeid="", iface=0):
         return self.handle.fabric_getmacaddr(nodeid=nodeid, iface=iface)
 
-    def get_fabric_linkspeed(self, link=None, actual=None):
+    def fabric_get_linkspeed(self, link=None, actual=None):
         return self.handle.fabric_getlinkspeed(link=link, actual=actual)
 
     #
     # fabric config commands
     #
 
-    def fabric_config_updateconfig(self):
+    def fabric_config_update_config(self):
         return self.handle.fabric_config_updateconfig()
 
-    def get_fabric_ipinfo(self, filename, tftp_addr=None):
+    def fabric_config_get_ip_info(self, filename, tftp_addr=None):
         return self.handle.fabric_config_getipinfo(filename=filename,
                                             tftp_addr=tftp_addr)
 
-    def get_fabric_macaddresses(self, filename, tftp_addr=None):
+    def fabric_config_get_mac_addresses(self, filename, tftp_addr=None):
         return self.handle.fabric_config_getmacaddresses(filename=filename,
                                                   tftp_addr=tftp_addr)
 
-    def get_fabric_ipsrc(self):
+    def fabric_config_get_ip_src(self):
         return self.handle.fabric_config_getipsrc()
     
-    def set_fabric_ipsrc(self, ipsrc_mode):
+    def fabric_config_set_ip_src(self, ipsrc_mode):
         return self.handle.fabric_config_setipsrc(ipsrc_mode=ipsrc_mode)
 
-    def fabric_factory_default(self):
+    def fabric_config_factory_default(self):
         return self.handle.fabric_config_factory_default()
 
-    def fabric_get_ipaddr_base(self):
+    def fabric_config_get_ip_addr_base(self):
         return self.handle.fabric_config_get_ipaddr_base()
 
-    def get_fabric_config_linkspeed(self):
+    def fabric_config_get_linkspeed(self):
         return self.handle.fabric_config_getlinkspeed()
 
-    def set_fabric_config_linkspeed(self, linkspeed):
+    def fabric_config_set_linkspeed(self, linkspeed):
         return self.handle.fabric_config_setlinkspeed(linkspeed=linkspeed)
 
-    def get_fabric_config_linkspeed_policy(self):
+    def fabric_config_get_linkspeed_policy(self):
         return self.handle.fabric_config_getlinkspeedpolicy()
 
-    def set_fabric_config_linkspeed_policy(self, ls_policy):
+    def fabric_config_set_linkspeed_policy(self, ls_policy):
         return self.handle.fabric_config_setlinkspeedpolicy(ls_policy=ls_policy)
 
     def set_bootdev(self, device, options=None):
