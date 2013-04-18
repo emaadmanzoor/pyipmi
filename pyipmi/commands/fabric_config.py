@@ -77,6 +77,33 @@ class GetIPInfoCommand(CommandWithErrors):
             return ["cxoem", "fabric", "config", "get", "ipinfo", "file",
                     self._params['filename']]
 
+class GetUplinkInfoCommand(CommandWithErrors):
+    """ Describes the cxoem fabric list_ip_addrs IPMI command
+    """
+
+    name = "Retrieve fabric Uplink info"
+    result_type = FabricGetUplinkInfoResult
+
+    response_fields = {
+        'File Name' : {},
+        'Error' : {}
+    }
+
+    @property
+    def ipmitool_args(self):
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "config", "get", "uplink_info",
+                        "tftp", tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "config", "get", "uplink_info",
+                        "tftp", tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "config", "get", "uplink_info", "file",
+                    self._params['filename']]
+
 class GetMACAddressesCommand(CommandWithErrors):
     """ Describes the cxoem fabric list_macs IPMI command
     """
@@ -141,7 +168,7 @@ class SetIPSrcCommand(Command, ResponseParserMixIn):
 class FactoryDefaultCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config factory_default command"""
     name = "Fabric config factory_default command"
-    
+
     ipmitool_args = ['cxoem', 'fabric', 'config', 'factory_default']
 
 class GetIPAddrBase(Command, ResponseParserMixIn):
@@ -207,5 +234,6 @@ fabric_config_commands = {
     "fabric_config_getlinkspeed" : GetLinkspeedCommand,
     "fabric_config_setlinkspeed" : SetLinkspeedCommand,
     "fabric_config_getlinkspeedpolicy" : GetLinkspeedPolicyCommand,
-    "fabric_config_setlinkspeedpolicy" : SetLinkspeedPolicyCommand
+    "fabric_config_setlinkspeedpolicy" : SetLinkspeedPolicyCommand,
+    "fabric_config_getuplinkinfo" : GetUplinkInfoCommand
 }
