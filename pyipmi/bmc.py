@@ -401,11 +401,11 @@ class BMC(object):
                                      channel=channel)
 
     def get_fabric_ipinfo(self, filename, tftp_addr=None):
-        return self.handle.fabric_getipinfo(filename=filename,
+        return self.handle.fabric_config_getipinfo(filename=filename,
                                             tftp_addr=tftp_addr)
 
     def get_fabric_macaddresses(self, filename, tftp_addr=None):
-        return self.handle.fabric_getmacaddresses(filename=filename,
+        return self.handle.fabric_config_getmacaddresses(filename=filename,
                                                   tftp_addr=tftp_addr)
 
     def get_fabric_nodeid(self):
@@ -418,16 +418,16 @@ class BMC(object):
         return self.handle.fabric_getmacaddr(nodeid=nodeid, iface=iface)
 
     def get_fabric_ipsrc(self):
-        return self.handle.fabric_getipsrc()
+        return self.handle.fabric_config_getipsrc()
     
     def set_fabric_ipsrc(self, ipsrc_mode):
-        return self.handle.fabric_setipsrc(ipsrc_mode=ipsrc_mode)
+        return self.handle.fabric_config_setipsrc(ipsrc_mode=ipsrc_mode)
 
     def fabric_factory_default(self):
-        return self.handle.fabric_factory_default()
+        return self.handle.fabric_config_factory_default()
 
     def fabric_get_ipaddr_base(self):
-        return self.handle.fabric_get_ipaddr_base()
+        return self.handle.fabric_config_get_ipaddr_base()
 
     def get_fabric_linkspeed(self, link=None, actual=None):
         return self.handle.fabric_getlinkspeed(link=link, actual=actual)

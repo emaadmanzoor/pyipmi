@@ -197,13 +197,13 @@ class SetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
                    self._params['ls_policy']]
 
 fabric_config_commands = {
-    "fabric_getipinfo"  : GetIPInfoCommand,
-    "fabric_getmacaddresses" : GetMACAddressesCommand,
+    "fabric_config_getipinfo"  : GetIPInfoCommand,
+    "fabric_config_getmacaddresses" : GetMACAddressesCommand,
     "fabric_config_updateconfig"  : UpdateConfigCommand,
-    "fabric_getipsrc" : GetIPSrcCommand,
-    "fabric_setipsrc" : SetIPSrcCommand,
-    "fabric_factory_default" : FactoryDefaultCommand,
-    "fabric_get_ipaddr_base" : GetIPAddrBase,
+    "fabric_config_getipsrc" : GetIPSrcCommand,
+    "fabric_config_setipsrc" : SetIPSrcCommand,
+    "fabric_config_factory_default" : FactoryDefaultCommand,
+    "fabric_config_get_ipaddr_base" : GetIPAddrBase,
     "fabric_config_getlinkspeed" : GetLinkspeedCommand,
     "fabric_config_setlinkspeed" : SetLinkspeedCommand,
     "fabric_config_getlinkspeedpolicy" : GetLinkspeedPolicyCommand,
