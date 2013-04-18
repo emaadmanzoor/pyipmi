@@ -41,3 +41,7 @@ class FabricGetMACAddressesResult(object):
 
 class FabricUpdateConfigResult(object):
     """Object to hold update config list results"""
+
+class FabricGetUplinkInfoResult(object):
+    """Object to hold fabric uplink_info results"""
+    pass
