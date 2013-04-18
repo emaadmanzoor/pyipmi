@@ -427,9 +427,13 @@ class BMC(object):
         return self.handle.fabric_config_getmacaddresses(filename=filename,
                                                   tftp_addr=tftp_addr)
 
+    def fabric_config_get_uplink_info(self, filename, tftp_addr=None):
+        return self.handle.fabric_config_getuplinkinfo(filename=filename,
+                                                  tftp_addr=tftp_addr)
+
     def fabric_config_get_ip_src(self):
         return self.handle.fabric_config_getipsrc()
-    
+
     def fabric_config_set_ip_src(self, ipsrc_mode):
         return self.handle.fabric_config_setipsrc(ipsrc_mode=ipsrc_mode)
 
