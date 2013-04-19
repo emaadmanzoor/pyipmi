@@ -430,6 +430,11 @@ class BMC(object):
     def fabric_get_depthchart(self, filename, tftp_addr=None):
         return self.handle.fabric_getdepthchart(filename=filename,
                                                 tftp_addr=tftp_addr)
+    def fabric_add_macaddr(self, nodeid="", iface=0, macaddr=""):
+        return self.handle.fabric_addmacaddr(nodeid=nodeid, iface=iface, macaddr=macaddr)
+
+    def fabric_rm_macaddr(self, nodeid="", iface=0, macaddr=""):
+        return self.handle.fabric_rmmacaddr(nodeid=nodeid, iface=iface, macaddr=macaddr)
 
     #
     # fabric config commands
