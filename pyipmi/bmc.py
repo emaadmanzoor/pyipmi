@@ -455,6 +455,12 @@ class BMC(object):
     def fabric_config_set_linkspeed_policy(self, ls_policy):
         return self.handle.fabric_config_setlinkspeedpolicy(ls_policy=ls_policy)
 
+    def fabric_config_get_uplink(self, iface=0):
+        return self.handle.fabric_config_getuplink(iface=iface)
+
+    def fabric_config_set_uplink(self, uplink=0, iface=0):
+        return self.handle.fabric_config_setuplink(uplink=uplink, iface=iface)
+
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
 

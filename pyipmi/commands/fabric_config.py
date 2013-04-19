@@ -223,6 +223,30 @@ class SetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'ls_policy',
                    self._params['ls_policy']]
 
+class GetUplinkCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config get uplink command"""
+    name = "Get uplink command"
+    result_type = int
+
+    def parse_response(self, out, err):
+        if err:
+            raise IpmiError(err)
+        return int(out)
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'get', 'uplink', 'interface',
+                self._params['iface']]
+
+class SetUplinkCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config set uplink command"""
+    name = "Set uplink command"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'set', 'uplink',
+                self._params['uplink'], 'interface', self._params['iface']]
+
 fabric_config_commands = {
     "fabric_config_getipinfo"  : GetIPInfoCommand,
     "fabric_config_getmacaddresses" : GetMACAddressesCommand,
@@ -235,5 +259,7 @@ fabric_config_commands = {
     "fabric_config_setlinkspeed" : SetLinkspeedCommand,
     "fabric_config_getlinkspeedpolicy" : GetLinkspeedPolicyCommand,
     "fabric_config_setlinkspeedpolicy" : SetLinkspeedPolicyCommand,
-    "fabric_config_getuplinkinfo" : GetUplinkInfoCommand
+    "fabric_config_getuplinkinfo" : GetUplinkInfoCommand,
+    "fabric_config_getuplink" : GetUplinkCommand,
+    "fabric_config_setuplink" : SetUplinkCommand
 }
