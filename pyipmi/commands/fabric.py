@@ -125,10 +125,50 @@ class GetLinkspeedCommand(Command, ResponseParserMixIn):
             result.extend(['actual'])
         return result
 
+class GetLinkStatsCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric info link_stats command"""
+    name = "Get link_stats command"
+    result_type = FabricGetLinkStatsResult
+    response_fields = {
+        'File Name' : {},
+        'Error' : {}
+    }
+
+    def parse_response(self, out, err):
+        return out.strip()
+
+    @property
+    def ipmitool_args(self):
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return [
+                    'cxoem', 'fabric', 'info', 'link_stats',
+                    'link', self._params['link'],
+                    'tftp', tftp_args[0],
+                    'file', self._params['filename']
+                ]
+            else:
+                return [
+                    'cxoem', 'fabric', 'info', 'link_stats',
+                    'link', self._params['link'],
+                    'tftp', tftp_args[0],
+                    'port', tftp_args[1],
+                    'file', self._params['filename']
+                ]
+        else:
+            return [
+                'cxoem', 'fabric', 'info', 'link_stats',
+                'link', self._params['link'],
+                'file', self._params['filename']
+            ]
+
+
 fabric_commands = {
     "fabric_updateconfig"  :UpdateConfigCommand,
     "fabric_getnodeid"  : GetNodeIDCommand,
     "fabric_getipaddr" : GetIPAddrCommand,
     "fabric_getmacaddr" : GetMacAddrCommand,
-    "fabric_getlinkspeed" : GetLinkspeedCommand
+    "fabric_getlinkspeed" : GetLinkspeedCommand,
+    "fabric_getlinkstats" : GetLinkStatsCommand,
 }

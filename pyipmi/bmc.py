@@ -412,6 +412,13 @@ class BMC(object):
     def fabric_get_linkspeed(self, link=None, actual=None):
         return self.handle.fabric_getlinkspeed(link=link, actual=actual)
 
+    def fabric_get_linkstats(self, filename=None, tftp_addr=None, link=None):
+        return self.handle.fabric_getlinkstats(
+            filename=filename,
+            tftp_addr=tftp_addr,
+            link=link
+        )
+
     #
     # fabric config commands
     #

@@ -45,3 +45,7 @@ class FabricUpdateConfigResult(object):
 class FabricGetUplinkInfoResult(object):
     """Object to hold fabric uplink_info results"""
     pass
+
+class FabricGetLinkStatsResult(object):
+    """Object to hold the fabric link_stats results"""
+    pass
