@@ -430,10 +430,11 @@ class BMC(object):
     def fabric_get_depthchart(self, filename, tftp_addr=None):
         return self.handle.fabric_getdepthchart(filename=filename,
                                                 tftp_addr=tftp_addr)
-    def fabric_add_macaddr(self, nodeid="", iface=0, macaddr=""):
+
+    def fabric_add_macaddr(self, nodeid=None, iface=0, macaddr=None):
         return self.handle.fabric_addmacaddr(nodeid=nodeid, iface=iface, macaddr=macaddr)
 
-    def fabric_rm_macaddr(self, nodeid="", iface=0, macaddr=""):
+    def fabric_rm_macaddr(self, nodeid=None, iface=0, macaddr=None):
         return self.handle.fabric_rmmacaddr(nodeid=nodeid, iface=iface, macaddr=macaddr)
 
     #
@@ -524,6 +525,16 @@ class BMC(object):
 
     def get_info_card(self):
         return self.handle.info_card()
+
+    #
+    # node commands
+    #
+
+    def node_add_macaddr(self, iface=0, macaddr=None):
+        return self.handle.node_addmacaddr(iface=iface, macaddr=macaddr)
+
+    def node_rm_macaddr(self, iface=0, macaddr=None):
+        return self.handle.node_rmmacaddr(iface=iface, macaddr=macaddr)
 
 
 class LanBMC(BMC):

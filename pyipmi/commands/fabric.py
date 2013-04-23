@@ -128,6 +128,26 @@ class RmMacAddrCommand(Command, ResponseParserMixIn):
 		'node', self._params['nodeid'],
 		'interface', self._params['iface']]
 
+class NodeAddMacAddrCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric add macaddr command to a node"""
+    name = "Node Add macaddr command"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'add',
+		'macaddr', self._params['macaddr'],
+		'interface', self._params['iface']]
+
+class NodeRmMacAddrCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric rm macaddr command from a node"""
+    name = "Node Remove macaddr command"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'rm',
+		'macaddr', self._params['macaddr'],
+		'interface', self._params['iface']]
+
 class GetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get linkspeed command"""
     name = "Get linkspeed command"
@@ -279,4 +299,6 @@ fabric_commands = {
     "fabric_getroutingtable" : GetRoutingTableCommand
     "fabric_addmacaddr" : AddMacAddrCommand,
     "fabric_rmmacaddr" : RmMacAddrCommand,
+    "node_addmacaddr" : NodeAddMacAddrCommand,
+    "node_rmmacaddr" : NodeRmMacAddrCommand,
 }
