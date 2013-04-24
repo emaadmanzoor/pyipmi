@@ -49,3 +49,11 @@ class FabricGetUplinkInfoResult(object):
 class FabricGetLinkStatsResult(object):
     """Object to hold the fabric link_stats results"""
     pass
+
+class FabricGetLinkMapResult(object):
+    """Object to hold the fabric linkmap results"""
+    pass
+
+class FabricGetRoutingTableResult(object):
+    """Object to hold the fabric routing_table results"""
+    pass

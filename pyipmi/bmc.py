@@ -419,6 +419,14 @@ class BMC(object):
             link=link
         )
 
+    def fabric_get_linkmap(self, filename, tftp_addr=None):
+        return self.handle.fabric_getlinkmap(filename=filename,
+                                             tftp_addr=tftp_addr)
+
+    def fabric_get_routingtable(self, filename, tftp_addr=None):
+        return self.handle.fabric_getroutingtable(filename=filename,
+                                                  tftp_addr=tftp_addr)
+
     #
     # fabric config commands
     #

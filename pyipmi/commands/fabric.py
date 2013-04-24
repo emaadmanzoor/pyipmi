@@ -163,6 +163,60 @@ class GetLinkStatsCommand(Command, ResponseParserMixIn):
                 'file', self._params['filename']
             ]
 
+class GetLinkMapCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric info linkmap command"""
+    name = "Get linkmap command"
+    result_type = FabricGetLinkMapResult
+    response_fields = {
+        'File Name' : {},
+        'Error' : {}
+    }
+
+    def parse_respons(self, out, err):
+        return out.strip()
+        
+    @property
+    def ipmitool_args(self):
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "info", "linkmap", "tftp",
+                        tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "info", "linkmap", "tftp",
+                        tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "info", "linkmap", "file",
+                    self._params['filename']]
+
+class GetRoutingTableCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric info routing_table command"""
+    name = "Get routing_table command"
+    result_type = FabricGetRoutingTableResult
+    response_fields = {
+        'File Name' : {},
+        'Error' : {}
+    }
+
+    def parse_respons(self, out, err):
+        return out.strip()
+        
+    @property
+    def ipmitool_args(self):
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "info", "routing_table", "tftp",
+                        tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "info", "routing_table", "tftp",
+                        tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "info", "routing_table", "file",
+                    self._params['filename']]
+
 
 fabric_commands = {
     "fabric_updateconfig"  :UpdateConfigCommand,
@@ -171,4 +225,6 @@ fabric_commands = {
     "fabric_getmacaddr" : GetMacAddrCommand,
     "fabric_getlinkspeed" : GetLinkspeedCommand,
     "fabric_getlinkstats" : GetLinkStatsCommand,
+    "fabric_getlinkmap" : GetLinkMapCommand,
+    "fabric_getroutingtable" : GetRoutingTableCommand
 }
