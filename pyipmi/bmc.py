@@ -536,6 +536,13 @@ class BMC(object):
     def node_rm_macaddr(self, iface=0, macaddr=None):
         return self.handle.node_rmmacaddr(iface=iface, macaddr=macaddr)
 
+    #
+    # fabric info commands
+    #
+
+    def fabric_info_get_routing_table(self, filename, tftp_addr=None):
+        return self.handle.fabric_info_getroutingtable(filename=filename,
+                                                       tftp_addr=tftp_addr)
 
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""

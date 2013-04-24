@@ -38,6 +38,22 @@ from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.fabric import *
 from pyipmi import IpmiError
 
+class CommandWithErrors(Command, ResponseParserMixIn):
+
+    def parse_response(self, out, err):
+        """Parse the response to a command
+
+        The 'ipmitool_response_format' attribute is used to determine
+        what parser to use to for interpreting the results.
+
+        Arguments:
+        out -- the text response of an command from stdout
+        err -- the text response of an command from stderr
+        """
+
+        out = out + err
+        return self.response_parser(out, err)
+
 class UpdateConfigCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric update config command"""
     name = "Update Config"
@@ -243,7 +259,7 @@ class GetRoutingTableCommand(Command, ResponseParserMixIn):
 
     def parse_response(self, out, err):
         return out.strip()
-        
+
     @property
     def ipmitool_args(self):
         if self._params['tftp_addr'] != None:
@@ -299,6 +315,9 @@ fabric_commands = {
     "fabric_getroutingtable" : GetRoutingTableCommand
     "fabric_addmacaddr" : AddMacAddrCommand,
     "fabric_rmmacaddr" : RmMacAddrCommand,
+
     "node_addmacaddr" : NodeAddMacAddrCommand,
     "node_rmmacaddr" : NodeRmMacAddrCommand,
+
+    "fabric_info_getroutingtable" : GetRoutingTableCommand,
 }
