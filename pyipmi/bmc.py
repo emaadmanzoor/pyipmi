@@ -548,6 +548,10 @@ class BMC(object):
         return self.handle.fabric_info_getlinkmap(filename=filename,
                                                   tftp_addr=tftp_addr)
 
+    def fabric_info_get_depth_chart(self, filename, tftp_addr=None):
+        return self.handle.fabric_info_getdepthchart(filename=filename,
+                                                     tftp_addr=tftp_addr)
+
 class LanBMC(BMC):
     """A BMC that's accessed over the LAN"""
     def __init__(self,

@@ -302,7 +302,6 @@ class GetDepthChartCommand(Command, ResponseParserMixIn):
             return ["cxoem", "fabric", "info", "depth_chart", "file",
                     self._params['filename']]
 
-
 fabric_commands = {
     "fabric_updateconfig"  :UpdateConfigCommand,
     "fabric_getnodeid"  : GetNodeIDCommand,
@@ -321,4 +320,5 @@ fabric_commands = {
 
     "fabric_info_getroutingtable" : GetRoutingTableCommand,
     "fabric_info_getlinkmap" : GetLinkMapCommand,
+    "fabric_info_getdepthchart" : GetDepthChartCommand,
 }
