@@ -320,4 +320,5 @@ fabric_commands = {
     "node_rmmacaddr" : NodeRmMacAddrCommand,
 
     "fabric_info_getroutingtable" : GetRoutingTableCommand,
+    "fabric_info_getlinkmap" : GetLinkMapCommand,
 }
