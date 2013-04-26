@@ -172,7 +172,7 @@ class GetLinkMapCommand(Command, ResponseParserMixIn):
         'Error' : {}
     }
 
-    def parse_respons(self, out, err):
+    def parse_response(self, out, err):
         return out.strip()
         
     @property
@@ -199,7 +199,7 @@ class GetRoutingTableCommand(Command, ResponseParserMixIn):
         'Error' : {}
     }
 
-    def parse_respons(self, out, err):
+    def parse_response(self, out, err):
         return out.strip()
         
     @property
@@ -217,6 +217,33 @@ class GetRoutingTableCommand(Command, ResponseParserMixIn):
             return ["cxoem", "fabric", "info", "routing_table", "file",
                     self._params['filename']]
 
+class GetDepthChartCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric info depth_chart command"""
+    name = "Get depth_chart command"
+    result_type = FabricGetDepthChartResult
+    response_fields = {
+        'File Name' : {},
+        'Error' : {}
+    }
+
+    def parse_response(self, out, err):
+        return out.strip()
+        
+    @property
+    def ipmitool_args(self):
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "info", "depth_chart", "tftp",
+                        tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "info", "depth_chart", "tftp",
+                        tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "info", "depth_chart", "file",
+                    self._params['filename']]
+
 
 fabric_commands = {
     "fabric_updateconfig"  :UpdateConfigCommand,
@@ -226,5 +253,6 @@ fabric_commands = {
     "fabric_getlinkspeed" : GetLinkspeedCommand,
     "fabric_getlinkstats" : GetLinkStatsCommand,
     "fabric_getlinkmap" : GetLinkMapCommand,
-    "fabric_getroutingtable" : GetRoutingTableCommand
+    "fabric_getroutingtable" : GetRoutingTableCommand,
+    "fabric_getdepthchart" : GetDepthChartCommand
 }

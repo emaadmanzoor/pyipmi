@@ -427,6 +427,10 @@ class BMC(object):
         return self.handle.fabric_getroutingtable(filename=filename,
                                                   tftp_addr=tftp_addr)
 
+    def fabric_get_depthchart(self, filename, tftp_addr=None):
+        return self.handle.fabric_getdepthchart(filename=filename,
+                                                tftp_addr=tftp_addr)
+
     #
     # fabric config commands
     #

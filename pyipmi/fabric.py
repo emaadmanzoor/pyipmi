@@ -57,3 +57,7 @@ class FabricGetLinkMapResult(object):
 class FabricGetRoutingTableResult(object):
     """Object to hold the fabric routing_table results"""
     pass
+
+class FabricGetDepthChartResult(object):
+    """Object to hold the fabric depth_chart results"""
+    pass
