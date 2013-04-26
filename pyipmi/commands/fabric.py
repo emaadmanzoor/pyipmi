@@ -310,8 +310,8 @@ fabric_commands = {
     "fabric_getlinkspeed" : GetLinkspeedCommand,
     "fabric_getlinkstats" : GetLinkStatsCommand,
     "fabric_getlinkmap" : GetLinkMapCommand,
-    "fabric_getdepthchart" : GetDepthChartCommand
-    "fabric_getroutingtable" : GetRoutingTableCommand
+    "fabric_getdepthchart" : GetDepthChartCommand,
+    "fabric_getroutingtable" : GetRoutingTableCommand,
     "fabric_addmacaddr" : AddMacAddrCommand,
     "fabric_rmmacaddr" : RmMacAddrCommand,
 
