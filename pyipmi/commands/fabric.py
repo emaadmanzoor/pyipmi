@@ -128,10 +128,13 @@ class AddMacAddrCommand(Command, ResponseParserMixIn):
 
     @property
     def ipmitool_args(self):
-        return ['cxoem', 'fabric', 'add',
-		'macaddr', self._params['macaddr'],
-		'node', self._params['nodeid'],
-		'interface', self._params['iface']]
+        result = ['cxoem', 'fabric', 'add',
+                'macaddr', self._params['macaddr'],
+                'interface', self._params['iface']]
+        if self._params['nodeid']:
+            result += ['node', self._params['nodeid']]
+        return result
+
 
 class RmMacAddrCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric rm macaddr command"""
@@ -139,30 +142,12 @@ class RmMacAddrCommand(Command, ResponseParserMixIn):
 
     @property
     def ipmitool_args(self):
-        return ['cxoem', 'fabric', 'rm',
-		'macaddr', self._params['macaddr'],
-		'node', self._params['nodeid'],
-		'interface', self._params['iface']]
-
-class NodeAddMacAddrCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric add macaddr command to a node"""
-    name = "Node Add macaddr command"
-
-    @property
-    def ipmitool_args(self):
-        return ['cxoem', 'fabric', 'add',
-		'macaddr', self._params['macaddr'],
-		'interface', self._params['iface']]
-
-class NodeRmMacAddrCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric rm macaddr command from a node"""
-    name = "Node Remove macaddr command"
-
-    @property
-    def ipmitool_args(self):
-        return ['cxoem', 'fabric', 'rm',
-		'macaddr', self._params['macaddr'],
-		'interface', self._params['iface']]
+        result = ['cxoem', 'fabric', 'rm',
+                'macaddr', self._params['macaddr'],
+                'interface', self._params['iface']]
+        if self._params['nodeid']:
+            result += ['node', self._params['nodeid']]
+        return result
 
 class GetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get linkspeed command"""
@@ -314,9 +299,6 @@ fabric_commands = {
     "fabric_getroutingtable" : GetRoutingTableCommand,
     "fabric_addmacaddr" : AddMacAddrCommand,
     "fabric_rmmacaddr" : RmMacAddrCommand,
-
-    "node_addmacaddr" : NodeAddMacAddrCommand,
-    "node_rmmacaddr" : NodeRmMacAddrCommand,
 
     "fabric_info_getroutingtable" : GetRoutingTableCommand,
     "fabric_info_getlinkmap" : GetLinkMapCommand,
