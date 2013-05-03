@@ -184,12 +184,12 @@ class GetIPAddrBase(Command, ResponseParserMixIn):
 class GetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get linkspeed command"""
     name = "Get global linkspeed command"
-    result_type = int
+    result_type = float
 
     def parse_response(self, out, err):
         if err:
             raise IpmiError(err)
-        return int(out)
+        return float(out)
 
     ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'linkspeed']
 
