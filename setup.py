@@ -32,7 +32,7 @@ from setuptools import setup
 
 setup(
     name='pyipmi',
-    version='0.7.0',
+    version='0.7.1',
     packages=['pyipmi',
                 'pyipmi.commands',
                 'pyipmi.tools'],
