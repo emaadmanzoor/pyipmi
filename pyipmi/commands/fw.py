@@ -33,25 +33,8 @@ from .. import Command, IpmiError
 from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.fw import *
 
-class CommandWithErrors(Command, ResponseParserMixIn):
 
-    # TODO: Generalize this to base class?  Better way to include
-    # error output in parsing?
-    def parse_response(self, out, err):
-        """Parse the response to a command
-
-        The 'ipmitool_response_format' attribute is used to determine
-        what parser to use to for interpreting the results.
-
-        Arguments:
-        out -- the text response of an command from stdout
-        err -- the text response of an command from stderr
-        """
-
-        out = out + err
-        return self.response_parser(out, err)
-
-class FWDownloadCommand(CommandWithErrors):
+class FWDownloadCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw download IPMI command
 
     """
@@ -78,7 +61,7 @@ class FWDownloadCommand(CommandWithErrors):
                 "tftp", self._params['tftp_addr']]
 
 
-class FWUploadCommand(CommandWithErrors):
+class FWUploadCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw upload IPMI command
 
     """
@@ -105,7 +88,7 @@ class FWUploadCommand(CommandWithErrors):
                 "tftp", self._params['tftp_addr']]
 
 
-class FWRegisterReadCommand(CommandWithErrors):
+class FWRegisterReadCommand(Command, ResponseParserMixIn):
     """ cxoem fw register read command """
     name = "Register Firmware Read"
     result_type = FWRegisterReadResult
@@ -128,7 +111,7 @@ class FWRegisterReadCommand(CommandWithErrors):
                 self._params['filename'], self._params['image_type']]
 
 
-class FWRegisterWriteCommand(CommandWithErrors):
+class FWRegisterWriteCommand(Command, ResponseParserMixIn):
     """ cxoem fw register write command """
     name = "Register Firmware Write"
     result_type = FWRegisterWriteResult
@@ -151,7 +134,7 @@ class FWRegisterWriteCommand(CommandWithErrors):
                 self._params['filename'], self._params['image_type']]
 
 
-class FWActivateCommand(CommandWithErrors):
+class FWActivateCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw activate IPMI command
 
     """
@@ -170,7 +153,7 @@ class FWActivateCommand(CommandWithErrors):
         return ["cxoem", "fw", "activate", self._params['partition']]
 
 
-class FWInvalidateCommand(CommandWithErrors):
+class FWInvalidateCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw deactivate IPMI command
 
     """
@@ -189,7 +172,7 @@ class FWInvalidateCommand(CommandWithErrors):
         return ["cxoem", "fw", "invalidate", self._params['partition']]
 
 
-class FWFlagsCommand(CommandWithErrors):
+class FWFlagsCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw flags IPMI command
 
     """
@@ -209,7 +192,7 @@ class FWFlagsCommand(CommandWithErrors):
                 self._params['flags']]
 
 
-class FWStatusCommand(CommandWithErrors):
+class FWStatusCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw status IPMI command
 
     """
@@ -229,7 +212,7 @@ class FWStatusCommand(CommandWithErrors):
         return ["cxoem", "fw", "status", self._params['tftp_handle']]
 
 
-class FWCheckCommand(CommandWithErrors):
+class FWCheckCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw check IPMI command
 
     """
@@ -251,7 +234,7 @@ class FWCheckCommand(CommandWithErrors):
         return ["cxoem", "fw", "check", self._params['partition']]
 
 
-class FWCancelCommand(CommandWithErrors):
+class FWCancelCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw cancel IPMI command
 
     """
@@ -270,7 +253,7 @@ class FWCancelCommand(CommandWithErrors):
         return ["cxoem", "fw", "cancel", self._params['job_id']]
 
 
-class FWInfoCommand(CommandWithErrors):
+class FWInfoCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw info IPMI command
 
     """
@@ -296,7 +279,7 @@ class FWInfoCommand(CommandWithErrors):
     ipmitool_args = ["cxoem", "fw", "info"]
 
 
-class FWGetCommand(CommandWithErrors):
+class FWGetCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw get IPMI command
 
     """
@@ -322,7 +305,7 @@ class FWGetCommand(CommandWithErrors):
                 "tftp", self._params['tftp_addr']]
 
 
-class FWPutCommand(CommandWithErrors):
+class FWPutCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw put IPMI command
 
     """
@@ -348,7 +331,7 @@ class FWPutCommand(CommandWithErrors):
                 "tftp", self._params['tftp_addr']]
 
 
-class FWResetCommand(CommandWithErrors):
+class FWResetCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw reset IPMI command
 
     """
@@ -364,7 +347,7 @@ class FWResetCommand(CommandWithErrors):
 
 
 
-class FWVersionCommand(CommandWithErrors):
+class FWVersionCommand(Command, ResponseParserMixIn):
     """Describes the cxoem fw version IPMI command
 
     """
