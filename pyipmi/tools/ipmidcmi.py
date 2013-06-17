@@ -31,7 +31,9 @@
 
 """An implementation of Tool for ipmi-dcmi (module of FreeIPMI) support"""
 
-import subprocess, sys, pexpect
+import subprocess, sys
+if sys.platform != 'win32':
+    import pexpect
 from pyipmi import Tool, IpmiError, InteractiveCommand
 
 class IpmiDcmi(Tool):

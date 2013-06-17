@@ -31,7 +31,9 @@
 
 """An implementation of Tool for ipmitool support"""
 
-import os, subprocess, pexpect
+import os, subprocess, sys
+if sys.platform != 'win32':
+    import pexpect
 from pyipmi import Tool, InteractiveCommand
 
 class IpmiTool(Tool):

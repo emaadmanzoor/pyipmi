@@ -33,8 +33,9 @@
 
 from sys import stderr
 
-import pexpect
-from pexpect import TIMEOUT, EOF
+if sys.platform != 'win32':
+    import pexpect
+    from pexpect import TIMEOUT, EOF
 from pyipmi import IpmiError
 
 ESCAPE_SEQUENCES = {
