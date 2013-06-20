@@ -264,6 +264,10 @@ class ResponseParserMixIn(object):
 
     def handle_command_error(self, out, err):
         """Handle an error from running the command"""
-        raise IpmiError(err.strip())
+        part = err.partition(":")
+        if part[1] and part[0].strip().upper() == "ERROR":
+            raise IpmiError(part[2].strip())
+        else:
+            raise IpmiError(err.strip())
 
     response_parser = parse_colon_record
