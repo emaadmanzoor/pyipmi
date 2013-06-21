@@ -31,7 +31,7 @@
 
 """Helper objects for various SOL-related commands"""
 
-from sys import stderr
+from sys import stderr, platform
 
 if sys.platform != 'win32':
     import pexpect
