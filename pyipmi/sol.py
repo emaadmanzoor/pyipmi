@@ -33,7 +33,7 @@
 
 from sys import stderr, platform
 
-if sys.platform != 'win32':
+if platform != 'win32':
     import pexpect
     from pexpect import TIMEOUT, EOF
 from pyipmi import IpmiError
