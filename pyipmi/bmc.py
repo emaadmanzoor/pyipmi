@@ -492,6 +492,18 @@ class BMC(object):
     def fabric_config_set_link_users_factor(self, lu_factor):
         return self.handle.fabric_config_setlinkusersfactor(lu_factor=lu_factor)
 
+    def fabric_config_set_macaddr_base(self, macaddr):
+        return self.handle.fabric_config_set_macaddr_base(macaddr=macaddr)
+
+    def fabric_config_get_macaddr_base(self):
+        return self.handle.fabric_config_get_macaddr_base()
+
+    def fabric_config_set_macaddr_mask(self, mask):
+        return self.handle.fabric_config_set_macaddr_mask(mask=mask)
+
+    def fabric_config_get_macaddr_mask(self):
+        return self.handle.fabric_config_get_macaddr_mask()
+
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
 
