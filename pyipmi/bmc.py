@@ -456,6 +456,11 @@ class BMC(object):
         return self.handle.fabric_config_getuplinkinfo(filename=filename,
                                                   tftp_addr=tftp_addr)
 
+    def fabric_config_get_uplink_speed(self, tftp_addr=None):
+        return self.handle.fabric_config_getuplinkspeed(
+            tftp_addr=tftp_addr
+        )
+
     def fabric_config_get_ip_src(self):
         return self.handle.fabric_config_getipsrc()
 

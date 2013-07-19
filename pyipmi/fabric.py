@@ -46,6 +46,10 @@ class FabricGetUplinkInfoResult(object):
     """Object to hold fabric uplink_info results"""
     pass
 
+class FabricGetUplinkSpeedResult(object):
+    """Object to hold fabric uplink_info results"""
+    pass
+
 class FabricGetLinkStatsResult(object):
     """Object to hold the fabric link_stats results"""
     pass
