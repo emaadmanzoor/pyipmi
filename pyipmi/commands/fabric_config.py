@@ -105,20 +105,6 @@ class GetUplinkInfoCommand(CommandWithErrors):
                     self._params['filename']]
 
 
-class GetUplinkSpeedCommand(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric config get uplink_speed command"""
-    name = "Get uplink speed command"
-    result_type = int
-
-    def parse_response(self, out, err):
-    """Returns the output given from running the command"""
-        if err:
-            raise IpmiError(err)
-        return int(out)
-
-    ipmitool_args = ['cxoem', 'fabric', 'get', 'uplink_speed']
-
-
 class GetMACAddressesCommand(CommandWithErrors):
     """ Describes the cxoem fabric list_macs IPMI command
     """
@@ -296,7 +282,6 @@ fabric_config_commands = {
     "fabric_config_getlinkspeedpolicy" : GetLinkspeedPolicyCommand,
     "fabric_config_setlinkspeedpolicy" : SetLinkspeedPolicyCommand,
     "fabric_config_getuplinkinfo" : GetUplinkInfoCommand,
-    "fabric_config_getuplinkspeed" : GetUplinkSpeedCommand,
     "fabric_config_getuplink" : GetUplinkCommand,
     "fabric_config_setuplink" : SetUplinkCommand,
     "fabric_config_getlinkusersfactor" : GetLinkUsersFactorCommand,

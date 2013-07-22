@@ -393,10 +393,13 @@ class BMC(object):
     def user_priv(self, userid, priv_level, channel=None):
         return self.handle.user_priv(userid=userid, priv_level=priv_level,
                                      channel=channel)
-    #
-    # fabric commands
-    #
+    """Fabric commands
 
+    In pyipmi/fabric.py, these commands are mapped to classes that 
+    are subclasses of the Command class. Those subclasses contain the
+    string arguments that are run by pyipmi/ipmitool.py
+
+    """
     def fabric_update_config(self):
         return self.handle.fabric_updateconfig()
 
@@ -437,9 +440,12 @@ class BMC(object):
     def fabric_rm_macaddr(self, iface, macaddr, nodeid=None):
         return self.handle.fabric_rmmacaddr(nodeid=nodeid, iface=iface, macaddr=macaddr)
 
+    def fabric_get_uplink_speed(self):
+        return self.handle.fabric_getuplinkspeed()
+
     """Fabric config commands
 
-    In pyipmi/fabric_config.py these commands are mapped to classes that 
+    In pyipmi/fabric_config.py, these commands are mapped to classes that 
     are subclasses of the Command class. Those subclasses contain the
     string arguments that are run by pyipmi/ipmitool.py
 
@@ -459,9 +465,6 @@ class BMC(object):
     def fabric_config_get_uplink_info(self, filename, tftp_addr=None):
         return self.handle.fabric_config_getuplinkinfo(filename=filename,
                                                   tftp_addr=tftp_addr)
-
-    def fabric_config_get_uplink_speed(self, tftp_addr=None):
-        return self.handle.fabric_config_getuplinkspeed()
 
     def fabric_config_get_ip_src(self):
         return self.handle.fabric_config_getipsrc()

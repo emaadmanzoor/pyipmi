@@ -287,6 +287,21 @@ class GetDepthChartCommand(Command, ResponseParserMixIn):
             return ["cxoem", "fabric", "info", "depth_chart", "file",
                     self._params['filename']]
 
+
+class GetUplinkSpeedCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric get uplink_speed command"""
+    name = "Get uplink speed command"
+    result_type = int
+
+    def parse_response(self, out, err):
+        """Returns the output given from running the command"""
+        if err:
+            raise IpmiError(err)
+        return int(out)
+
+    ipmitool_args = ['cxoem', 'fabric', 'get', 'uplink_speed']
+
+
 fabric_commands = {
     "fabric_updateconfig"  :UpdateConfigCommand,
     "fabric_getnodeid"  : GetNodeIDCommand,
@@ -299,8 +314,8 @@ fabric_commands = {
     "fabric_getroutingtable" : GetRoutingTableCommand,
     "fabric_addmacaddr" : AddMacAddrCommand,
     "fabric_rmmacaddr" : RmMacAddrCommand,
-
     "fabric_info_getroutingtable" : GetRoutingTableCommand,
     "fabric_info_getlinkmap" : GetLinkMapCommand,
     "fabric_info_getdepthchart" : GetDepthChartCommand,
+    "fabric_getuplinkspeed" : GetUplinkSpeedCommand
 }
