@@ -443,6 +443,9 @@ class BMC(object):
     def fabric_get_uplink_speed(self):
         return self.handle.fabric_getuplinkspeed()
 
+    def fabric_get_uplink_info(self):
+        return self.handle.fabric_getuplinkinfo()
+
     """Fabric config commands
 
     In pyipmi/fabric_config.py, these commands are mapped to classes that 
