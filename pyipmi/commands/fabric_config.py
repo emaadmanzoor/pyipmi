@@ -111,13 +111,12 @@ class GetUplinkSpeedCommand(Command, ResponseParserMixIn):
     result_type = int
 
     def parse_response(self, out, err):
+    """Returns the output given from running the command"""
         if err:
             raise IpmiError(err)
         return int(out)
 
-    @property
-    def ipmitool_args(self):
-        return ['cxoem', 'fabric', 'get', 'uplink_speed']
+    ipmitool_args = ['cxoem', 'fabric', 'get', 'uplink_speed']
 
 
 class GetMACAddressesCommand(CommandWithErrors):
