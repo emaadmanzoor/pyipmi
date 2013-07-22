@@ -269,6 +269,43 @@ class SetLinkUsersFactorCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'lu_factor',
                    self._params['lu_factor']]
 
+class SetMACAddressBaseCommand(Command, ResponseParserMixIn):
+    name = "Set the base MAC address for a custom range"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'set', 'macaddr_base',
+                self._params['macaddr']]
+
+class GetMACAddressBaseCommand(Command, ResponseParserMixIn):
+    name = "Get the base MAC address for a custom range"
+    result_type = str
+    ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'macaddr_base']
+
+    def parse_response(self, out, err):
+        if err:
+            raise IpmiError(err)
+        return out.strip()
+
+class SetMACAddressMaskCommand(Command, ResponseParserMixIn):
+    name = "Set the MAC address mask for a custom range"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'set', 'macaddr_mask',
+                self._params['mask']]
+
+class GetMACAddressMaskCommand(Command, ResponseParserMixIn):
+    name = "Get the MAC address mask for a custom range"
+    result_type = str
+    ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'macaddr_mask']
+
+    def parse_response(self, out, err):
+        if err:
+            raise IpmiError(err)
+        return out.strip()
+
+
 fabric_config_commands = {
     "fabric_config_getipinfo"  : GetIPInfoCommand,
     "fabric_config_getmacaddresses" : GetMACAddressesCommand,
@@ -285,5 +322,9 @@ fabric_config_commands = {
     "fabric_config_getuplink" : GetUplinkCommand,
     "fabric_config_setuplink" : SetUplinkCommand,
     "fabric_config_getlinkusersfactor" : GetLinkUsersFactorCommand,
-    "fabric_config_setlinkusersfactor" : SetLinkUsersFactorCommand
+    "fabric_config_setlinkusersfactor" : SetLinkUsersFactorCommand,
+    "fabric_config_set_macaddr_base" : SetMACAddressBaseCommand,
+    "fabric_config_get_macaddr_base" : GetMACAddressBaseCommand,
+    "fabric_config_set_macaddr_mask" : SetMACAddressMaskCommand,
+    "fabric_config_get_macaddr_mask" : GetMACAddressMaskCommand
 }
