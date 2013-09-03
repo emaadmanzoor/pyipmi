@@ -481,6 +481,12 @@ class BMC(object):
     def fabric_config_get_ip_addr_base(self):
         return self.handle.fabric_config_get_ipaddr_base()
 
+    def fabric_config_set_ipaddr_base(self, ipaddr):
+        return self.handle.fabric_config_set_ipaddr_base(ipaddr=ipaddr)
+
+    def fabric_config_set_ipaddr_num(self, num):
+        return self.handle.fabric_config_set_ipaddr_num(num=num)
+
     def fabric_config_get_linkspeed(self):
         return self.handle.fabric_config_getlinkspeed()
 
@@ -516,6 +522,12 @@ class BMC(object):
 
     def fabric_config_get_macaddr_mask(self):
         return self.handle.fabric_config_get_macaddr_mask()
+
+    def fabric_config_set_netmask(self, netmask):
+        return self.handle.fabric_config_set_netmask(netmask=netmask)
+
+    def fabric_config_set_defgw(self, ipaddr):
+        return self.handle.fabric_config_set_defgw(ipaddr=ipaddr)
 
     def set_bootdev(self, device, options=None):
         return self.handle.bootdev_set(device=device, options=options)
