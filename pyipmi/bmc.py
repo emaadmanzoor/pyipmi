@@ -484,9 +484,6 @@ class BMC(object):
     def fabric_config_set_ipaddr_base(self, ipaddr):
         return self.handle.fabric_config_set_ipaddr_base(ipaddr=ipaddr)
 
-    def fabric_config_set_ipaddr_num(self, num):
-        return self.handle.fabric_config_set_ipaddr_num(num=num)
-
     def fabric_config_get_linkspeed(self):
         return self.handle.fabric_config_getlinkspeed()
 

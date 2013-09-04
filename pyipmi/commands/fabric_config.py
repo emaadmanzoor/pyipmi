@@ -189,13 +189,6 @@ class SetIPAddrBase(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'ipaddr_base',
                 self._params['ipaddr']]
 
-class SetIPAddrNum(Command, ResponseParserMixIn):
-    """Describes the ipmitool fabric config set ipaddr_num command"""
-    @property
-    def ipmitool_args(self):
-        return ['cxoem', 'fabric', 'config', 'set', 'ipaddr_num',
-                self._params['num']]
-
 class GetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get linkspeed command"""
     name = "Get global linkspeed command"
@@ -341,7 +334,6 @@ fabric_config_commands = {
     "fabric_config_factory_default" : FactoryDefaultCommand,
     "fabric_config_get_ipaddr_base" : GetIPAddrBase,
     "fabric_config_set_ipaddr_base" : SetIPAddrBase,
-    "fabric_config_set_ipaddr_num" : SetIPAddrNum,
     "fabric_config_getlinkspeed" : GetLinkspeedCommand,
     "fabric_config_setlinkspeed" : SetLinkspeedCommand,
     "fabric_config_getlinkspeedpolicy" : GetLinkspeedPolicyCommand,
