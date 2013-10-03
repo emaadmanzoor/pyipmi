@@ -49,16 +49,25 @@ class InfoBasicCommand(Command, ResponseParserMixIn):
 
         if out.startswith("Calxeda SoC"):
             for line in out.splitlines():
-                if line.lstrip().startswith("Calxeda SoC"):
+                line = line.lstrip()
+                if line.startswith("Calxeda SoC"):
                     result.iana = int(line.split()[2].strip("()"), 16)
-                elif line.lstrip().startswith("Firmware Version"):
+                elif line.startswith("Firmware Version"):
                     result.firmware_version = line.partition(":")[2].strip()
-                elif line.lstrip().startswith("SoC Version"):
+                elif line.startswith("SoC Version"):
                     result.ecme_version = line.partition(":")[2].strip()
-                elif line.lstrip().startswith("Build Number"):
+                elif line.startswith("Build Number"):
                     result.ecme_build_number = line.partition(":")[2].strip()
-                elif line.lstrip().startswith("Timestamp"):
+                elif line.startswith("Timestamp"):
                     result.ecme_timestamp = int(line.split()[1].strip(":()"))
+                elif line.startswith("Node EEPROM Image Version"):
+                    result.node_eeprom_version = line.partition(":")[2].strip()
+                elif line.startswith("Node EEPROM CFG id"):
+                    result.node_eeprom_config = line.partition(":")[2].strip()
+                elif line.startswith("Slot EEPROM Image Version"):
+                    result.slot_eeprom_version = line.partition(":")[2].strip()
+                elif line.startswith("Slot EEPROM CFG id"):
+                    result.slot_eeprom_config = line.partition(":")[2].strip()
         elif err.startswith("Error: "):
             raise IpmiError(err.splitlines()[0][7:])
         else:
