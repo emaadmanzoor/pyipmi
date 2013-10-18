@@ -324,6 +324,29 @@ class SetDefaultGatewayCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'defgw',
                 self._params['ipaddr']]
 
+class GetSCDiscoveryCommand(CommandWithErrors):
+    name = "Retrieve fabric SC discovery info"
+    result_type = str
+
+    response_fields = {
+        'File Name' : {},
+        'Error' : {}
+    }
+
+    @property
+    def ipmitool_args(self):
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "config", "get", "sc_discovery", "tftp",
+                        tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "config", "get", "sc_discovery", "tftp",
+                        tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "config", "get", "sc_discovery", "file",
+                    self._params['filename']]
 
 fabric_config_commands = {
     "fabric_config_getipinfo"  : GetIPInfoCommand,
@@ -349,4 +372,5 @@ fabric_config_commands = {
     "fabric_config_get_macaddr_mask" : GetMACAddressMaskCommand,
     "fabric_config_set_netmask": SetNetmaskCommand,
     "fabric_config_set_defgw": SetDefaultGatewayCommand,
+    "fabric_config_get_sc_discovery" : GetSCDiscoveryCommand,
 }
