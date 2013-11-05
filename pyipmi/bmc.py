@@ -230,6 +230,10 @@ class BMC(object):
         """List SEL entries"""
         return self.handle.sel_list()
 
+    def sel_elist(self):
+        """Extended SEL list"""
+        return self.handle.sel_elist()
+
     def sel_clear(self):
         """Clear the SEL"""
         return self.handle.sel_clear()

@@ -217,6 +217,18 @@ class SELListCommand(Command, ResponseParserMixIn):
     result_type = list
 
 
+class SELElistCommand(Command, ResponseParserMixIn):
+    """ Describes the SEL Elist command """
+    name = "SEL elist"
+    ipmitool_args = ["sel", "elist"]
+    result_type = list
+
+    def response_parser(self, resp, err):
+        entries = [x.strip() for x in resp.splitlines()]
+        entries = [x for x in entries if x != '']
+        return entries
+
+
 sel_commands = {
     "set_sel_time" : SELTimeSetCommand,
     "get_sel_time" : SELTimeGetCommand,
@@ -225,5 +237,6 @@ sel_commands = {
     "sel_add" : SELAddCommand,
     "sel_get" : SELGetCommand,
     "sel_clear" : SELClearCommand,
-    "sel_list" : SELListCommand
+    "sel_list" : SELListCommand,
+    "sel_elist" : SELElistCommand
 }
