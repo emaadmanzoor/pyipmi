@@ -30,9 +30,17 @@
 
 from setuptools import setup
 
+def get_version():
+    """ Parse __init__.py to find the package version """
+    for line in open("pyipmi/__init__.py"):
+        key, delim, value = line.partition("=")
+        if key.strip() == "__version__" and delim == "=":
+            return value.strip().strip("'\"")
+    raise Exception("Failed to parse pyipmi package version from __init__.py")
+
 setup(
     name='pyipmi',
-    version='0.9.0',
+    version=get_version(),
     packages=['pyipmi',
                 'pyipmi.commands',
                 'pyipmi.tools'],
