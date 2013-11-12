@@ -533,6 +533,9 @@ class BMC(object):
     def fabric_config_set_defgw(self, ipaddr):
         return self.handle.fabric_config_set_defgw(ipaddr=ipaddr)
 
+    def fabric_config_set_nodenum_offset(self, offset):
+        return self.handle.fabric_config_set_nodenum_offset(offset=offset)
+
     def fabric_config_get_sc_discovery(self, filename, tftp_addr=None):
         return self.handle.fabric_config_get_sc_discovery(
             filename=filename, tftp_addr=tftp_addr)

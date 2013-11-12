@@ -324,6 +324,12 @@ class SetDefaultGatewayCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'defgw',
                 self._params['ipaddr']]
 
+class SetNodenumOffsetCommand(Command, ResponseParserMixIn):
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'set', 'nodenum_offset',
+                self._params['offset']]
+
 class GetSCDiscoveryCommand(CommandWithErrors):
     name = "Retrieve fabric SC discovery info"
     result_type = str
@@ -372,5 +378,6 @@ fabric_config_commands = {
     "fabric_config_get_macaddr_mask" : GetMACAddressMaskCommand,
     "fabric_config_set_netmask": SetNetmaskCommand,
     "fabric_config_set_defgw": SetDefaultGatewayCommand,
+    "fabric_config_set_nodenum_offset": SetNodenumOffsetCommand,
     "fabric_config_get_sc_discovery" : GetSCDiscoveryCommand,
 }
