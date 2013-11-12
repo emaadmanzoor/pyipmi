@@ -315,6 +315,18 @@ class GetUplinkInfoCommand(Command, ResponseParserMixIn):
 
     ipmitool_args = ['cxoem', 'fabric', 'get', 'uplink_info']
 
+class GetChassisSerialNumCommand(Command, ResponseParserMixIn):
+    """Describes the ipmi fabric get chassis_serial_num command"""
+    name = "Get chassis serial num command"
+    result_type = str
+
+    def parse_response(self, out, err):
+        """returns the output given from running the command"""
+        if err:
+            raise IpmiError(err)
+        return str(out).strip()
+
+    ipmitool_args = ['cxoem', 'fabric', 'get', 'chassis_serial_num']
 
 fabric_commands = {
     "fabric_updateconfig"  :UpdateConfigCommand,
@@ -332,5 +344,6 @@ fabric_commands = {
     "fabric_info_getlinkmap" : GetLinkMapCommand,
     "fabric_info_getdepthchart" : GetDepthChartCommand,
     "fabric_getuplinkspeed" : GetUplinkSpeedCommand,
-    "fabric_getuplinkinfo" : GetUplinkInfoCommand
+    "fabric_getuplinkinfo" : GetUplinkInfoCommand,
+    "fabric_getchassisserialnum" : GetChassisSerialNumCommand,
 }
