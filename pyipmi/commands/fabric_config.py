@@ -330,6 +330,14 @@ class SetNodenumOffsetCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'nodenum_offset',
                 self._params['offset']]
 
+class AddSCRouteCommand(Command, ResponseParserMixIn):
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'add', 'sc_route',
+                'node_start', self._params['node_start'],
+                'node_end', self._params['node_end'],
+                'via', self._params['via']]
+
 class GetSCDiscoveryCommand(CommandWithErrors):
     name = "Retrieve fabric SC discovery info"
     result_type = str
@@ -380,4 +388,5 @@ fabric_config_commands = {
     "fabric_config_set_defgw": SetDefaultGatewayCommand,
     "fabric_config_set_nodenum_offset": SetNodenumOffsetCommand,
     "fabric_config_get_sc_discovery" : GetSCDiscoveryCommand,
+    "fabric_config_add_sc_route" : AddSCRouteCommand,
 }
