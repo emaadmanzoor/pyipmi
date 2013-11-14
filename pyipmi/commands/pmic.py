@@ -30,12 +30,10 @@
 
 
 from .. import Command
-from pyipmi.info import *
 from pyipmi.tools.responseparser import ResponseParserMixIn
-from pyipmi import IpmiError
 
 
-class PMICGetVersionCommand(Command):
+class PMICGetVersionCommand(Command, ResponseParserMixIn):
     """ Describes the pmic get version command """
     result_type = str
     ipmitool_args = ['cxoem', 'pmic', 'get', 'version']
