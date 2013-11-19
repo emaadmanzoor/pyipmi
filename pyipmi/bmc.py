@@ -450,6 +450,9 @@ class BMC(object):
     def fabric_get_uplink_info(self):
         return self.handle.fabric_getuplinkinfo()
 
+    def fabric_set_chassis_serial_num(self, serial):
+        return self.handle.fabric_setchassisserialnum(serial=serial)
+
     def fabric_get_chassis_serial_num(self):
         return self.handle.fabric_getchassisserialnum()
 

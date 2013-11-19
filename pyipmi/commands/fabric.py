@@ -328,6 +328,15 @@ class GetChassisSerialNumCommand(Command, ResponseParserMixIn):
 
     ipmitool_args = ['cxoem', 'fabric', 'get', 'chassis_serial_num']
 
+class SetChassisSerialNumCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric set chassis_serial_num_command"""
+    name = "Set chassis serial num command"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'set', 'chassis_serial_num',
+                self._params['serial']]
+
 fabric_commands = {
     "fabric_updateconfig"  :UpdateConfigCommand,
     "fabric_getnodeid"  : GetNodeIDCommand,
@@ -346,4 +355,5 @@ fabric_commands = {
     "fabric_getuplinkspeed" : GetUplinkSpeedCommand,
     "fabric_getuplinkinfo" : GetUplinkInfoCommand,
     "fabric_getchassisserialnum" : GetChassisSerialNumCommand,
+    "fabric_setchassisserialnum" : SetChassisSerialNumCommand,
 }
