@@ -56,7 +56,6 @@ class UserListCommand(Command, ResponseParserMixIn):
             user_info_list = line.strip().split()
             if len(user_info_list) < 5:
                 continue
-
             key = line[0:3].strip()
             user_info.name = line[4:20].strip()
             user_info.callin = line[22:28].strip()

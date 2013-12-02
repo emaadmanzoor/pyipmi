@@ -217,7 +217,7 @@ class GetLinkMapCommand(Command, ResponseParserMixIn):
 
     def parse_response(self, out, err):
         return out.strip()
-        
+
     @property
     def ipmitool_args(self):
         if self._params['tftp_addr'] != None:
@@ -271,7 +271,7 @@ class GetDepthChartCommand(Command, ResponseParserMixIn):
 
     def parse_response(self, out, err):
         return out.strip()
-        
+
     @property
     def ipmitool_args(self):
         if self._params['tftp_addr'] != None:
