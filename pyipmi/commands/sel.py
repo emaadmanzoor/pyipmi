@@ -62,7 +62,7 @@ class SELTimeGetCommand(Command, ResponseParserMixIn):
     """Describes the Get SEL Time command"""
 
     def response_parser(self, resp, err):
-        """A helper function to parse a timestamp returned from 
+        """A helper function to parse a timestamp returned from
         an 'sel time get' command
         """
 
@@ -91,7 +91,7 @@ class SELInfoCommand(Command, ResponseParserMixIn):
     response_fields = {
         'Version' : {'parser': version_parser},
         'Entries' : {'parser': lambda s: int(s)},
-        'Free Space' : {'parser': lambda s: int(s[:-6])}, #removes ' bytes'
+        'Free Space' : {'parser': lambda s: int(s[:-6])},  # removes ' bytes'
         'Last Add Time' : {'parser': lambda ts: SELTimestamp(ts)},
         'Last Del Time' : {'parser': lambda ts: SELTimestamp(ts)},
         'Overflow' : {'parser': str2bool},
@@ -118,7 +118,7 @@ class SELAllocInfoCommand(Command, ResponseParserMixIn):
 class SELAddCommand(Command, ResponseParserMixIn):
     """Describes the sel add command"""
 
-    #TODO: get response data from ipmitool
+    # TODO: get response data from ipmitool
 
     name = "SEL Add"
 
@@ -185,9 +185,9 @@ class SELGetCommand(Command, ResponseParserMixIn):
         'Timestamp': {},
         'Generator ID': {'parser': hex_parser},
         'EvM Revision': {'parser': hex_parser},
-        'Sensor Type': {}, #TODO: covert to hex code
+        'Sensor Type': {},  # TODO: covert to hex code
         'Sensor Number': {'parser': hex_parser},
-        'Event Type': {}, #TODO: convert to hex code
+        'Event Type': {},  # TODO: convert to hex code
         'Event Direction': {'parser': direction_parser},
         'Event Data': {'parser': event_data_parser},
         'Description': {}
@@ -210,7 +210,7 @@ class SELListCommand(Command, ResponseParserMixIn):
     def response_parser(self, resp, err):
         sel_list = resp.strip().split('\n')
         sel_list = map(string.strip, sel_list)
-        return filter(lambda s: s != '', sel_list) # remove blank entries
+        return filter(lambda s: s != '', sel_list)  # remove blank entries
 
     name = "List SEL"
     ipmitool_args = ["sel", "list"]
