@@ -34,6 +34,7 @@ from pyipmi.tools.responseparser import ResponseParserMixIn
 from pyipmi.fabric import *
 from pyipmi import IpmiError
 
+
 class CommandWithErrors(Command, ResponseParserMixIn):
 
     def parse_response(self, out, err):
@@ -50,6 +51,7 @@ class CommandWithErrors(Command, ResponseParserMixIn):
         out = out + err
         return self.response_parser(out, err)
 
+
 class GetIPInfoCommand(CommandWithErrors):
     """ Describes the cxoem fabric list_ip_addrs IPMI command
     """
@@ -58,8 +60,8 @@ class GetIPInfoCommand(CommandWithErrors):
     result_type = FabricGetIPInfoResult
 
     response_fields = {
-        'File Name' : {},
-        'Error' : {}
+        'File Name': {},
+        'Error': {}
     }
 
     @property
@@ -77,6 +79,7 @@ class GetIPInfoCommand(CommandWithErrors):
             return ["cxoem", "fabric", "config", "get", "ipinfo", "file",
                     self._params['filename']]
 
+
 class GetUplinkInfoCommand(CommandWithErrors):
     """ Describes the cxoem fabric list_ip_addrs IPMI command
     """
@@ -85,8 +88,8 @@ class GetUplinkInfoCommand(CommandWithErrors):
     result_type = FabricGetUplinkInfoResult
 
     response_fields = {
-        'File Name' : {},
-        'Error' : {}
+        'File Name': {},
+        'Error': {}
     }
 
     @property
@@ -113,8 +116,8 @@ class GetMACAddressesCommand(CommandWithErrors):
     result_type = FabricGetMACAddressesResult
 
     response_fields = {
-        'File Name' : {},
-        'Error' : {}
+        'File Name': {},
+        'Error': {}
     }
 
     @property
@@ -132,11 +135,13 @@ class GetMACAddressesCommand(CommandWithErrors):
             return ["cxoem", "fabric", "config", "get", "macaddrs", "file",
                     self._params['filename']]
 
+
 class UpdateConfigCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config update config command"""
     name = "Update Config"
 
     ipmitool_args = ['cxoem', 'fabric', 'config', 'update_config']
+
 
 class GetIPSrcCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric get ipsrc command"""
@@ -153,6 +158,7 @@ class GetIPSrcCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ["cxoem", "fabric", "config", "get", "ipsrc"]
 
+
 class SetIPSrcCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric set ipsrc command"""
     name = "Set ipsrc command"
@@ -166,11 +172,13 @@ class SetIPSrcCommand(Command, ResponseParserMixIn):
                 'ipsrc',
                 self._params['ipsrc_mode']]
 
+
 class FactoryDefaultCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config factory_default command"""
     name = "Fabric config factory_default command"
 
     ipmitool_args = ['cxoem', 'fabric', 'config', 'factory_default']
+
 
 class GetIPAddrBase(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get ipaddr_base command"""
@@ -182,12 +190,14 @@ class GetIPAddrBase(Command, ResponseParserMixIn):
     def parse_response(self, out, err):
         return out.strip()
 
+
 class SetIPAddrBase(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config set ipaddr_base command"""
     @property
     def ipmitool_args(self):
         return ['cxoem', 'fabric', 'config', 'set', 'ipaddr_base',
                 self._params['ipaddr']]
+
 
 class GetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get linkspeed command"""
@@ -201,6 +211,7 @@ class GetLinkspeedCommand(Command, ResponseParserMixIn):
 
     ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'linkspeed']
 
+
 class SetLinkspeedCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config set linkspeed command"""
     name = "Set linkspeed command"
@@ -209,6 +220,7 @@ class SetLinkspeedCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ['cxoem', 'fabric', 'config', 'set', 'linkspeed',
                    self._params['linkspeed']]
+
 
 class GetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get ls_policy command"""
@@ -222,6 +234,7 @@ class GetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
 
     ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'ls_policy']
 
+
 class SetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config set ls_policy command"""
     name = "Set linkspeed command"
@@ -230,6 +243,7 @@ class SetLinkspeedPolicyCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ['cxoem', 'fabric', 'config', 'set', 'ls_policy',
                    self._params['ls_policy']]
+
 
 class GetUplinkCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get uplink command"""
@@ -245,6 +259,7 @@ class GetUplinkCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ['cxoem', 'fabric', 'config', 'get', 'uplink', 'interface',
                 self._params['iface']]
+
 
 class SetUplinkCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config set uplink command"""
@@ -291,6 +306,7 @@ class GetLinkUsersFactorCommand(Command, ResponseParserMixIn):
 
     ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'lu_factor']
 
+
 class SetLinkUsersFactorCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config set lu_factor command"""
     name = "Set global link users factor command"
@@ -300,6 +316,7 @@ class SetLinkUsersFactorCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'lu_factor',
                    self._params['lu_factor']]
 
+
 class SetMACAddressBaseCommand(Command, ResponseParserMixIn):
     name = "Set the base MAC address for a custom range"
 
@@ -307,6 +324,7 @@ class SetMACAddressBaseCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ['cxoem', 'fabric', 'config', 'set', 'macaddr_base',
                 self._params['macaddr']]
+
 
 class GetMACAddressBaseCommand(Command, ResponseParserMixIn):
     name = "Get the base MAC address for a custom range"
@@ -318,6 +336,7 @@ class GetMACAddressBaseCommand(Command, ResponseParserMixIn):
             raise IpmiError(err)
         return out.strip()
 
+
 class SetMACAddressMaskCommand(Command, ResponseParserMixIn):
     name = "Set the MAC address mask for a custom range"
 
@@ -325,6 +344,7 @@ class SetMACAddressMaskCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ['cxoem', 'fabric', 'config', 'set', 'macaddr_mask',
                 self._params['mask']]
+
 
 class GetMACAddressMaskCommand(Command, ResponseParserMixIn):
     name = "Get the MAC address mask for a custom range"
@@ -336,11 +356,13 @@ class GetMACAddressMaskCommand(Command, ResponseParserMixIn):
             raise IpmiError(err)
         return out.strip()
 
+
 class SetNetmaskCommand(Command, ResponseParserMixIn):
     @property
     def ipmitool_args(self):
         return ['cxoem', 'fabric', 'config', 'set', 'netmask',
                 self._params['netmask']]
+
 
 class SetDefaultGatewayCommand(Command, ResponseParserMixIn):
     @property
@@ -348,11 +370,13 @@ class SetDefaultGatewayCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'defgw',
                 self._params['ipaddr']]
 
+
 class SetNodenumOffsetCommand(Command, ResponseParserMixIn):
     @property
     def ipmitool_args(self):
         return ['cxoem', 'fabric', 'config', 'set', 'nodenum_offset',
                 self._params['offset']]
+
 
 class AddSCRouteCommand(Command, ResponseParserMixIn):
     @property
@@ -362,13 +386,14 @@ class AddSCRouteCommand(Command, ResponseParserMixIn):
                 'node_end', self._params['node_end'],
                 'via', self._params['via']]
 
+
 class GetSCDiscoveryCommand(CommandWithErrors):
     name = "Retrieve fabric SC discovery info"
     result_type = str
 
     response_fields = {
-        'File Name' : {},
-        'Error' : {}
+        'File Name': {},
+        'Error': {}
     }
 
     @property
@@ -387,32 +412,32 @@ class GetSCDiscoveryCommand(CommandWithErrors):
                     self._params['filename']]
 
 fabric_config_commands = {
-    "fabric_config_getipinfo"  : GetIPInfoCommand,
-    "fabric_config_getmacaddresses" : GetMACAddressesCommand,
-    "fabric_config_updateconfig"  : UpdateConfigCommand,
-    "fabric_config_getipsrc" : GetIPSrcCommand,
-    "fabric_config_setipsrc" : SetIPSrcCommand,
-    "fabric_config_factory_default" : FactoryDefaultCommand,
-    "fabric_config_get_ipaddr_base" : GetIPAddrBase,
-    "fabric_config_set_ipaddr_base" : SetIPAddrBase,
-    "fabric_config_getlinkspeed" : GetLinkspeedCommand,
-    "fabric_config_setlinkspeed" : SetLinkspeedCommand,
-    "fabric_config_getlinkspeedpolicy" : GetLinkspeedPolicyCommand,
-    "fabric_config_setlinkspeedpolicy" : SetLinkspeedPolicyCommand,
-    "fabric_config_getuplinkinfo" : GetUplinkInfoCommand,
-    "fabric_config_getuplink" : GetUplinkCommand,
-    "fabric_config_setuplink" : SetUplinkCommand,
-    "fabric_config_getlinkusersfactor" : GetLinkUsersFactorCommand,
-    "fabric_config_setlinkusersfactor" : SetLinkUsersFactorCommand,
-    "fabric_config_set_macaddr_base" : SetMACAddressBaseCommand,
-    "fabric_config_get_macaddr_base" : GetMACAddressBaseCommand,
-    "fabric_config_set_macaddr_mask" : SetMACAddressMaskCommand,
-    "fabric_config_get_macaddr_mask" : GetMACAddressMaskCommand,
+    "fabric_config_getipinfo": GetIPInfoCommand,
+    "fabric_config_getmacaddresses": GetMACAddressesCommand,
+    "fabric_config_updateconfig": UpdateConfigCommand,
+    "fabric_config_getipsrc": GetIPSrcCommand,
+    "fabric_config_setipsrc": SetIPSrcCommand,
+    "fabric_config_factory_default": FactoryDefaultCommand,
+    "fabric_config_get_ipaddr_base": GetIPAddrBase,
+    "fabric_config_set_ipaddr_base": SetIPAddrBase,
+    "fabric_config_getlinkspeed": GetLinkspeedCommand,
+    "fabric_config_setlinkspeed": SetLinkspeedCommand,
+    "fabric_config_getlinkspeedpolicy": GetLinkspeedPolicyCommand,
+    "fabric_config_setlinkspeedpolicy": SetLinkspeedPolicyCommand,
+    "fabric_config_getuplinkinfo": GetUplinkInfoCommand,
+    "fabric_config_getuplink": GetUplinkCommand,
+    "fabric_config_setuplink": SetUplinkCommand,
+    "fabric_config_getlinkusersfactor": GetLinkUsersFactorCommand,
+    "fabric_config_setlinkusersfactor": SetLinkUsersFactorCommand,
+    "fabric_config_set_macaddr_base": SetMACAddressBaseCommand,
+    "fabric_config_get_macaddr_base": GetMACAddressBaseCommand,
+    "fabric_config_set_macaddr_mask": SetMACAddressMaskCommand,
+    "fabric_config_get_macaddr_mask": GetMACAddressMaskCommand,
     "fabric_config_set_netmask": SetNetmaskCommand,
     "fabric_config_set_defgw": SetDefaultGatewayCommand,
     "fabric_config_set_nodenum_offset": SetNodenumOffsetCommand,
-    "fabric_config_get_sc_discovery" : GetSCDiscoveryCommand,
-    "fabric_config_add_sc_route" : AddSCRouteCommand,
+    "fabric_config_get_sc_discovery": GetSCDiscoveryCommand,
+    "fabric_config_add_sc_route": AddSCRouteCommand,
     'fabric_config_get_uplink_mode': GetUplinkModeCommand,
     'fabric_config_set_uplink_mode': SetUplinkModeCommand
 }
