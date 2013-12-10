@@ -337,6 +337,22 @@ class SetChassisSerialNumCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'set', 'chassis_serial_num',
                 self._params['serial']]
 
+
+class GetUplinkStatusCommand(CommandWithErrors):
+    """Describes the cxoem fabric get uplink_status IPMI command"""
+
+    name = "Retrieve fabric Uplink status"
+    result_type = str
+
+    def parse_response(self, out, err):
+        """Returns the output given from running the command"""
+        if err:
+            raise IpmiError(err)
+        return str(out)
+
+    ipmitool_args = ['cxoem', 'fabric', 'get', 'uplink_status']
+
+
 fabric_commands = {
     "fabric_updateconfig"  :UpdateConfigCommand,
     "fabric_getnodeid"  : GetNodeIDCommand,
@@ -356,4 +372,5 @@ fabric_commands = {
     "fabric_getuplinkinfo" : GetUplinkInfoCommand,
     "fabric_getchassisserialnum" : GetChassisSerialNumCommand,
     "fabric_setchassisserialnum" : SetChassisSerialNumCommand,
+    'fabric_get_uplink_status': GetUplinkStatusCommand
 }

@@ -399,7 +399,7 @@ class BMC(object):
                                      channel=channel)
     """Fabric commands
 
-    In pyipmi/fabric.py, these commands are mapped to classes that 
+    In pyipmi/fabric.py, these commands are mapped to classes that
     are subclasses of the Command class. Those subclasses contain the
     string arguments that are run by pyipmi/ipmitool.py
 
@@ -456,9 +456,12 @@ class BMC(object):
     def fabric_get_chassis_serial_num(self):
         return self.handle.fabric_getchassisserialnum()
 
+    def fabric_get_uplink_status(self):
+        return self.handle.fabric_get_uplink_status()
+
     """Fabric config commands
 
-    In pyipmi/fabric_config.py, these commands are mapped to classes that 
+    In pyipmi/fabric_config.py, these commands are mapped to classes that
     are subclasses of the Command class. Those subclasses contain the
     string arguments that are run by pyipmi/ipmitool.py
 
