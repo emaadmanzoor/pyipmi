@@ -466,6 +466,13 @@ class BMC(object):
     string arguments that are run by pyipmi/ipmitool.py
 
     """
+    def fabric_config_get_uplink_mode(self):
+        return self.handle.fabric_config_get_uplink_mode()
+
+    def fabric_config_set_uplink_mode(self, uplink_mode):
+        return self.handle.fabric_config_set_uplink_mode(
+            uplink_mode=uplink_mode
+        )
 
     def fabric_config_update_config(self):
         return self.handle.fabric_config_updateconfig()

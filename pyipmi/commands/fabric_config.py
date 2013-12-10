@@ -255,6 +255,30 @@ class SetUplinkCommand(Command, ResponseParserMixIn):
         return ['cxoem', 'fabric', 'config', 'set', 'uplink',
                 self._params['uplink'], 'interface', self._params['iface']]
 
+
+class GetUplinkModeCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config get uplink_mode command"""
+    name = 'Get uplink mode'
+    result_type = int
+
+    def parse_response(self, out, err):
+        if err:
+            raise IpmiError(err)
+        return int(out)
+
+    ipmitool_args = ['cxoem', 'fabric', 'config', 'get', 'uplink_mode']
+
+
+class SetUplinkModeCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config set uplink_mode command"""
+    name = 'Set uplink mode'
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'set', 'uplink_mode',
+                self._params['uplink_mode']]
+
+
 class GetLinkUsersFactorCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get lu_factor command"""
     name = "Get global link users factor command"
@@ -389,4 +413,6 @@ fabric_config_commands = {
     "fabric_config_set_nodenum_offset": SetNodenumOffsetCommand,
     "fabric_config_get_sc_discovery" : GetSCDiscoveryCommand,
     "fabric_config_add_sc_route" : AddSCRouteCommand,
+    'fabric_config_get_uplink_mode': GetUplinkModeCommand,
+    'fabric_config_set_uplink_mode': SetUplinkModeCommand
 }
