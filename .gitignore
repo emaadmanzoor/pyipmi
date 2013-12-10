@@ -4,3 +4,5 @@ test/*.log
 build/
 *.swp
 pyipmi.egg-info/
+.project
+.pydevproject
