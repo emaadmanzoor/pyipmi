@@ -466,6 +466,14 @@ class BMC(object):
     string arguments that are run by pyipmi/ipmitool.py
 
     """
+    def fabric_config_get_uplinks(self, filename, tftp_addr=None):
+        return self.handle.fabric_config_get_uplinks(filename=filename,
+                                            tftp_addr=tftp_addr)
+
+    def fabric_config_get_networks(self, filename, tftp_addr=None):
+        return self.handle.fabric_config_get_networks(filename=filename,
+                                            tftp_addr=tftp_addr)
+
     def fabric_config_get_uplink_mode(self):
         return self.handle.fabric_config_get_uplink_mode()
 

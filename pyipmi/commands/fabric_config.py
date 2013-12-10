@@ -261,7 +261,7 @@ class GetUplinkCommand(Command, ResponseParserMixIn):
                 self._params['iface']]
 
 
-class SetUplinkCommand(Command, ResponseParserMixIn):
+class SetUplinkCommand(Command):
     """Describes the ipmitool fabric config set uplink command"""
     name = "Set uplink command"
 
@@ -269,6 +269,58 @@ class SetUplinkCommand(Command, ResponseParserMixIn):
     def ipmitool_args(self):
         return ['cxoem', 'fabric', 'config', 'set', 'uplink',
                 self._params['uplink'], 'interface', self._params['iface']]
+
+
+class GetNetworksCommand(CommandWithErrors):
+    """Describes the cxoem fabric config get networks"""
+
+    name = "Retrieve fabric networks"
+
+    response_fields = {
+        'File Name': {},
+        'Error': {}
+    }
+
+    @property
+    def ipmitool_args(self):
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "config", "get", "networks", "tftp",
+                        tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "config", "get", "networks", "tftp",
+                        tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "config", "get", "networks", "file",
+                    self._params['filename']]
+
+
+class GetUplinksCommand(CommandWithErrors):
+    """Describes the cxoem fabric config get uplinks command"""
+
+    name = "Retrieve fabric uplinks"
+
+    response_fields = {
+        'File Name': {},
+        'Error': {}
+    }
+
+    @property
+    def ipmitool_args(self):
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "config", "get", "uplinks", "tftp",
+                        tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "config", "get", "uplinks", "tftp",
+                        tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "config", "get", "uplinks", "file",
+                    self._params['filename']]
 
 
 class GetUplinkModeCommand(Command, ResponseParserMixIn):
@@ -439,5 +491,7 @@ fabric_config_commands = {
     "fabric_config_get_sc_discovery": GetSCDiscoveryCommand,
     "fabric_config_add_sc_route": AddSCRouteCommand,
     'fabric_config_get_uplink_mode': GetUplinkModeCommand,
-    'fabric_config_set_uplink_mode': SetUplinkModeCommand
+    'fabric_config_set_uplink_mode': SetUplinkModeCommand,
+    'fabric_config_get_networks': GetNetworksCommand,
+    'fabric_config_get_uplinks': GetUplinksCommand
 }
