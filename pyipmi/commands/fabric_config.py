@@ -303,7 +303,6 @@ class AddNetworkCommand(Command, ResponseParserMixIn):
 
     @property
     def ipmitool_args(self):
-        print self._params
         if(self._params['uplink'] is not None):
             return ['cxoem', 'fabric', 'config', 'add', 'network',
                     self._params['name'], 'uplink', self._params['uplink']]
