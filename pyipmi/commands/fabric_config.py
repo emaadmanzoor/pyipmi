@@ -261,7 +261,7 @@ class GetUplinkCommand(Command, ResponseParserMixIn):
                 self._params['iface']]
 
 
-class SetUplinkCommand(Command):
+class SetUplinkCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config set uplink command"""
     name = "Set uplink command"
 
