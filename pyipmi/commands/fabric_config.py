@@ -325,6 +325,26 @@ class RmNetworkCommand(Command, ResponseParserMixIn):
                     self._params['name']]
 
 
+class AssignIfaceToNetworkCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config set mac command"""
+    name = "Assign iface to network command"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'set', 'mac',
+                self._params['mac'], 'network', self._params['network']]
+
+
+class GetIfaceToNetworkCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config get mac command"""
+    name = "Get iface to network command"
+
+    @property
+    def ipmitool_args(self):
+        return ['cxoem', 'fabric', 'config', 'get', 'network', 'mac',
+                self._params['mac']]
+
+
 class GetUplinksCommand(CommandWithErrors):
     """Describes the cxoem fabric config get uplinks command"""
 
@@ -523,5 +543,7 @@ fabric_config_commands = {
     'fabric_config_get_networks': GetNetworksCommand,
     'fabric_config_get_uplinks': GetUplinksCommand,
     'fabric_config_add_network': AddNetworkCommand,
-    'fabric_config_rm_network': RmNetworkCommand
+    'fabric_config_rm_network': RmNetworkCommand,
+    'fabric_config_set_mac': AssignIfaceToNetworkCommand,
+    'fabric_config_get_mac_network': GetIfaceToNetworkCommand
 }
