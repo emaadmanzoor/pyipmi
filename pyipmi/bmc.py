@@ -469,6 +469,9 @@ class BMC(object):
     def fabric_config_add_network(self, name, uplink=None):
         return self.handle.fabric_config_add_network(name=name, uplink=uplink)
 
+    def fabric_config_rm_network(self, name, uplink=None):
+        return self.handle.fabric_config_rm_network(name=name, uplink=uplink)
+
     def fabric_config_get_uplinks(self, filename, tftp_addr=None):
         return self.handle.fabric_config_get_uplinks(filename=filename,
                                             tftp_addr=tftp_addr)
