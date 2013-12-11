@@ -338,6 +338,12 @@ class AssignIfaceToNetworkCommand(Command, ResponseParserMixIn):
 class GetIfaceToNetworkCommand(Command, ResponseParserMixIn):
     """Describes the ipmitool fabric config get mac command"""
     name = "Get iface to network command"
+    result_type = str
+
+    def parse_response(self, out, err):
+        if err:
+            raise IpmiError(err)
+        return out.strip()
 
     @property
     def ipmitool_args(self):
@@ -345,9 +351,8 @@ class GetIfaceToNetworkCommand(Command, ResponseParserMixIn):
                 self._params['mac']]
 
 
-class GetUplinksCommand(CommandWithErrors):
+class GetUplinksCommand(CommandWithErrors, ResponseParserMixIn):
     """Describes the cxoem fabric config get uplinks command"""
-
     name = "Retrieve fabric uplinks"
 
     response_fields = {
@@ -545,5 +550,5 @@ fabric_config_commands = {
     'fabric_config_add_network': AddNetworkCommand,
     'fabric_config_rm_network': RmNetworkCommand,
     'fabric_config_set_mac': AssignIfaceToNetworkCommand,
-    'fabric_config_get_mac_network': GetIfaceToNetworkCommand
+    'fabric_config_get_network_mac': GetIfaceToNetworkCommand
 }

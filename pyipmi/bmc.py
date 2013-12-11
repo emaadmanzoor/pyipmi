@@ -466,8 +466,8 @@ class BMC(object):
     string arguments that are run by pyipmi/ipmitool.py
 
     """
-    def fabric_config_get_mac_network(self, mac):
-        return self.handle.fabric_config_get_mac_network(mac=mac)
+    def fabric_config_get_network_mac(self, mac):
+        return self.handle.fabric_config_get_network_mac(mac=mac)
 
     def fabric_config_set_mac(self, mac, network):
         return self.handle.fabric_config_set_mac(mac=mac, network=network)
