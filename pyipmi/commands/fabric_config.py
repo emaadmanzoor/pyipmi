@@ -297,6 +297,21 @@ class GetNetworksCommand(CommandWithErrors):
                     self._params['filename']]
 
 
+class AddNetworkCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool fabric config add network command"""
+    name = "Set uplink command"
+
+    @property
+    def ipmitool_args(self):
+        print self._params
+        if('uplink' in self._params):
+            return ['cxoem', 'fabric', 'config', 'add', 'network',
+                    self._params['name'], 'uplink', self._params['uplink']]
+        else:
+            return ['cxoem', 'fabric', 'config', 'add', 'network',
+                    self._params['name']]
+
+
 class GetUplinksCommand(CommandWithErrors):
     """Describes the cxoem fabric config get uplinks command"""
 
@@ -493,5 +508,6 @@ fabric_config_commands = {
     'fabric_config_get_uplink_mode': GetUplinkModeCommand,
     'fabric_config_set_uplink_mode': SetUplinkModeCommand,
     'fabric_config_get_networks': GetNetworksCommand,
-    'fabric_config_get_uplinks': GetUplinksCommand
+    'fabric_config_get_uplinks': GetUplinksCommand,
+    'fabric_config_add_network': AddNetworkCommand
 }
