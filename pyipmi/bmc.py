@@ -472,8 +472,12 @@ class BMC(object):
     def fabric_config_set_mac(self, mac, network):
         return self.handle.fabric_config_set_mac(mac=mac, network=network)
 
-    def fabric_config_add_network(self, name, uplink=None):
-        return self.handle.fabric_config_add_network(name=name, uplink=uplink)
+    def fabric_config_add_network(self, name, uplink=None, private=False):
+        return self.handle.fabric_config_add_network(
+            name=name,
+            uplink=uplink,
+            private=private
+        )
 
     def fabric_config_rm_network(self, name, uplink=None):
         return self.handle.fabric_config_rm_network(name=name, uplink=uplink)
