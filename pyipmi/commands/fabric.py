@@ -353,6 +353,26 @@ class GetUplinkStatusCommand(CommandWithErrors):
     ipmitool_args = ['cxoem', 'fabric', 'get', 'uplink_status']
 
 
+class PartitionConfigCommand(Command, ResponseParserMixIn):
+    """Describes the cxoem fabric info partition_config command"""
+    name = "Get partition config command"
+
+    @property
+    def ipmitool_args(self):
+        if self._params['tftp_addr'] != None:
+            tftp_args = self._params['tftp_addr'].split(":")
+            if len(tftp_args) == 1:
+                return ["cxoem", "fabric", "info", "partition_config", "tftp",
+                        tftp_args[0], "file", self._params['filename']]
+            else:
+                return ["cxoem", "fabric", "info", "partition_config", "tftp",
+                        tftp_args[0], "port", tftp_args[1], "file",
+                        self._params['filename']]
+        else:
+            return ["cxoem", "fabric", "info", "partition_config", "file",
+                    self._params['filename']]
+
+
 fabric_commands = {
     "fabric_updateconfig"  :UpdateConfigCommand,
     "fabric_getnodeid"  : GetNodeIDCommand,
@@ -368,6 +388,7 @@ fabric_commands = {
     "fabric_info_getroutingtable" : GetRoutingTableCommand,
     "fabric_info_getlinkmap" : GetLinkMapCommand,
     "fabric_info_getdepthchart" : GetDepthChartCommand,
+    "fabric_info_partition_config" : PartitionConfigCommand,
     "fabric_getuplinkspeed" : GetUplinkSpeedCommand,
     "fabric_getuplinkinfo" : GetUplinkInfoCommand,
     "fabric_getchassisserialnum" : GetChassisSerialNumCommand,
