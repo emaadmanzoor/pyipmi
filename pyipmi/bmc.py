@@ -357,7 +357,7 @@ class BMC(object):
     def fru_show(self, filename):
         return self.handle.fru_show(filename=filename)
 
-    def lan_print(self, channel=''):
+    def lan_print(self, channel=None):
         return self.handle.lan_print(channel=channel)
 
     def lan_set(self, channel, command, param):

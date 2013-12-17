@@ -96,8 +96,10 @@ class LANPrintCommand(Command, ResponseParserMixIn):
 
     @property
     def ipmitool_args(self):
-        channel = self._params.get('channel', '')
-        return ["lan", "print", channel]
+        if self._params["channel"] != None:
+            return ["lan", "print", self._params["channel"]]
+        else:
+            return ["lan", "print"]
 
 
 class LANSetCommand(Command, ResponseParserMixIn):
