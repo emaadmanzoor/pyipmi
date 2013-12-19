@@ -32,7 +32,7 @@
 """pyipmi provides IPMI client functionality"""
 from __future__ import print_function
 
-__version__ = "0.9.2"
+__version__ = "0.11.0"
 
 __all__ = ['Handle', 'Tool', 'Command', 'make_bmc', 'IpmiError']
 
