@@ -364,6 +364,14 @@ class BMC(object):
         return self.handle.lan_set(channel=channel, command=command,
                                    param=param)
 
+    def lan_alert_print(self, channel=None):
+        return self.handle.lan_alert_print(channel=channel)
+
+    def lan_alert_set(self, channel, alert_destination, command, param):
+        return self.handle.lan_alert_set(channel=channel,
+                                         alert_destination=alert_destination,
+                                         command=command, param=param)
+
     def channel_info(self):
         return self.handle.channel_info()
 

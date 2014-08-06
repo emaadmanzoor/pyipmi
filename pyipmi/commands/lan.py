@@ -123,7 +123,62 @@ class LANSetCommand(Command, ResponseParserMixIn):
         return command_array
 
 
+class LANAlertPrintCommand(Command, ResponseParserMixIn):
+    """Describes the lan alert print ipmitool command
+    """
+    name = "LAN Alert Print"
+    result_type = LANPrintResults
+
+    response_parser = ResponseParserMixIn.parse_colon_record_list
+
+    def parse_response(self, out, err):
+        # Remove trailing newline
+        new_out = '\n'.join((out.split('\n'))[:-1])
+        return self.response_parser(new_out, err)
+
+    response_fields = {
+        'Alert Destination'       : {},
+        'Alert Acknowledge'       : {},
+        'Destination Type'        : {},
+        'Retry Interval'          : {},
+        'Number of Retries'       : {},
+        'Alert Gateway'           : {},
+        'Alert IP Address'        : {},
+        'Alert MAC Address'       : {}
+    }
+
+    @property
+    def ipmitool_args(self):
+        if self._params["channel"] != None:
+            return ["lan", "alert", "print", self._params["channel"]]
+        else:
+            return ["lan", "alert", "print"]
+
+
+class LANAlertSetCommand(Command, ResponseParserMixIn):
+    """Describes the ipmitool lan alert set command
+    """
+    name = "LAN Alert Set"
+    result_type = LANSetResult
+
+    response_fields = {
+    }
+
+    @property
+    def ipmitool_args(self):
+        command = "lan alert set %s %s %s" % (self._params['channel'],
+                                              self._params['alert_destination'],
+                                              self._params['command'])
+        command_array = command.split(' ')
+        params = self._params['param']
+        param_array = [params]
+        command_array.extend(param_array)
+        return command_array
+
+
 lan_commands = {
     'lan_print'             : LANPrintCommand,
-    'lan_set'               : LANSetCommand
+    'lan_set'               : LANSetCommand,
+    'lan_alert_print'       : LANAlertPrintCommand,
+    'lan_alert_set'         : LANAlertSetCommand
 }
