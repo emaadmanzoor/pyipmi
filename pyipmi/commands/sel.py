@@ -194,6 +194,17 @@ class SELGetCommand(Command, ResponseParserMixIn):
     }
 
 
+class SELDeleteCommand(Command, ResponseParserMixIn):
+    """Describes the sel delete command"""
+
+    name = "SEL Delete"
+
+    @property
+    def ipmitool_args(self):
+        """return args for ipmitool command"""
+        return ["sel", "delete"] + list(self._params['record_ids'])
+
+
 class SELClearCommand(Command, ResponseParserMixIn):
     """Describes the Clear SEL command"""
 
