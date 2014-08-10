@@ -238,6 +238,20 @@ class BMC(object):
         """Clear the SEL"""
         return self.handle.sel_clear()
 
+    def sensor_list(self):
+        """List sensors and thresholds"""
+        return self.handle.sensor_list()
+
+    def sensor_get(self, *sensor_ids):
+        """Print information for the provided sensors"""
+        return self.handle.sensor_get(sensor_ids=sensor_ids)
+
+    def sensor_thresh(self, sensor, threshold, values):
+        """Set sensor thresholds"""
+        return self.handle.sensor_thresh(sensor=sensor,
+                                         threshold=threshold,
+                                         values=values)
+
     def set_sol_config_param(self, param, value):
         """Set SOL Configuration Parameter"""
         return self.handle.set_sol_config_params(param=param, value=value)
